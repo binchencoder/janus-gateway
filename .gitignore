@@ -16,4 +16,4 @@ vendor
 
 # Java files
 *.exe
-/target/
+target/
