@@ -8,9 +8,7 @@ package(default_visibility = ["//visibility:public"])
 
 proto_library(
     name = "examplepb_proto",
-    srcs = [
-        "echo_service.proto",
-    ],
+    srcs = glob(["*.proto"]),
     deps = [
         "@grpc_ecosystem_grpc_gateway//protoc-gen-swagger/options:options_proto",
         "@com_google_protobuf//:duration_proto",
