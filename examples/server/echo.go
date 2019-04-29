@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	examples "github.com/binchencoder/ease-gateway/proto/echo"
+	examples "github.com/binchencoder/ease-gateway/examples/proto"
 	"github.com/golang/glog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"

@@ -6,7 +6,7 @@ Package examplepb is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package echo
+package proto
 
 import (
 	"context"

@@ -1,6 +1,9 @@
 module github.com/binchencoder/ease-gateway
 
-require github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+require (
+	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+	github.com/golang/protobuf v1.3.1
+)
 
 replace (
 	cloud.google.com/go => github.com/googleapis/google-cloud-go v0.34.0

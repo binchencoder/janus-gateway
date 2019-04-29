@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/binchencoder/ease-gateway/proto/echo"
+	"github.com/binchencoder/ease-gateway/examples/proto"
 	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 )
@@ -18,7 +18,7 @@ func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []gwruntime.Ser
 	mux := gwruntime.NewServeMux(opts...)
 
 	for _, f := range []func(context.Context, *gwruntime.ServeMux, *grpc.ClientConn) error{
-		echo.RegisterEchoServiceHandler,
+		proto.RegisterEchoServiceHandler,
 	} {
 		if err := f(ctx, mux, conn); err != nil {
 			return nil, err

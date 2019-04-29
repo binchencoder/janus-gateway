@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+option java_package = "com.binchencoder.grpc.errors";
+option java_outer_classname = "Errors";
+
+///### Package frontend defines common messages for frontend errors (including
+///### WEB, Android, iOS, Windows, and MacOS Apps).
+package error;
+
+///### Enum for all error codes.
+///### Localization Guide for error codes. Error code which requires Localization
+///### need to provide a //@Trans chinese comment on the above line.
+enum ErrorCode {
+	NONE = 0;
+
+	///### 100000 - 120000 Common error
+	//@Trans 当前服务正在维护，请稍后再试.
+	SERVICE_DOWN = 100000;
+	//@Trans 当前服务内部错误，请稍后再试.
+	SERVICE_INTERNAL_ERROR = 100001;
+	//@Trans 找不到意中的“它”，请稍后重试!
+	SERVICE_INTERNAL_ACCIDENTAL_ERROR = 100002;
+	//@Trans 程序参数错误.
+	SERVICE_BAD_PARAM_ERROR = 100003;
+	//@Trans 程序编码错误.
+	SERVICE_UNREACHABLE_CODE = 100004;
+
+	///### 500500-500999: Common error codes.
+
+	//@Trans 用户认证失败，需重新登录
+	AUTHEN_ERROR = 500500;
+	//@Trans 服务器端错误
+	SERVER_ERROR = 500501;
+	//@Trans 权限不足
+	NORIGHT_ERROR = 500502;
+	//@Trans 数据不存在或已删除
+
+	///### 620000-629999: 主线
+
+	//@Trans 主线分类名称重复！
+	IGOAL_DUPLICATE_TAG = 620001;
+	//@Trans 您无权限进行此操作！
+	IGOAL_NO_ONLINE_TMPL_MANAGE_PERMISSION = 620002;
+	//@Trans 模板文件大小超限！
+	IGOAL_IMPORT_TEMPLATE_FILE_SIZE_EXCEEDED = 620003;
+	//@Trans 系统开小差了，请稍后尝试！
+	IGOAL_VERSION_CONFLICT_ERROR = 620004;
+	//@Trans 上传文件数量超过上限!
+	IGOAL_DOC_UPLOAD_FILE_NUMBER_EXCEEDED = 620005;
+}
+
+// An error message including its error code and the parameters to render
+// a localized string.
+message ErrorMessage {
+	// The error code.
+	ErrorCode code = 1;
+
+	// The parameters used to render a localized string.
+	repeated string params = 2;
+}
+
+// The error wrapper message. All frontend messages should contain exactly
+// one field with this message as the first field. Example:
+//
+//     message GetMyMemosResponse {
+//         frontend.Error error = 1;
+//
+//         int32  current_page  = 2;
+//         int32  page_total    = 3;
+//         string continue_token = 4;
+//
+//         repeated MemoMsg memos = 5;
+//     }
+message Error {
+	// The general error code.
+	ErrorCode code = 1;
+
+	// The general parameters with which to render a localized string.
+	repeated string params = 2;
+
+	// The debug information. Only populated in DEV, TEST, and QA environment.
+	// In PROD environment it will be stripped off before returning to the
+	// client.
+	string debug = 3;
+
+	// The detailed error messages.
+	repeated ErrorMessage details = 4;
+}

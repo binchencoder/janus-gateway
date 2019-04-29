@@ -13,3 +13,7 @@ vendor
 
 # Generated travis files
 .travis.yml
+
+# Java files
+*.exe
+/target/
