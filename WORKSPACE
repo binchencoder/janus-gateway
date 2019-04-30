@@ -30,6 +30,30 @@ go_repository(
     importpath = "github.com/grpc-ecosystem/grpc-gateway",
 )
 
+go_repository(
+    name = "com_github_fatih_color",
+    commit = "3f9d52f7176a6927daacff70a3e8d1dc2025c53e",
+    importpath = "github.com/fatih/color",
+)
+
+go_repository(
+    name = "com_github_klauspost_compress",
+    commit = "ae52aff18558bd92cbe681549bfe9e8cbffd5903",
+    importpath = "github.com/klauspost/compress",
+)
+
+go_repository(
+    name = "com_github_klauspost_cpuid",
+    commit = "05a8198c0f5a27739aec358908d7e12c64ce6eb7",
+    importpath = "github.com/klauspost/cpuid",
+)
+
+go_repository(
+    name = "com_github_golang_net",
+    commit = "4829fb13d2c62012c17688fa7f629f371014946d",
+    importpath = "github.com/golang/net",
+)
+
 # Also define in Gopkg.toml
 go_repository(
     name = "org_golang_google_genproto",

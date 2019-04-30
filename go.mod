@@ -1,8 +1,12 @@
 module github.com/binchencoder/ease-gateway
 
 require (
+	github.com/fatih/color v1.7.0
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/protobuf v1.3.1
+	github.com/mattn/go-colorable v0.1.1 // indirect
+	github.com/mattn/go-isatty v0.0.7 // indirect
+	golang.org/x/net v0.0.0-20190425155659-4829fb13d2c6
 )
 
 replace (
