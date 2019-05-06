@@ -22,7 +22,9 @@ func swaggerServer(dir string) http.HandlerFunc {
 
 		glog.Infof("Serving %s", r.URL.Path)
 		p := strings.TrimPrefix(r.URL.Path, "/swagger/")
+		fmt.Printf("serve file trim path: %s\n", p)
 		p = path.Join(dir, p)
+		fmt.Printf("serve file join path: %s\n", p)
 		http.ServeFile(w, r, p)
 	}
 }
