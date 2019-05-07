@@ -11,7 +11,7 @@ package error;
 ///### Localization Guide for error codes. Error code which requires Localization
 ///### need to provide a //@Trans chinese comment on the above line.
 enum ErrorCode {
-	NONE = 0;
+    NONE = 0;
 
 	///### 100000 - 120000 Common error
 	//@Trans 当前服务正在维护，请稍后再试.
@@ -23,7 +23,9 @@ enum ErrorCode {
 	//@Trans 程序参数错误.
 	SERVICE_BAD_PARAM_ERROR = 100003;
 	//@Trans 程序编码错误.
-	SERVICE_UNREACHABLE_CODE = 100004;
+    SERVICE_UNREACHABLE_CODE = 100004;
+    //@Trans Undefined error.
+    UNDEFINED = 100005;
 
 	///### 500500-500999: Common error codes.
 
@@ -34,6 +36,9 @@ enum ErrorCode {
 	//@Trans 权限不足
 	NORIGHT_ERROR = 500502;
 	//@Trans 数据不存在或已删除
+	NODATA_ERROR = 500503;
+	//@Trans 用户不存在或已停用
+	USER_ERROR = 500504;
 
 	///### 620000-629999: 主线
 

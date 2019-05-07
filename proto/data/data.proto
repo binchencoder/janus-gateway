@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+option java_package = "com.binchencoder.grpc.data";
+option java_outer_classname = "DataProtos";
+
+package data;
+
+// The unique service ID. Please sort in alphanumeric order.
+//
+// Services or apps under the same product should be placed in one section
+// with the same naming prefix. For example, vexillary itself has 4 services
+// so their service IDs could be defined as:
+//
+//   <blank line>
+//   // Vexillary service IDs.
+//   <blank line>
+//   VexillaryBackend   = 34;
+//   VexillaryDashboard = 35;
+//   VexillaryFrontend  = 36;
+//   VexillaryScheduler = 37;
+//   <blank line>
+//
+enum ServiceId {
+	SERVICE_NONE = 0;
+
+	//### 11 - 99: Infrastructure services
+	VEXILLARY_SERVICE       = 11;
+
+	//### 2700-2709 Jingoal purchase services.
+	PURCHASE_JD_SERVICE = 2700;
+    PURCHASE_PRODUCT_SERVICE = 2701;
+
+	// test service begins from 2147470000
+	SHARED_TEST_CLIENT_SERVICE  = 2147470000; // public test client service.
+	SHARED_TEST_SERVER_SERVICE  = 2147470001; // public test server service.
+	VEXILLARY_TEST_SERVICE      = 2147470002; // test service for vexillary.
+	SHARED_TEST_CLIENT2_SERVICE = 2147470003; // public test client service.
+	SHARED_TEST_SERVER2_SERVICE = 2147470004; // public test server service.
+	SHARED_TEST_CLIENT3_SERVICE = 2147470005; // public test client service.
+	SHARED_TEST_SERVER3_SERVICE = 2147470006; // public test server service.
+	// The private service ID used for private testing only.
+	// Warning: This should not be expose to production gateway!!!
+	PRIVATE_CUSTOMER_JANUS_SERVICE = 2147470007;
+
+	SKYLB_DEMO_CLIENT  = 2147470008;
+	SKYLB_DEMO_SERVICE = 2147470009;
+
+	VEXILLARY_DEVELOPER_SERVICE = 2147470010; // test service for vexillary developer.
+	VEXILLARY_DEVELOPER_SERVICE2 = 2147470011; // test service2 for vexillary developer.
+
+	SHARED_TEST_DATABASE_SERVICE = 2147470012; // public test database service.
+
+	///### for config server default settings.
+	_ = 2147483647; // math.MaxInt32
+}
+
+// The error enum returned by vexillay frontend or backend service.
+enum Error {
+	// There are no error happening.
+	ERROR_NONE = 0;
+
+	// The requested service for feature flags is not found. Client should send
+	// next request with a longer delay.
+	SERVICE_NOT_FOUND = 1;
+
+	// The requested service for feature flags is timed out. Client should send
+	// next request with a shorter delay.
+	TIMEOUT = 2;
+}
+
+// AppType 定义应用类型.
+enum AppType {
+	ALL                    = 0; // All app types.
+
+	PURCHASE_JD            = 1; // 今购模块id(与京东合作项目)
+}
+
+// Locale represents a specific geographical, political, or cultural region.
+enum Locale {
+	LOCALE_NONE = 0;
+	// ENGLISH
+	EN = 1;
+	// FRENCH
+	FR = 2;
+	// GERMAN
+	DE = 3;
+	// ITALIAN
+	IT = 4;
+	// JAPANESE
+	JA = 5;
+	// KOREAN
+	CO = 6;
+	// CHINESE
+	ZH = 7;
+	// SIMPLIFIED_CHINESE
+	ZH_CN = 101;
+	// TRADITIONAL_CHINESE
+	ZH_TW = 102;
+	// FRANCE
+	FR_FR = 103;
+	// GERMANY
+	DE_DE = 104;
+	// ITALY
+	IT_IT = 105;
+	// JAPAN
+	JA_JP = 106;
+	// KOREA
+	KO_KR = 107;
+	// UK
+	EN_GB = 108;
+	// US
+	EN_US = 109;
+	// CANADA
+	EN_CA = 110;
+	// CANADA_FRENCH
+	FR_CA = 111;
+}
+
+// UserDetails provides core user information.
+message UserDetails {
+	// User's identity.
+    string account_id = 1;
+    // User's Locale.
+    Locale locale = 2;
+}
