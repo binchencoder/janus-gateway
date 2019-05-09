@@ -7,11 +7,16 @@ require (
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/protobuf v1.3.1
 	github.com/google/shlex v0.0.0-20181106134648-c34317bd91bf // indirect
+	github.com/grpc-ecosystem/grpc-gateway v1.8.6
 	github.com/kardianos/govendor v1.0.9 // indirect
+	github.com/klauspost/compress v1.5.0
+	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mattn/go-isatty v0.0.7 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	golang.org/x/net v0.0.0-20190425155659-4829fb13d2c6
+	google.golang.org/genproto v0.0.0-20190508193815-b515fa19cec8
+	google.golang.org/grpc v1.20.1
 	gopkg.in/yaml.v2 v2.2.2 // indirect
 )
 
