@@ -1,6 +1,11 @@
 _output/
 .idea
 
+# Eclipse
+.classpath
+.project
+.settings/
+
 # Bazel.
 bazel-bin
 bazel-genfiles
