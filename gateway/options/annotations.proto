@@ -1,0 +1,158 @@
+// Copyright (c) 2015, Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package jingoal.api;
+
+import "google/protobuf/descriptor.proto";
+import "gateway/options/http.proto";
+import "proto/data/data.proto";
+
+option java_multiple_files = true;
+option java_outer_classname = "AnnotationsProto";
+option java_package = "com.jingoal.api";
+option objc_class_prefix = "JAPI";
+
+extend google.protobuf.MethodOptions {
+	// See `HttpRule`.
+	HttpRule http = 108345;
+}
+
+// The api method.
+message ApiMethod {
+	bool login_not_required   = 1;
+	bool client_sign_required = 2;
+
+	// Used only for CONSISTENT load balancer.
+	// Can take the following formats:
+	//     - "field.field.field": hash key from a proto field.
+	//     - "@uuid": generated UUID as hash key.
+	//     - "@session": hash key from session (session sticky).
+	string hash_key = 3;
+
+	// If the client of this call come from third party.
+	// When this field is true, gateway will not check
+	// X-Source.
+	bool is_third_party = 4;
+
+	// Used to call the GRPC service timeout.
+	// duration string, such as "300ms", "1m30s".
+	string timeout = 5;
+
+	// Api regist gateway.
+	ApiSourceType api_source = 6;
+
+	// Auth token type.
+	AuthTokenType token_type = 7;
+
+	// Specified source Type.
+	SpecSourceType spec_source_type = 8;
+}
+
+// Api regist gateway.
+enum ApiSourceType {
+	EASE_GATEWAY       = 0; // janus-gateway apis.
+	OPEN_GATEWAY        = 1; // open-gateway open apis.
+}
+
+// Auth token type.
+enum AuthTokenType {
+	EASE_AUTH_TOKEN   = 0; // janus gateway auth type.
+	BASE_ACCESS_TOKEN  = 1; // open platform baseAccessToken.
+}
+
+// Specified source Type.
+enum SpecSourceType {
+	UNSPECIFIED = 0; // use the value of x-source about header.
+	WEB = 1; // specify x-source as "web".
+}
+
+extend google.protobuf.MethodOptions {
+	ApiMethod method = 108361;
+}
+
+// The load balancer enums.
+enum LoadBalancer {
+	ROUND_ROBIN = 0;
+	CONSISTENT  = 1; // Consistent hashing.
+}
+
+// The service spec used for skylb/vexillary
+message ServiceSpec {
+	// The identity of the service.
+	data.ServiceId service_id = 1;
+
+	// For skylb integration.
+	string port_name = 2;
+	string namespace = 3;
+
+	bool gen_controller = 4;
+
+	LoadBalancer balancer = 5;
+}
+
+extend google.protobuf.ServiceOptions {
+	ServiceSpec service_spec = 108349;
+}
+
+// The opertaion type.
+enum OperatorType {
+	OPERATOR_TYPE_UNKNOWN = 0;
+
+	GT      = 1; // Greater than
+	LT      = 2; // Less than
+	EQ      = 3; // Equals
+	MATCH   = 4; // String pattern match.
+	NON_NIL = 5; // Not nil
+	LEN_GT  = 6; // String length great than
+	LEN_LT  = 7; // String length less than
+	LEN_EQ  = 8; // String length equals
+}
+
+// The supported function type list
+enum FunctionType{
+	FUNCTION_TYPE_UNKNOWN = 0;
+
+	TRIM = 1; // String trim.
+}
+
+// ValueType is the type of the field.
+enum ValueType {
+	VALUE_TYPE_UNKNOWN = 0;
+
+	NUMBER = 1; // Represent all number type like int,real
+	STRING = 2; // String
+	OBJ    = 3;
+}
+
+// ValidationRule defines the rule to validate the input value.
+message ValidationRule {
+	OperatorType operator = 1;
+	ValueType    type     = 2;
+	string       value    = 3;
+	FunctionType function = 4;
+}
+
+// ValidationRules holds a list of validation rules.
+message ValidationRules {
+	repeated ValidationRule rules = 1;
+}
+
+extend google.protobuf.FieldOptions {
+	// The validation rules, if there are more than
+	// one rules, validtion will pass only if all
+	// the rules are complied (AND).
+	ValidationRules rules = 108102;
+}

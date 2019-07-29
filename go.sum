@@ -3,7 +3,9 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/dominikh/go-tools v0.0.0-20190425155659-e561f6794a2a09dd/go.mod h1:qBNLV2EQXN9hMDGPA+nlUNDKcPCtmEvCC8iVgA6uBic=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
+github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
+github.com/go-yaml/yaml v0.0.0-20181115110504-51d6538a90f8 h1:lMJ4rStmFyGCSg/zzEO1iTNQ8oq7YKFXIQocfGdsrRc=
 github.com/go-yaml/yaml v0.0.0-20181115110504-51d6538a90f8/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 github.com/golang/appengine v1.6.1/go.mod h1:i06prIuMbXzDqacNJfV5OdTW448YApPu5ww/cMBSeb0=
 github.com/golang/crypto v0.0.0-20190427214059-a29dc8fdc73485/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=
