@@ -1,17 +1,23 @@
 package descriptor
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/golang/glog"
 	"github.com/golang/protobuf/proto"
 	descriptor "github.com/golang/protobuf/protoc-gen-go/descriptor"
+
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
 
 	// options "google.golang.org/genproto/googleapis/api/annotations"
 	options "github.com/binchencoder/ease-gateway/gateway/options"
+)
+
+var (
+	errNoServiceSpec = errors.New("no service spec defined in the service")
 )
 
 // loadServices registers services and their methods from "targetFile" to "r".
@@ -23,7 +29,7 @@ func (r *Registry) loadServices(file *File) error {
 	for _, sd := range file.GetService() {
 		glog.V(2).Infof("Registering %s", sd.GetName())
 		svc := &Service{
-			File: file,
+			File:                   file,
 			ServiceDescriptorProto: sd,
 		}
 		for _, md := range sd.GetMethod() {
