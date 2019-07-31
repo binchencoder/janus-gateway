@@ -54,6 +54,8 @@ func main() {
 	flag.Parse()
 	defer glog.Flush()
 
+	fmt.Printf("Start  gen grpc gateway")
+
 	if *versionFlag {
 		fmt.Printf("Version %v, commit %v, built at %v\n", version, commit, date)
 		os.Exit(0)
