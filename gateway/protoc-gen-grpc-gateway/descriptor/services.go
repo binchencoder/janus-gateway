@@ -13,7 +13,7 @@ import (
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
 
 	// options "google.golang.org/genproto/googleapis/api/annotations"
-	options "github.com/binchencoder/ease-gateway/gateway/options"
+	"github.com/binchencoder/ease-gateway/gateway/options"
 )
 
 var (
@@ -28,13 +28,33 @@ func (r *Registry) loadServices(file *File) error {
 	var svcs []*Service
 	for _, sd := range file.GetService() {
 		glog.V(2).Infof("Registering %s", sd.GetName())
+
+		spec, err := extractServiceSpec(sd)
+		if err != nil {
+			glog.Errorf("Failed to extract Service spec %s: %+v", sd.GetName(), err)
+			return err
+		}
+
+		if len(spec.PortName) == 0 {
+			spec.PortName = "grpc"
+		}
+
+		if len(spec.Namespace) == 0 {
+			spec.Namespace = "default"
+		}
+
 		svc := &Service{
 			File:                   file,
+			ServiceId:              &spec.ServiceId,
+			PortName:               &spec.PortName,
+			Namespace:              &spec.Namespace,
+			GenController:          spec.GenController,
+			Balancer:               spec.Balancer,
 			ServiceDescriptorProto: sd,
 		}
 		for _, md := range sd.GetMethod() {
 			glog.V(2).Infof("Processing %s.%s", sd.GetName(), md.GetName())
-			opts, err := extractAPIOptions(md)
+			opts, mopts, err := extractAPIOptions(md)
 			if err != nil {
 				glog.Errorf("Failed to extract HttpRule from %s.%s: %v", svc.GetName(), md.GetName(), err)
 				return err
@@ -46,7 +66,7 @@ func (r *Registry) loadServices(file *File) error {
 			if len(optsList) == 0 {
 				glog.V(1).Infof("Found non-target method: %s.%s", svc.GetName(), md.GetName())
 			}
-			meth, err := r.newMethod(svc, md, optsList)
+			meth, err := r.newMethod(svc, md, optsList, mopts)
 			if err != nil {
 				return err
 			}
@@ -62,7 +82,7 @@ func (r *Registry) loadServices(file *File) error {
 	return nil
 }
 
-func (r *Registry) newMethod(svc *Service, md *descriptor.MethodDescriptorProto, optsList []*options.HttpRule) (*Method, error) {
+func (r *Registry) newMethod(svc *Service, md *descriptor.MethodDescriptorProto, optsList []*options.HttpRule, mopts *options.ApiMethod) (*Method, error) {
 	requestType, err := r.LookupMsg(svc.File.GetPackage(), md.GetInputType())
 	if err != nil {
 		return nil, err
@@ -76,6 +96,16 @@ func (r *Registry) newMethod(svc *Service, md *descriptor.MethodDescriptorProto,
 		MethodDescriptorProto: md,
 		RequestType:           requestType,
 		ResponseType:          responseType,
+	}
+	if mopts != nil {
+		meth.LoginRequired = !mopts.LoginNotRequired
+		meth.ClientSignRequired = mopts.ClientSignRequired
+		meth.HashKey = mopts.HashKey
+		meth.IsThirdParty = mopts.IsThirdParty
+		meth.SpecSourceType = mopts.SpecSourceType
+		meth.ApiSource = mopts.ApiSource
+		meth.TokenType = mopts.TokenType
+		meth.Timeout = mopts.Timeout
 	}
 
 	newBinding := func(opts *options.HttpRule, idx int) (*Binding, error) {
@@ -192,22 +222,74 @@ func (r *Registry) newMethod(svc *Service, md *descriptor.MethodDescriptorProto,
 	return meth, nil
 }
 
-func extractAPIOptions(meth *descriptor.MethodDescriptorProto) (*options.HttpRule, error) {
-	if meth.Options == nil {
-		return nil, nil
+func extractServiceSpec(svc *descriptor.ServiceDescriptorProto) (*options.ServiceSpec, error) {
+	if svc.Options == nil {
+		return nil, errNoServiceSpec
 	}
-	if !proto.HasExtension(meth.Options, options.E_Http) {
-		return nil, nil
+	if !proto.HasExtension(svc.Options, options.E_ServiceSpec) {
+		return nil, errNoServiceSpec
 	}
-	ext, err := proto.GetExtension(meth.Options, options.E_Http)
+	spec, err := proto.GetExtension(svc.Options, options.E_ServiceSpec)
 	if err != nil {
 		return nil, err
 	}
+
+	svcSpec, ok := spec.(*options.ServiceSpec)
+	if !ok {
+		return nil, fmt.Errorf("extension is %T; Want a service spec", spec)
+	}
+	return svcSpec, nil
+}
+
+func extractFieldRules(field *descriptor.FieldDescriptorProto) (*options.ValidationRules, error) {
+	if field.Options == nil {
+		return nil, nil
+	}
+	if !proto.HasExtension(field.Options, options.E_Rules) {
+		return nil, nil
+	}
+	r, err := proto.GetExtension(field.Options, options.E_Rules)
+	if err != nil {
+		return nil, err
+	}
+	rules, ok := r.(*options.ValidationRules)
+	if !ok {
+		return nil, fmt.Errorf("Faile to extract rules: %v", rules)
+	}
+	return rules, nil
+}
+
+func extractAPIOptions(meth *descriptor.MethodDescriptorProto) (*options.HttpRule, *options.ApiMethod, error) {
+	if meth.Options == nil {
+		return nil, nil, nil
+	}
+	if !proto.HasExtension(meth.Options, options.E_Http) {
+		return nil, nil, nil
+	}
+	ext, err := proto.GetExtension(meth.Options, options.E_Http)
+	if err != nil {
+		return nil, nil, err
+	}
 	opts, ok := ext.(*options.HttpRule)
 	if !ok {
-		return nil, fmt.Errorf("extension is %T; want an HttpRule", ext)
+		return nil, nil, fmt.Errorf("extension is %T; want an HttpRule", ext)
 	}
-	return opts, nil
+
+	mopts := &options.ApiMethod{}
+	if !proto.HasExtension(meth.Options, options.E_Method) {
+		return opts, mopts, nil
+	}
+
+	// Extract Jingoal method options.
+	m, err := proto.GetExtension(meth.Options, options.E_Method)
+	if err != nil {
+		return nil, nil, err
+	}
+	mopts, ok = m.(*options.ApiMethod)
+	if !ok {
+		return nil, nil, fmt.Errorf("extension is %T; want an ApiMethod", ext)
+	}
+	return opts, mopts, nil
 }
 
 func (r *Registry) newParam(meth *Method, path string) (Parameter, error) {

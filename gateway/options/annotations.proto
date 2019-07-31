@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package jingoal.api;
+package options;
 
 import "google/protobuf/descriptor.proto";
 import "gateway/options/http.proto";

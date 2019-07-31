@@ -9,7 +9,9 @@ import (
 	"github.com/golang/glog"
 	descriptor "github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
-	"google.golang.org/genproto/googleapis/api/annotations"
+
+	// "google.golang.org/genproto/googleapis/api/annotations"
+	annotations "github.com/binchencoder/ease-gateway/gateway/options"
 )
 
 // Registry is a registry of information extracted from plugin.CodeGeneratorRequest.
@@ -77,6 +79,11 @@ type repeatedFieldSeparator struct {
 	name string
 	sep  rune
 }
+
+var (
+	// Reg is the global dictionary.
+	Reg *Registry
+)
 
 // NewRegistry returns a new Registry.
 func NewRegistry() *Registry {

@@ -1,6 +1,6 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
-package(default_visibility = ["//:generators"])
+package(default_visibility =  ["//visibility:public"])
 
 go_library(
     name = "go_default_library",
@@ -14,6 +14,7 @@ go_library(
     importpath = "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor",
     deps = [
         "@binchencoder_ease_gateway//gateway/protoc-gen-grpc-gateway/httprule:go_default_library",
+        "@binchencoder_ease_gateway//gateway/options:go_default_library",
         "@binchencoder_ease_gateway//proto/data:go_default_library",
         "@com_github_ghodss_yaml//:go_default_library",
         "@com_github_golang_glog//:go_default_library",
