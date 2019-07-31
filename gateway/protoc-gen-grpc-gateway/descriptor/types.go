@@ -9,8 +9,9 @@ import (
 	gogen "github.com/golang/protobuf/protoc-gen-go/generator"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
-	"github.com/binchencoder/ease-gateway/gateway/options"
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
+
+	options "github.com/binchencoder/ease-gateway/gateway/options"
 	"github.com/binchencoder/ease-gateway/proto/data"
 )
 

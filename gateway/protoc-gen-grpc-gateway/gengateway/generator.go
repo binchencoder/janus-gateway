@@ -18,7 +18,7 @@ import (
 	// gen "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/generator"
 	gen "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/generator"
 
-	"github.com/binchencoder/ease-gateway/gateway/options"
+	options "github.com/binchencoder/ease-gateway/gateway/options"
 )
 
 var (

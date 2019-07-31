@@ -13,7 +13,7 @@ import (
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
 
 	// options "google.golang.org/genproto/googleapis/api/annotations"
-	"github.com/binchencoder/ease-gateway/gateway/options"
+	options "github.com/binchencoder/ease-gateway/gateway/options"
 )
 
 var (

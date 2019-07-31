@@ -9,9 +9,15 @@ import (
 	"github.com/golang/glog"
 	"github.com/golang/protobuf/proto"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
-	"github.com/grpc-ecosystem/grpc-gateway/codegenerator"
-	"github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/genswagger"
+
+	// "github.com/grpc-ecosystem/grpc-gateway/codegenerator"
+	"github.com/binchencoder/ease-gateway/gateway/codegenerator"
+
+	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
+	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+
+	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/genswagger"
+	"github.com/binchencoder/ease-gateway/gateway/genswagger"
 )
 
 var (
