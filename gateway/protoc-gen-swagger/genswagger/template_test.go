@@ -11,9 +11,15 @@ import (
 	protodescriptor "github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
 	"github.com/golang/protobuf/ptypes/any"
-	"github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
-	swagger_options "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
+
+	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
+	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+
+	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
+	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
+
+	// swagger_options "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
+	swagger_options "github.com/binchencoder/ease-gateway/gateway/protoc-gen-swagger/options"
 )
 
 func crossLinkFixture(f *descriptor.File) *descriptor.File {

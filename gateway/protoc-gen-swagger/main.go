@@ -17,7 +17,7 @@ import (
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/genswagger"
-	"github.com/binchencoder/ease-gateway/gateway/genswagger"
+	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-swagger/genswagger"
 )
 
 var (
