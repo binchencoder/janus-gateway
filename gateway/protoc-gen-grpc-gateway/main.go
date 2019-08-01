@@ -120,8 +120,6 @@ func main() {
 		targets = append(targets, f)
 	}
 
-	fmt.Printf("%v\n", targets)
-
 	out, err := g.Generate(targets)
 	glog.V(1).Info("Processed code generator request")
 	if err != nil {
