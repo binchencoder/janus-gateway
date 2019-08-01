@@ -54,14 +54,13 @@ func main() {
 	flag.Parse()
 	defer glog.Flush()
 
-	fmt.Printf("Start  gen grpc gateway")
-
 	if *versionFlag {
 		fmt.Printf("Version %v, commit %v, built at %v\n", version, commit, date)
 		os.Exit(0)
 	}
 
 	reg := descriptor.NewRegistry()
+	descriptor.Reg = reg
 
 	glog.V(1).Info("Parsing code generator request")
 	req, err := codegenerator.ParseRequest(os.Stdin)
@@ -120,6 +119,8 @@ func main() {
 		}
 		targets = append(targets, f)
 	}
+
+	fmt.Printf("%v\n", targets)
 
 	out, err := g.Generate(targets)
 	glog.V(1).Info("Processed code generator request")

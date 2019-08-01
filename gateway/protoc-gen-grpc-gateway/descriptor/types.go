@@ -126,6 +126,8 @@ func (m *Message) FQMN() string {
 // field recursively.
 func (m *Message) HasRule() bool {
 	for _, f := range m.Fields {
+		fmt.Printf("HasRule range field :%v", f)
+
 		if *f.Type == descriptor.FieldDescriptorProto_TYPE_MESSAGE {
 			// It looks the field's type name is prefixed with package already.
 			// To make it consistent with parameters passing to Reg.LookupMessage,
@@ -140,6 +142,9 @@ func (m *Message) HasRule() bool {
 				continue
 			}
 
+			if m.CheckedFields == nil {
+				m.CheckedFields = make(map[string]bool)
+			}
 			m.CheckedFields[key] = false
 
 			if ft, err := Reg.LookupMsg(m.File.GetPackage(), f.GetTypeName()); err == nil {
