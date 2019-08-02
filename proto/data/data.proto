@@ -1,4 +1,5 @@
 syntax = "proto3";
+option go_package = "data";
 
 option java_package = "com.binchencoder.grpc.data";
 option java_outer_classname = "DataProtos";

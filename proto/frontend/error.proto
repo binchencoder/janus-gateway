@@ -1,4 +1,5 @@
 syntax = "proto3";
+option go_package = "frontend";
 
 option java_package = "com.binchencoder.grpc.errors";
 option java_outer_classname = "Errors";
