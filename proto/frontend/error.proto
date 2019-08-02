@@ -5,7 +5,7 @@ option java_outer_classname = "Errors";
 
 ///### Package frontend defines common messages for frontend errors (including
 ///### WEB, Android, iOS, Windows, and MacOS Apps).
-package error;
+package frontend;
 
 ///### Enum for all error codes.
 ///### Localization Guide for error codes. Error code which requires Localization
