@@ -121,6 +121,10 @@ enum Locale {
 message UserDetails {
     // User's identity.
     string account_id = 1;
+    // uid.
+	string user_id = 2;
+	// cid.
+	string company_id = 3;
     // User's Locale.
-    Locale locale = 2;
+    Locale locale = 4;
 }
