@@ -1,6 +1,5 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("@grpc_ecosystem_grpc_gateway//protoc-gen-swagger:defs.bzl", "protoc_gen_swagger")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -10,7 +9,6 @@ proto_library(
         "data.proto",
     ],
     deps = [
-        "@grpc_ecosystem_grpc_gateway//protoc-gen-swagger/options:options_proto",
         "@com_google_protobuf//:duration_proto",
         "@com_google_protobuf//:empty_proto",
         "@com_google_protobuf//:field_mask_proto",
@@ -24,12 +22,10 @@ go_proto_library(
     name = "data_go_proto",
     compilers = [
         "@io_bazel_rules_go//proto:go_grpc",
-        "@grpc_ecosystem_grpc_gateway//protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
     ],
     importpath = "github.com/binchencoder/ease-gateway/proto/data",
     proto = ":data_proto",
     deps = [
-        "@grpc_ecosystem_grpc_gateway//protoc-gen-swagger/options:go_default_library",
         "@go_googleapis//google/api:annotations_go_proto",
     ],
 )
@@ -45,9 +41,4 @@ go_library(
         "@org_golang_google_grpc//grpclog:go_default_library",
         "@org_golang_google_grpc//status:go_default_library",
     ],
-)
-
-protoc_gen_swagger(
-    name = "data_protoc_gen_swagger",
-    proto = ":data_proto",
 )
