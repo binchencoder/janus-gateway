@@ -42,3 +42,10 @@ go_library(
         "@org_golang_google_grpc//status:go_default_library",
     ],
 )
+
+java_proto_library(
+    name = "data_java_proto",
+    deps = [
+        ":data_proto",
+    ],
+)

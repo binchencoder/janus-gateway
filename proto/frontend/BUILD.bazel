@@ -27,3 +27,10 @@ go_library(
         "@com_github_golang_protobuf//proto:go_default_library",
     ],
 )
+
+java_proto_library(
+    name = "error_java_proto",
+    deps = [
+        ":error_proto",
+    ],
+)
