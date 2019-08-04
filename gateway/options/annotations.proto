@@ -17,8 +17,8 @@ syntax = "proto3";
 package ease.api;
 
 import "google/protobuf/descriptor.proto";
-import "gateway/options/http.proto";
-import "proto/data/data.proto";
+import "ease-gateway/gateway/options/http.proto";
+import "ease-gateway/proto/data/data.proto";
 
 option java_multiple_files = true;
 option java_outer_classname = "AnnotationsProto";
