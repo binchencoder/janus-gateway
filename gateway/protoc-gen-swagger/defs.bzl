@@ -145,7 +145,7 @@ protoc_gen_swagger = rule(
             allow_files = True,
         ),
         "_protoc_gen_swagger": attr.label(
-            default = Label("@binchencoder_ease_gateway//gateway/protoc-gen-swagger:protoc-gen-swagger"),
+            default = Label("//ease-gateway/gateway/protoc-gen-swagger:protoc-gen-swagger"),
             executable = True,
             cfg = "host",
         ),

@@ -16,7 +16,7 @@ go_library(
     embed = [":options_go_proto"],
     importpath = "github.com/binchencoder/ease-gateway/gateway/options",
     deps = [
-        "@binchencoder_ease_gateway//proto/data:go_default_library",
+        "//ease-gateway/proto/data:go_default_library",
     ],
 )
 
@@ -29,7 +29,7 @@ proto_library(
     deps = [
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",
-        "@binchencoder_ease_gateway//proto/data:data_proto",
+        "//ease-gateway/proto/data:data_proto",
     ],
 )
 
@@ -39,6 +39,6 @@ go_proto_library(
     importpath = "github.com/binchencoder/ease-gateway/gateway/options",
     proto = ":options_proto",
     deps = [
-        "@binchencoder_ease_gateway//proto/data:data_go_proto",
+        "//ease-gateway/proto/data:data_go_proto",
     ],
 )
