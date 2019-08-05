@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"text/template"
+	"unicode"
 
 	"github.com/golang/glog"
 	generator2 "github.com/golang/protobuf/protoc-gen-go/generator"
@@ -34,6 +35,23 @@ func (b binding) GetBodyFieldPath() string {
 		return b.Body.FieldPath.String()
 	}
 	return "*"
+}
+
+// badToUnderscore is the mapping function used to generate Go names from
+// package names, which can be dotted in the input .proto file.  It
+// replaces non-identifier characters such as dot or dash with underscore.
+func badToUnderscore(r rune) rune {
+	if unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_' {
+		return r
+	}
+	return '_'
+}
+
+// GetUniqueName return the unique valid go variable name
+// based on package name.
+func (p param) GetUniqueName() string {
+	s := strings.Split(p.GetName(), ".")
+	return strings.Map(badToUnderscore, s[0])
 }
 
 // HasQueryParam determines if the binding needs parameters in query string.
@@ -217,6 +235,177 @@ var _ io.Reader
 var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
+var _ sync.RWMutex
+var _ proto.Message
+var _ context.Context
+var _ grpc.ClientConn
+var _ client.ServiceCli
+var _ vexpb.ServiceId
+var _ = http.MethodGet
+var _ regexp.Regexp
+var _ = balancer.ConsistentHashing
+var _ option.BalancerCreator
+var _ naming.Resolver
+var _ strings.Reader
+var _ = utf8.UTFMax
+
+// TODO (jiezmo): check if there is any rule before create this var.
+var {{.GetUniqueName}}_error = lgr.ToGrpcError(codes.InvalidArgument, &fpb.Error{Code: fpb.ErrorCode_BADPARAM_ERROR, Params: []string{"Validation error"},})
+`))
+
+	validatorTemplate = template.Must(template.New("validator").Parse(`
+{{$fileUniqueName := .GetUniqueName}}
+// Validation methods start
+{{range $, $message := .Messages}}
+	{{if $message.HasRule}}
+	func {{$message.GetValidationMethodName}}(v *{{$message.File.GoPkg.Path  | $message.GoType }}) error{
+	if v == nil {
+		return nil
+	}
+	// Validation for each Fields
+	{{range $,$f := $message.Fields}}  {{/*0*/}}
+
+		{{if $f.HasRule}}
+			{{if $f.IsRepeated}}
+				for _, vv2 := range v.{{$f.GoName}} {
+			{{else}}
+				{
+				vv2 := v.{{if $f.IsOneOf}}Get{{$f.GoName}}(){{else}}{{$f.GoName}}{{end}}
+				{{if $f.IsOneOf}}
+					if _, ok := v.{{$f.OneOfDeclGoName}}.(*{{$message.File.GoPkg.Path  | $message.GoType }}_{{$f.GoName}}); ok {
+				{{end}}
+			{{end}}
+		{{end}}
+
+		// Validation Field: {{if $f.IsOneOf}}Get{{$f.GoName}}(){{else}}{{$f.GoName}}{{end}}
+		{{range $,$r := $f.Rules}}   {{/*1*/}}
+			{{if $r.IsOpMatch}}   {{/*2*/}}
+				{{if $r.IsTypeString}}
+					// Match pattern {{if $f.IsOneOf}}Get{{$f.GoName}}(){{else}}{{$f.GoName}}{{end}}
+					if matched, err := regexp.MatchString("{{$r.Value}}", vv2); matched == false || err != nil{
+						return {{$fileUniqueName}}_error
+					}
+				{{else}}
+					// TODO(jiezmo): fail the build
+					//Err, only string can have pattern match
+				{{end}}
+			{{else if $r.IsOpEq}}
+				{{if $r.IsTypeString}}
+					if "{{$r.Value}}" != vv2{
+						return {{$fileUniqueName}}_error
+					}
+				{{else}}
+					if {{$r.Value}} != vv2{
+						return {{$fileUniqueName}}_error
+					}
+				{{end}}
+			{{else if $r.IsOpGt}}
+				{{if $r.IsTypeNumber}}
+					if vv2 <= {{$r.Value}} {
+						return {{$fileUniqueName}}_error
+					}
+				{{else}}
+					// TODO(jiezmo): fail the build
+					// Err
+				{{end}}
+			{{else if $r.IsOpLt}}
+				{{if $r.IsTypeNumber}}
+					if vv2 >= {{$r.Value}} {
+						return {{$fileUniqueName}}_error
+					}
+				{{else}}
+					// TODO(jiezmo): fail the build
+					// Err
+				{{end}}
+			{{else if $r.IsOpNotNil}}
+				{{if $r.IsTypeObj}}
+					if vv2 == nil{
+						return {{$fileUniqueName}}_error
+					}
+				{{else}}
+					// TODO(jiezmo): fail the build
+					// Err
+				{{end}}
+			{{else if $r.IsLenEq}}
+				{{if $r.IsTypeString}}
+					{{if $r.NeedTrim}}
+					if utf8.RuneCountInString(strings.TrimSpace(vv2)) != {{$r.Value}}{
+						return {{$fileUniqueName}}_error
+					}
+					{{else}}
+					if {{$r.Value}} != utf8.RuneCountInString(vv2){
+						return {{$fileUniqueName}}_error
+					}
+					{{end}}
+				{{else}}
+					// TODO(jiezmo): fail the build
+					// Err
+				{{end}}
+			{{else if $r.IsLenGt}}
+				{{if $r.IsTypeString}}
+					{{if $r.NeedTrim}}
+					if utf8.RuneCountInString(strings.TrimSpace(vv2)) <= {{$r.Value}}{
+						return {{$fileUniqueName}}_error
+					}
+					{{else}}
+					if utf8.RuneCountInString(vv2) <= {{$r.Value}}{
+						return {{$fileUniqueName}}_error
+					}
+					{{end}}
+				{{else}}
+					// TODO(jiezmo): fail the build
+					// Err
+				{{end}}
+			{{else if $r.IsLenLt}}
+				{{if $r.IsTypeString}}
+					{{if $r.NeedTrim}}
+					if utf8.RuneCountInString(strings.TrimSpace(vv2)) >= {{$r.Value}}{
+						return {{$fileUniqueName}}_error
+					}
+					{{else}}
+					if utf8.RuneCountInString(vv2) >= {{$r.Value}}{
+						return {{$fileUniqueName}}_error
+					}
+					{{end}}
+				{{else}}
+					// TODO(jiezmo): fail the build
+					// Err
+				{{end}}
+			{{else}}
+				// TODO(jiezmo): fail the build
+				// Error
+			{{end}}  {{/*2*/}}
+		{{end}}  {{/*1*/}}
+
+		{{if $f.HasRule}}
+			{{if $f.IsOneOf}}
+				}
+			{{end}}
+			}
+		{{end}}
+
+		{{if $f.FieldMessage}}
+			{{if and $f.FieldMessage.HasRule}}
+				{{if $f.IsRepeated}}
+				for _, vv := range v.{{$f.GoName}} {
+					if err := {{$message.File.GoPkg.Path | $f.FieldMessage.GetValidationMethodQualifiedName}}(vv); err != nil {
+						return err
+					}
+				}
+				{{else}}
+				if err := {{$message.File.GoPkg.Path | $f.FieldMessage.GetValidationMethodQualifiedName}}(v.{{if $f.IsOneOf}}Get{{$f.GoName}}(){{else}}{{$f.GoName}}{{end}}); err != nil {
+					return err
+				}
+				{{end}}
+			{{end}}
+		{{end}}
+	{{end}}
+	return nil
+	}
+	{{end}}
+
+{{end}}
+// Validation methods done
 `))
 
 	handlerTemplate = template.Must(template.New("handler").Parse(`
@@ -435,6 +624,31 @@ var (
 `))
 
 	trailerTemplate = template.Must(template.New("trailer").Parse(`
+// Register itself to runtime.
+func init() {
+	var s *runtime.Service
+	var spec *skypb.ServiceSpec
+
+	_ = s
+	_ = spec
+{{range $svc := .Services}}
+	spec = internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec
+	s = &runtime.Service {
+		Spec    : *spec,
+		Name    : "{{$svc.GetName}}",
+		Register: Register{{$svc.GetName}}HandlerFromEndpoint,
+		Enable  : Enable{{$svc.GetName}}_Service,
+		Disable : Disable{{$svc.GetName}}_Service,
+	}
+
+	{{if $svc.GenController}}
+		runtime.AddService(s, Enable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup, Disable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup)
+	{{else}}
+		runtime.AddService(s, nil, nil)
+	{{end}}
+{{end}}
+}
+	
 {{$UseRequestContext := .UseRequestContext}}
 {{range $svc := .Services}}
 // Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint is same as Register{{$svc.GetName}}{{$.RegisterFuncSuffix}} but
@@ -540,5 +754,16 @@ var (
 	{{end}}
 	{{end}}
 )
+
+var (
+	internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec = client.NewServiceSpec("{{$svc.Namespace}}", vexpb.ServiceId_{{$svc.ServiceId}}, "{{$svc.PortName}}")
+	internal_{{$svc.GetName}}_{{$svc.ServiceId}}_client {{$svc.GetName}}Client
+	{{if $svc.GenController}}
+	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli client.ServiceCli
+
+	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock =sync.RWMutex{}
+	{{end}}
+)
+
 {{end}}`))
 )

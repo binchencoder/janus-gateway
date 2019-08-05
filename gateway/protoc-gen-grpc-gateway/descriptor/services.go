@@ -224,9 +224,11 @@ func (r *Registry) newMethod(svc *Service, md *descriptor.MethodDescriptorProto,
 
 func extractServiceSpec(svc *descriptor.ServiceDescriptorProto) (*options.ServiceSpec, error) {
 	if svc.Options == nil {
+		glog.Errorf("extractServiceSpec svc.Options == nil, %+v", svc)
 		return nil, errNoServiceSpec
 	}
 	if !proto.HasExtension(svc.Options, options.E_ServiceSpec) {
+		glog.Errorf("extractServiceSpec !proto.HasExtension == true, %+v", svc)
 		return nil, errNoServiceSpec
 	}
 	spec, err := proto.GetExtension(svc.Options, options.E_ServiceSpec)

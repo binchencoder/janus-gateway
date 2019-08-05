@@ -1,0 +1,49 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+package(default_visibility = ["//visibility:public"])
+
+go_library(
+    name = "go_default_library",
+    srcs = glob(
+        ["*.go"],
+        exclude = ["*_test.go"],
+    ),
+    importpath = "github.com/binchencoder/ease-gateway/gateway/runtime",
+    deps = [
+        "//ease-gateway/gateway/runtime/internal:go_default_library",
+        "//ease-gateway/gateway/options:go_default_library",
+        "//letsgo/grpc:go_default_library",
+        "//letsgo/hashring:go_default_library",
+        "//skylb-api/proto:go_default_library",
+        "@grpc_ecosystem_grpc_gateway//utilities:go_default_library",
+        "@com_github_golang_protobuf//jsonpb:go_default_library_gen",
+        "@com_github_golang_protobuf//proto:go_default_library",
+        "@com_github_golang_protobuf//protoc-gen-go/generator:go_default_library_gen",
+        "@go_googleapis//google/api:httpbody_go_proto",
+        "@io_bazel_rules_go//proto/wkt:any_go_proto",
+        "@io_bazel_rules_go//proto/wkt:duration_go_proto",
+        "@io_bazel_rules_go//proto/wkt:field_mask_go_proto",
+        "@io_bazel_rules_go//proto/wkt:timestamp_go_proto",
+        "@io_bazel_rules_go//proto/wkt:wrappers_go_proto",
+        "@org_golang_google_grpc//codes:go_default_library",
+        "@org_golang_google_grpc//grpclog:go_default_library",
+        "@org_golang_google_grpc//metadata:go_default_library",
+        "@org_golang_google_grpc//status:go_default_library",
+    ],
+)
+
+go_test(
+    name = "lib_test",
+    size = "small",
+    srcs = [
+        "balancer_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
+    deps = [
+        "//ease-gateway/gateway/options:go_default_library",
+        "//letsgo/hashring:go_default_library",
+        "//third-party-go/vendor/github.com/golang/protobuf/proto:go_default_library",
+    ],
+)

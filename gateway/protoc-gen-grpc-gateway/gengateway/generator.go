@@ -52,14 +52,20 @@ func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, p
 		"strings":                  "",
 		"sync":                     "",
 		"unicode/utf8":             "",
-		"golang.org/x/net/context": "",
+		// "golang.org/x/net/context": "",
 		"github.com/grpc-ecosystem/grpc-gateway/runtime":   "",
 		"github.com/grpc-ecosystem/grpc-gateway/utilities": "",
 		"github.com/golang/protobuf/proto":                 "",
-		"github.com/ease-gateway/proto/data":               "vexpb",
-		"github.com/ease-gateway/proto/frontend":           "fpb",
+		"github.com/binchencoder/ease-gateway/proto/data":               "vexpb",
+		"github.com/binchencoder/ease-gateway/proto/frontend":           "fpb",
+		"github.com/binchencoder/letsgo/grpc":                     "lgr",
+		"github.com/binchencoder/skylb-api/balancer":              "",
+		"github.com/binchencoder/skylb-api/client":                "",
+		"github.com/binchencoder/skylb-api/client/option":         "",
+		"github.com/binchencoder/skylb-api/proto":                 "skypb",
 		"google.golang.org/grpc":                           "",
 		"google.golang.org/grpc/codes":                     "",
+		"google.golang.org/grpc/naming":               "",
 		"google.golang.org/grpc/grpclog":                   "",
 		"google.golang.org/grpc/status":                    "",
 	} {
@@ -139,6 +145,8 @@ func (g *generator) Generate(targets []*descriptor.File) ([]*plugin.CodeGenerato
 func (g *generator) generate(file *descriptor.File) (string, error) {
 	pkgSeen := make(map[string]bool)
 	var imports []descriptor.GoPackage
+
+	glog.Errorf("generate g.baseImports: %+v", g.baseImports)
 	for _, pkg := range g.baseImports {
 		pkgSeen[pkg.Path] = true
 		imports = append(imports, pkg)
