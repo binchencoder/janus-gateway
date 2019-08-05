@@ -10,7 +10,7 @@ go_library(
     ],
     importpath = "github.com/binchencoder/ease-gateway/examples/server",
     deps = [
-        "//examples/proto:go_default_library",
+        "//ease-gateway/examples/proto:go_default_library",
         "@com_github_golang_glog//:go_default_library",
         "@com_github_golang_protobuf//proto:go_default_library",
         "@com_github_rogpeppe_fastuuid//:go_default_library",
