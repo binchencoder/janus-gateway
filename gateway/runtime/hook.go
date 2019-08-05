@@ -7,6 +7,7 @@ import (
 	"golang.org/x/net/context"
 
 	pb "github.com/binchencoder/skylb-api/proto"
+	ggr "github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 // GatewayServiceHook collects the injection points with which gateway runtime
@@ -66,7 +67,7 @@ type GatewayServiceHook interface {
 	//    m: the method object to which the gateway routes
 	//    reqProto: the request proto message
 	//    meta:     the server meta data
-	RequestParsed(ctx context.Context, svc *Service, m *Method, reqProto proto.Message, meta *ServerMetadata) error
+	RequestParsed(ctx context.Context, svc *Service, m *Method, reqProto proto.Message, meta *ggr.ServerMetadata) error
 
 	// RequestHandled is called after a request is completely handled, either
 	// succeeded or failed.
@@ -78,7 +79,7 @@ type GatewayServiceHook interface {
 	//    out:  is the response message from grpc server.
 	//    meta: the meta data.
 	//    err:  is the err which returned from grpc server
-	RequestHandled(ctx context.Context, svc *Service, m *Method, responseProto proto.Message, meta *ServerMetadata, err error)
+	RequestHandled(ctx context.Context, svc *Service, m *Method, responseProto proto.Message, meta *ggr.ServerMetadata, err error)
 }
 
 var (
@@ -119,7 +120,7 @@ func RequestAccepted(ctx context.Context, spec *pb.ServiceSpec, name string, met
 
 // RequestParsed forwards the call to the RequestParsed method of
 // GatewayServiceHook.
-func RequestParsed(ctx context.Context, spec *pb.ServiceSpec, name string, methodName string, reqProto proto.Message, meta *ServerMetadata) error {
+func RequestParsed(ctx context.Context, spec *pb.ServiceSpec, name string, methodName string, reqProto proto.Message, meta *ggr.ServerMetadata) error {
 	if hook == nil {
 		return nil
 	}
@@ -130,7 +131,7 @@ func RequestParsed(ctx context.Context, spec *pb.ServiceSpec, name string, metho
 }
 
 // RequestHandled will forward call to the hook if been set otherwise noop.
-func RequestHandled(ctx context.Context, spec *pb.ServiceSpec, name string, methodName string, out proto.Message, meta *ServerMetadata, err error) {
+func RequestHandled(ctx context.Context, spec *pb.ServiceSpec, name string, methodName string, out proto.Message, meta *ggr.ServerMetadata, err error) {
 	if hook != nil {
 		sg := GetServiceGroup(spec)
 		s := sg.Services[name]

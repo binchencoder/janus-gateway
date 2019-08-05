@@ -164,6 +164,11 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 	if err := headerTemplate.Execute(w, p); err != nil {
 		return "", err
 	}
+
+	if err := validatorTemplate.Execute(w, p); err != nil {
+		return "", err
+	}
+
 	var targetServices []*descriptor.Service
 
 	for _, msg := range p.Messages {
@@ -483,12 +488,14 @@ var (
 {{template "request-func-signature" .}} {
 	var protoReq {{.Method.RequestType.GoType .Method.Service.File.GoPkg.Path}}
 	var metadata runtime.ServerMetadata
+	spec := internal_{{.Method.Service.GetName}}_{{.Method.Service.ServiceId}}_spec
 {{if .Body}}
 	newReader, berr := utilities.IOReaderFactory(req.Body)
 	if berr != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&{{.Body.AssignableExpr "protoReq"}}); err != nil && err != io.EOF  {
+		eruntime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	{{- if and $AllowPatchFeature (and (eq (.HTTPMethod) "PATCH") (.FieldMaskField))}}
@@ -521,6 +528,7 @@ var (
 	{{$enum := $binding.LookupEnum $param}}
 	val, ok = pathParams[{{$param | printf "%q"}}]
 	if !ok {
+		eruntime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", {{$param | printf "%q"}})
 	}
 {{if $param.IsNestedProto3}}
@@ -564,7 +572,20 @@ var (
 	metadata.HeaderMD = header
 	return stream, metadata, nil
 {{else}}
+	// Only hook up for non-stream call for now.
+
+	{{if and .Method.RequestType.HasRule}}
+	// Validate
+	// {{.Method.RequestType.GoType .Method.Service.File.GoPkg.Path}}
+	if err :={{.Method.RequestType.GetValidationMethodName}}(&protoReq); err != nil {
+		eruntime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
+		return nil, metadata, err
+	}
+	{{end}}
+	eruntime.RequestParsed(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", &protoReq, &metadata)
+	ctx = eruntime.PreLoadBalance(ctx, "{{$.Method.Service.Balancer.String}}", "{{.Method.HashKey}}", &protoReq)
 	msg, err := client.{{.Method.GetName}}(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	eruntime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", msg, &metadata, err)
 	return msg, metadata, err
 {{end}}
 }`))
@@ -648,7 +669,7 @@ func init() {
 	{{end}}
 {{end}}
 }
-	
+
 {{$UseRequestContext := .UseRequestContext}}
 {{range $svc := .Services}}
 // Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint is same as Register{{$svc.GetName}}{{$.RegisterFuncSuffix}} but
@@ -688,14 +709,34 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}(ctx context.Context, mux *
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "{{$svc.GetName}}Client" to call the correct interceptors.
 func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context, mux *runtime.ServeMux, client {{$svc.GetName}}Client) error {
+	spec := internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec
+
 	{{range $m := $svc.Methods}}
 	{{range $b := $m.Bindings}}
-	mux.Handle({{$b.HTTPMethod | printf "%q"}}, pattern_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-	{{- if $UseRequestContext }}
-		ctx, cancel := context.WithCancel(req.Context())
-	{{- else -}}
-		ctx, cancel := context.WithCancel(ctx)
-	{{- end }}
+	eruntime.AddMethod(spec, "{{$svc.GetName}}", "{{$m.GetName}}", "{{$b.PathTmpl.Template}}", {{$b.HTTPMethod | printf "%q"}}, {{$m.LoginRequired}},
+		{{$m.ClientSignRequired}}, {{$m.IsThirdParty}}, "{{$m.SpecSourceType}}", "{{$m.ApiSource}}", "{{$m.TokenType}}", "{{$m.Timeout}}")
+	mux.Handle({{$b.HTTPMethod | printf "%q"}}, pattern_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}, vexpb.ServiceId_{{$svc.ServiceId}}, 
+	func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		// TODO(mojz): review all locking/unlocking logic.
+		// internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.RLock()
+		// defer internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.RUnlock()
+		cli := internal_{{$svc.GetName}}_{{$svc.ServiceId}}_client
+		if cli == nil {
+			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
+			return
+		}
+
+		ctx, err := eruntime.RequestAccepted(inctx, internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec, "{{$svc.GetName}}", "{{$m.GetName}}", w, req)
+		if err != nil {
+			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			return
+		}
+
+		{{- if $UseRequestContext }}
+			ctx, cancel := context.WithCancel(req.Context())
+		{{- else -}}
+			ctx, cancel := context.WithCancel(ctx)
+		{{- end }}
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
@@ -738,6 +779,59 @@ func (m response_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}) XXX_ResponseBody(
 {{end}}
 {{end}}
 {{end}}
+
+{{if $svc.GenController}}
+func Disable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup() {
+	// internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.Lock()
+	// defer internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.Unlock()
+	if internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli != nil {
+		spec := internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec
+		sg := runtime.GetServiceGroup(spec)
+		for _, svc := range sg.Services {
+			svc.Disable()
+		}
+
+		internal_{{$svc.GetName}}_{{$svc.ServiceId}}_client = nil
+		internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.Shutdown()
+		internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli = nil
+	}
+}
+
+func Enable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup() {
+	// internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.Lock()
+	// defer internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.Unlock()
+
+	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli = client.NewServiceCli(runtime.CallerServiceId)
+
+	// Resolve service
+	spec := internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec
+
+	{{if eq $svc.Balancer.String "ROUND_ROBIN"}}
+	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.Resolve(spec)
+	{{else if eq $svc.Balancer.String "CONSISTENT"}}
+	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.Resolve(spec,
+		option.WithBalancerCreator(func(r naming.Resolver) grpc.Balancer {
+			return balancer.ConsistentHashing(r)
+		}),
+	)
+	{{end}}
+	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.EnableResolveFullEps()
+	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.Start(func(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
+		sg := runtime.GetServiceGroup(spec)
+		for _, svc := range sg.Services {
+			svc.Enable(spec, conn)
+		}
+	})
+}
+{{end}}
+
+func Enable{{$svc.GetName}}_Service(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
+	internal_{{$svc.GetName}}_{{$svc.ServiceId}}_client = New{{$svc.GetName}}Client(conn)
+}
+
+func Disable{{$svc.GetName}}_Service() {
+	internal_{{$svc.GetName}}_{{$svc.ServiceId}}_client = nil
+}
 
 var (
 	{{range $m := $svc.Methods}}

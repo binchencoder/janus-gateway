@@ -40,6 +40,8 @@ enum ErrorCode {
     NODATA_ERROR = 500503;
     //@Trans 用户不存在或已停用
     USER_ERROR = 500504;
+    //@Trans 参数不合法
+	BADPARAM_ERROR = 500513;
 
     ///### 620000-629999: 主线
 
