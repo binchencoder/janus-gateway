@@ -713,10 +713,8 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 
 	{{range $m := $svc.Methods}}
 	{{range $b := $m.Bindings}}
-	eruntime.AddMethod(spec, "{{$svc.GetName}}", "{{$m.GetName}}", "{{$b.PathTmpl.Template}}", {{$b.HTTPMethod | printf "%q"}}, {{$m.LoginRequired}},
-		{{$m.ClientSignRequired}}, {{$m.IsThirdParty}}, "{{$m.SpecSourceType}}", "{{$m.ApiSource}}", "{{$m.TokenType}}", "{{$m.Timeout}}")
-	mux.Handle({{$b.HTTPMethod | printf "%q"}}, pattern_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}, vexpb.ServiceId_{{$svc.ServiceId}}, 
-	func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	eruntime.AddMethod(spec, "{{$svc.GetName}}", "{{$m.GetName}}", "{{$b.PathTmpl.Template}}", {{$b.HTTPMethod | printf "%q"}}, {{$m.LoginRequired}}, {{$m.ClientSignRequired}}, {{$m.IsThirdParty}}, "{{$m.SpecSourceType}}", "{{$m.ApiSource}}", "{{$m.TokenType}}", "{{$m.Timeout}}")
+	mux.Handle({{$b.HTTPMethod | printf "%q"}}, pattern_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}, vexpb.ServiceId_{{$svc.ServiceId}}, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.RLock()
 		// defer internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.RUnlock()
