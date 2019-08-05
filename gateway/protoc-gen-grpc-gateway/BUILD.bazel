@@ -35,6 +35,7 @@ go_proto_compiler(
     deps = [
         "//ease-gateway/proto/data:go_default_library",
         "//ease-gateway/proto/frontend:go_default_library",
+        "//ease-gateway/gateway/runtime:go_default_library",
         "@grpc_ecosystem_grpc_gateway//runtime:go_default_library",
         "@grpc_ecosystem_grpc_gateway//utilities:go_default_library",
         "@com_github_golang_protobuf//proto:go_default_library",

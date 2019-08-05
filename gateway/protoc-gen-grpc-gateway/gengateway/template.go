@@ -626,14 +626,14 @@ var (
 	trailerTemplate = template.Must(template.New("trailer").Parse(`
 // Register itself to runtime.
 func init() {
-	var s *runtime.Service
+	var s *eruntime.Service
 	var spec *skypb.ServiceSpec
 
 	_ = s
 	_ = spec
 {{range $svc := .Services}}
 	spec = internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec
-	s = &runtime.Service {
+	s = &eruntime.Service {
 		Spec    : *spec,
 		Name    : "{{$svc.GetName}}",
 		Register: Register{{$svc.GetName}}HandlerFromEndpoint,
@@ -642,9 +642,9 @@ func init() {
 	}
 
 	{{if $svc.GenController}}
-		runtime.AddService(s, Enable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup, Disable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup)
+		eruntime.AddService(s, Enable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup, Disable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup)
 	{{else}}
-		runtime.AddService(s, nil, nil)
+		eruntime.AddService(s, nil, nil)
 	{{end}}
 {{end}}
 }
