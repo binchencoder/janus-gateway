@@ -4,18 +4,23 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
-	// "strconv"
+	"strconv"
 	"time"
 
 	"github.com/golang/protobuf/proto"
 	"golang.org/x/net/context"
 	gr "google.golang.org/grpc"
-	// "google.golang.org/grpc/codes"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 
+	"github.com/binchencoder/ease-gateway/gateway/options"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/binchencoder/ease-gateway/util"
+	"github.com/binchencoder/ease-gateway/integrate/metrics"
 	"github.com/binchencoder/letsgo/trace"
+
+	vexpb "github.com/binchencoder/ease-gateway/proto/data"
+	fpb "github.com/binchencoder/ease-gateway/proto/frontend"
 )
 
 var (
@@ -141,4 +146,29 @@ func NewGatewayHook(mux *runtime.ServeMux, host string) runtime.GatewayServiceHo
 		mux:  mux,
 		host: host,
 	}
+}
+
+// addMetrics add metrics to prometheus for janus.
+func addMetrics(ctx context.Context, svc *runtime.Service, m *runtime.Method, code codes.Code, startTime time.Time, clt string) float64 {
+	rp := &metrics.ReporterParam{StartTime: startTime, ServiceName: svc.Spec.GetServiceName(), Url: m.Path, HttpMethod: m.HttpMethod, Code: strconv.FormatUint(uint64(code), 10), Client: clt}
+	return rp.RequestComplete()
+}
+
+// getClient returns client value who request janus from Md.
+func getClientFroMd(md metadata.MD) string {
+	if s, ok := md[XSource]; ok && len(s) > 0 && s[0] != ResourceClient {
+		return s[0]
+	}
+	if s, ok := md[XClient]; ok && len(s) > 0 {
+		return s[0]
+	}
+	return ""
+}
+
+func grpcError(rpcCode codes.Code, pbCode fpb.ErrorCode, params []string) error {
+	e := fpb.Error{
+		Code:   pbCode,
+		Params: params,
+	}
+	return grpc.ToGrpcError(rpcCode, &e)
 }

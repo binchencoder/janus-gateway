@@ -12,8 +12,11 @@ go_library(
     deps = [
         "//ease-gateway/util:go_default_library",
         "//ease-gateway/util/glog:go_default_library",
+        "//ease-gateway/integrate/metrics:go_default_library",
         "//ease-gateway/gateway/runtime:go_default_library",
         "//ease-gateway/gateway/options:go_default_library",
+        "//ease-gateway/proto/data:go_default_library",
+        "//ease-gateway/proto/frontend:go_default_library",
         "//letsgo/trace:go_default_library",
         "//letsgo/grpc:go_default_library",
         "//third-party-go/vendor/github.com/golang/protobuf/proto:go_default_library",
