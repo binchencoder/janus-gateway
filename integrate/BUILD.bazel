@@ -11,7 +11,16 @@ go_library(
     importpath = "github.com/binchencoder/ease-gateway/integrate",
     deps = [
         "//ease-gateway/util:go_default_library",
-        "@com_github_klauspost_compress//gzip:go_default_library",
-        "@grpc_ecosystem_grpc_gateway//runtime:go_default_library",
+        "//ease-gateway/util/glog:go_default_library",
+        "//ease-gateway/gateway/runtime:go_default_library",
+        "//ease-gateway/gateway/options:go_default_library",
+        "//letsgo/trace:go_default_library",
+        "//letsgo/grpc:go_default_library",
+        "//third-party-go/vendor/github.com/golang/protobuf/proto:go_default_library",
+        "//third-party-go/vendor/github.com/klauspost/compress/gzip:go_default_library",
+        "//third-party-go/vendor/golang.org/x/net/context:go_default_library",
+        "//third-party-go/vendor/google.golang.org/grpc:go_default_library",
+        "//third-party-go/vendor/google.golang.org/grpc/codes:go_default_library",
+        "//third-party-go/vendor/google.golang.org/grpc/metadata:go_default_library",
     ]
 )

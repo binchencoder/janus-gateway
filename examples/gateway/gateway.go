@@ -8,16 +8,16 @@ import (
 	"time"
 
 	"github.com/binchencoder/ease-gateway/examples/proto"
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"google.golang.org/grpc"
 )
 
 // newGateway returns a new gateway server which translates HTTP into gRPC.
-func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []gwruntime.ServeMuxOption) (http.Handler, error) {
+func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []runtime.ServeMuxOption) (http.Handler, error) {
 
-	mux := gwruntime.NewServeMux(opts...)
+	mux := runtime.NewServeMux(opts...)
 
-	for _, f := range []func(context.Context, *gwruntime.ServeMux, *grpc.ClientConn) error{
+	for _, f := range []func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error{
 		proto.RegisterEchoServiceHandler,
 	} {
 		if err := f(ctx, mux, conn); err != nil {

@@ -4,7 +4,7 @@ import (
 	"flag"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 )
 
 var (

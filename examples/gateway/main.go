@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/golang/glog"
-	gwruntime "github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 )
 
 // Endpoint describes a gRPC endpoint
@@ -26,7 +26,7 @@ type Options struct {
 	SwaggerDir string
 
 	// Mux is a list of options to be passed to the grpc-gateway multiplexer
-	Mux []gwruntime.ServeMuxOption
+	Mux []runtime.ServeMuxOption
 }
 
 // Run starts a HTTP server and blocks while running if successful.

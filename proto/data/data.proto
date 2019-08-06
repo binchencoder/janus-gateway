@@ -27,6 +27,7 @@ enum ServiceId {
     //### 11 - 99: Infrastructure services
     VEXILLARY_SERVICE       = 11;
     EASE_GATEWAY           = 12;
+    CUSTOM_GATEWAY         = 13;
 
     //### 2700-2709 Jingoal purchase services.
     PURCHASE_JD_SERVICE = 2700;

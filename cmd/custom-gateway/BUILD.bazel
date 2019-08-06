@@ -1,0 +1,20 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@io_bazel_rules_go//go:def.bzl", "go_binary")
+
+go_binary(
+    name = "ease-gateway-demo",
+    srcs = [
+        "main.go",
+        "registrydemo.go",
+    ],
+    deps = [
+        "//ease-gateway/examples/proto:go_default_library",
+        "//ease-gateway/gateway/runtime:go_default_library",
+        "//ease-gateway/integrate:go_default_library",
+        "//ease-gateway/proto/data:go_default_library",
+        "//ease-gateway/util:go_default_library",
+        "//letsgo:go_default_library",
+        "//third-party-go/vendor/github.com/golang/glog:go_default_library",
+    ],
+)

@@ -25,7 +25,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/examplepbSimpleMessage"
+              "$ref": "#/definitions/protoSimpleMessage"
             }
           }
         },
@@ -52,7 +52,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/examplepbSimpleMessage"
+              "$ref": "#/definitions/protoSimpleMessage"
             }
           }
         },
@@ -132,7 +132,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/examplepbSimpleMessage"
+              "$ref": "#/definitions/protoSimpleMessage"
             }
           }
         },
@@ -212,7 +212,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/examplepbSimpleMessage"
+              "$ref": "#/definitions/protoSimpleMessage"
             }
           }
         },
@@ -286,7 +286,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/examplepbSimpleMessage"
+              "$ref": "#/definitions/protoSimpleMessage"
             }
           }
         },
@@ -359,7 +359,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/examplepbSimpleMessage"
+              "$ref": "#/definitions/protoSimpleMessage"
             }
           }
         },
@@ -369,7 +369,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/examplepbSimpleMessage"
+              "$ref": "#/definitions/protoSimpleMessage"
             }
           }
         ],
@@ -386,7 +386,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/examplepbSimpleMessage"
+              "$ref": "#/definitions/protoSimpleMessage"
             }
           }
         },
@@ -459,7 +459,7 @@
     }
   },
   "definitions": {
-    "examplepbEmbedded": {
+    "protoEmbedded": {
       "type": "object",
       "properties": {
         "progress": {
@@ -472,7 +472,7 @@
       },
       "description": "Embedded represents a message embedded in SimpleMessage."
     },
-    "examplepbSimpleMessage": {
+    "protoSimpleMessage": {
       "type": "object",
       "properties": {
         "id": {
@@ -491,14 +491,14 @@
           "type": "string"
         },
         "status": {
-          "$ref": "#/definitions/examplepbEmbedded"
+          "$ref": "#/definitions/protoEmbedded"
         },
         "en": {
           "type": "string",
           "format": "int64"
         },
         "no": {
-          "$ref": "#/definitions/examplepbEmbedded"
+          "$ref": "#/definitions/protoEmbedded"
         }
       },
       "description": "SimpleMessage represents a simple message sent to the Echo service."

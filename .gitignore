@@ -12,6 +12,7 @@ bazel-genfiles
 bazel-ease-gateway
 bazel-out
 bazel-testlogs
+*.bin
 
 # Go vendor directory
 #vendor
