@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/proto"
-	ggr "github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc/grpclog"
 )
@@ -379,14 +378,14 @@ func populateFieldEnumRepeated(f reflect.Value, values []string, enumValMap map[
 
 var (
 	convFromType = map[reflect.Kind]reflect.Value{
-		reflect.String:  reflect.ValueOf(ggr.String),
-		reflect.Bool:    reflect.ValueOf(ggr.Bool),
-		reflect.Float64: reflect.ValueOf(ggr.Float64),
-		reflect.Float32: reflect.ValueOf(ggr.Float32),
-		reflect.Int64:   reflect.ValueOf(ggr.Int64),
-		reflect.Int32:   reflect.ValueOf(ggr.Int32),
-		reflect.Uint64:  reflect.ValueOf(ggr.Uint64),
-		reflect.Uint32:  reflect.ValueOf(ggr.Uint32),
-		reflect.Slice:   reflect.ValueOf(ggr.Bytes),
+		reflect.String:  reflect.ValueOf(String),
+		reflect.Bool:    reflect.ValueOf(Bool),
+		reflect.Float64: reflect.ValueOf(Float64),
+		reflect.Float32: reflect.ValueOf(Float32),
+		reflect.Int64:   reflect.ValueOf(Int64),
+		reflect.Int32:   reflect.ValueOf(Int32),
+		reflect.Uint64:  reflect.ValueOf(Uint64),
+		reflect.Uint32:  reflect.ValueOf(Uint32),
+		reflect.Slice:   reflect.ValueOf(Bytes),
 	}
 )

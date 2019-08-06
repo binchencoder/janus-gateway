@@ -8,7 +8,6 @@ import (
 	"golang.org/x/net/context"
 
 	pb "github.com/binchencoder/skylb-api/proto"
-	ggr "github.com/grpc-ecosystem/grpc-gateway/runtime"
 )
 
 type GatewayServiceHookFake struct {
@@ -25,11 +24,11 @@ func (g *GatewayServiceHookFake) RequestAccepted(ctx context.Context, svc *Servi
 	return nil, nil
 }
 
-func (g *GatewayServiceHookFake) RequestParsed(ctx context.Context, svc *Service, m *Method, in proto.Message, meta *ggr.ServerMetadata) error {
+func (g *GatewayServiceHookFake) RequestParsed(ctx context.Context, svc *Service, m *Method, in proto.Message, meta *ServerMetadata) error {
 	return nil
 }
 
-func (g *GatewayServiceHookFake) RequestHandled(ctx context.Context, svc *Service, m *Method, out proto.Message, meta *ggr.ServerMetadata, err error) {
+func (g *GatewayServiceHookFake) RequestHandled(ctx context.Context, svc *Service, m *Method, out proto.Message, meta *ServerMetadata, err error) {
 }
 
 func TestHook(t *testing.T) {

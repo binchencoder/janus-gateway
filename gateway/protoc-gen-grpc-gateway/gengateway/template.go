@@ -495,7 +495,7 @@ var (
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
 	}
 	if err := marshaler.NewDecoder(newReader()).Decode(&{{.Body.AssignableExpr "protoReq"}}); err != nil && err != io.EOF  {
-		eruntime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
+		runtime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	{{- if and $AllowPatchFeature (and (eq (.HTTPMethod) "PATCH") (.FieldMaskField))}}
@@ -528,7 +528,7 @@ var (
 	{{$enum := $binding.LookupEnum $param}}
 	val, ok = pathParams[{{$param | printf "%q"}}]
 	if !ok {
-		eruntime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
+		runtime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", {{$param | printf "%q"}})
 	}
 {{if $param.IsNestedProto3}}
@@ -578,14 +578,14 @@ var (
 	// Validate
 	// {{.Method.RequestType.GoType .Method.Service.File.GoPkg.Path}}
 	if err :={{.Method.RequestType.GetValidationMethodName}}(&protoReq); err != nil {
-		eruntime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
+		runtime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
 		return nil, metadata, err
 	}
 	{{end}}
-	eruntime.RequestParsed(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", &protoReq, &metadata)
-	ctx = eruntime.PreLoadBalance(ctx, "{{$.Method.Service.Balancer.String}}", "{{.Method.HashKey}}", &protoReq)
+	runtime.RequestParsed(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", &protoReq, &metadata)
+	ctx = runtime.PreLoadBalance(ctx, "{{$.Method.Service.Balancer.String}}", "{{.Method.HashKey}}", &protoReq)
 	msg, err := client.{{.Method.GetName}}(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	eruntime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", msg, &metadata, err)
+	runtime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", msg, &metadata, err)
 	return msg, metadata, err
 {{end}}
 }`))
@@ -647,14 +647,14 @@ var (
 	trailerTemplate = template.Must(template.New("trailer").Parse(`
 // Register itself to runtime.
 func init() {
-	var s *eruntime.Service
+	var s *runtime.Service
 	var spec *skypb.ServiceSpec
 
 	_ = s
 	_ = spec
 {{range $svc := .Services}}
 	spec = internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec
-	s = &eruntime.Service {
+	s = &runtime.Service {
 		Spec    : *spec,
 		Name    : "{{$svc.GetName}}",
 		Register: Register{{$svc.GetName}}HandlerFromEndpoint,
@@ -663,9 +663,9 @@ func init() {
 	}
 
 	{{if $svc.GenController}}
-		eruntime.AddService(s, Enable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup, Disable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup)
+		runtime.AddService(s, Enable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup, Disable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGroup)
 	{{else}}
-		eruntime.AddService(s, nil, nil)
+		runtime.AddService(s, nil, nil)
 	{{end}}
 {{end}}
 }
@@ -713,7 +713,7 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 
 	{{range $m := $svc.Methods}}
 	{{range $b := $m.Bindings}}
-	eruntime.AddMethod(spec, "{{$svc.GetName}}", "{{$m.GetName}}", "{{$b.PathTmpl.Template}}", {{$b.HTTPMethod | printf "%q"}}, {{$m.LoginRequired}}, {{$m.ClientSignRequired}}, {{$m.IsThirdParty}}, "{{$m.SpecSourceType}}", "{{$m.ApiSource}}", "{{$m.TokenType}}", "{{$m.Timeout}}")
+	runtime.AddMethod(spec, "{{$svc.GetName}}", "{{$m.GetName}}", "{{$b.PathTmpl.Template}}", {{$b.HTTPMethod | printf "%q"}}, {{$m.LoginRequired}}, {{$m.ClientSignRequired}}, {{$m.IsThirdParty}}, "{{$m.SpecSourceType}}", "{{$m.ApiSource}}", "{{$m.TokenType}}", "{{$m.Timeout}}")
 	mux.Handle({{$b.HTTPMethod | printf "%q"}}, pattern_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}, vexpb.ServiceId_{{$svc.ServiceId}}, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.RLock()
@@ -724,7 +724,7 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 			return
 		}
 
-		ctx, err := eruntime.RequestAccepted(inctx, internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec, "{{$svc.GetName}}", "{{$m.GetName}}", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec, "{{$svc.GetName}}", "{{$m.GetName}}", w, req)
 		if err != nil {
 			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
