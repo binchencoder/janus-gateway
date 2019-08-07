@@ -15,8 +15,8 @@ package data;
 //   <blank line>
 //   //### 2700-2709 Approval services.
 //   <blank line>
-//   APPROVAL_GRPC_SERVICE = 2700;
-//   APPROVAL_SCHEDULE_SERVICE = 2701;
+//   APPROVAL_GRPC_SERVICE   = 2700;
+//   APPROVAL_SCHEDULE_SERVICE = 27001;
 //   <blank line>
 //
 enum ServiceId {
@@ -39,9 +39,6 @@ enum ServiceId {
     SHARED_TEST_SERVER2_SERVICE = 2147470004; // public test server service.
     SHARED_TEST_CLIENT3_SERVICE = 2147470005; // public test client service.
     SHARED_TEST_SERVER3_SERVICE = 2147470006; // public test server service.
-
-    VEXILLARY_DEVELOPER_SERVICE = 2147470010; // test service for vexillary developer.
-    VEXILLARY_DEVELOPER_SERVICE2 = 2147470011; // test service2 for vexillary developer.
 
     SHARED_TEST_DATABASE_SERVICE = 2147470012; // public test database service.
 

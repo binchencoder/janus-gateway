@@ -14,14 +14,14 @@ func main() {
 
 	var a interface{}
 	// If -roll_type=date filename will be used
-	a = glog.FileName{Name: "janus-common"}
+	a = glog.FileName{Name: "gateway-common"}
 	f := glog.Context(nil, a)
 	f.Info("bbbbbbbbbb")
 	defer f.Flush()
 
 	var b interface{}
 	// If -roll_type=date filename will be used
-	b = glog.FileName{Name: "janus-error"}
+	b = glog.FileName{Name: "gateway-error"}
 	z := glog.Context(nil, b)
 	z.Error("zzzzzzzzzzz")
 	defer z.Flush()

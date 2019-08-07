@@ -3,6 +3,7 @@ workspace(name = "binchencoder_ease_gateway")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
+# ---------- io_bazel_rules_go ----------
 http_archive(
     name = "io_bazel_rules_go",
     sha256 = "6776d68ebb897625dead17ae510eac3d5f6342367327875210df44dbe2aeeb19",
@@ -12,6 +13,21 @@ load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_depe
 go_rules_dependencies()
 go_register_toolchains()
 
+# ---------- io_bazel_rules_docker ----------
+# Download the rules_docker repository at release v0.9.0
+http_archive(
+    name = "io_bazel_rules_docker",
+    sha256 = "e513c0ac6534810eb7a14bf025a0f159726753f97f74ab7863c650d26e01d677",
+    strip_prefix = "rules_docker-0.9.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/archive/v0.9.0.tar.gz"],
+)
+load(
+    "@io_bazel_rules_docker//repositories:repositories.bzl",
+    container_repositories = "repositories",
+)
+container_repositories()
+
+# ---------- bazel_gazelle ----------
 http_archive(
     name = "bazel_gazelle",
     sha256 = "3c681998538231a2d24d0c07ed5a7658cb72bfb5fd4bf9911157c0e9ac6a2687",
@@ -20,14 +36,25 @@ http_archive(
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 gazelle_dependencies()
 
+# ---------- com_github_bazelbuild_buildtools ----------
+go_repository(
+    name = "com_github_bazelbuild_buildtools",
+    importpath = "github.com/bazelbuild/buildtools",
+    commit = "36bd730dfa67bff4998fe897ee4bbb529cc9fbee",
+)
+load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
+buildifier_dependencies()
+
+# ---------- com_google_protobuf ----------
+# TODO(chenbin) 2019/08/07
 git_repository(
     name = "com_google_protobuf",
     commit = "09745575a923640154bcf307fba8aedff47f240a",
     remote = "https://github.com/protocolbuffers/protobuf",
     shallow_since = "1558721209 -0700",
 )
-load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
-protobuf_deps()
+#load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+#protobuf_deps()
 
 go_repository(
     name = "binchencoder_third_party_java",
@@ -99,13 +126,3 @@ go_repository(
     commit = "eb3733d160e74a9c7e442f435eb3bea458e1d19f",
     importpath = "gopkg.in/yaml.v2",
 )
-
-go_repository(
-    name = "com_github_bazelbuild_buildtools",
-    importpath = "github.com/bazelbuild/buildtools",
-    commit = "36bd730dfa67bff4998fe897ee4bbb529cc9fbee",
-)
-
-load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
-
-buildifier_dependencies()

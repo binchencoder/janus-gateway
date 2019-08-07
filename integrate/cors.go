@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	allowHosts         = []string{"*.jingoal.com", "web.test.com", "localhost", "localhost:8080", "192.168.*"}
+	allowHosts         = []string{"*.xxx.com", "localhost", "localhost:8080", "192.168.*"}
 	allowMethods       = []string{"GET", "HEAD", "POST", "PUT", "DELETE"}
 	allowExposeHeaders = []string{XRequestId}
 
@@ -24,9 +24,6 @@ func SetAllowHostsRegexp(hosts []string) {
 }
 
 // SetAllowCredentials sets to allow CORS credentials.
-// TODO(zhwang): at present it's enabled only for custom gateway and ldap
-//               gateway. We should evaluate whether to enable it for
-//               Janus/Open gateways in prod.
 func SetAllowCredentials(allow bool) {
 	allowCredentials = allow
 }

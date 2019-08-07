@@ -282,7 +282,7 @@ func extractAPIOptions(meth *descriptor.MethodDescriptorProto) (*options.HttpRul
 		return opts, mopts, nil
 	}
 
-	// Extract Jingoal method options.
+	// Extract ease gateway method options.
 	m, err := proto.GetExtension(meth.Options, options.E_Method)
 	if err != nil {
 		return nil, nil, err

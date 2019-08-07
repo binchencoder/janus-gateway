@@ -1,5 +1,4 @@
-// Note: this file is for janus-gateway and open-gateway which are exposed to
-// Jingoal external users.
+// Note: this file is for ease-gateway  which are exposed to external users.
 
 package integrate
 
@@ -215,7 +214,7 @@ func verifyHeader(ctx context.Context, header http.Header, svc *runtime.Service,
 	return nil
 }
 
-// getClient returns client value who request janus from header.
+// getClient returns client value who request ease-gateway from header.
 func getClientFromHeader(header http.Header) string {
 	xs := header.Get(XSource)
 	cl := header.Get(XClient)
