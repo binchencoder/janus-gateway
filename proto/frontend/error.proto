@@ -27,6 +27,12 @@ enum ErrorCode {
     SERVICE_UNREACHABLE_CODE = 100004;
     //@Trans Undefined error.
     UNDEFINED = 100005;
+    //@Trans 参数不合法
+    BADPARAM_ERROR = 100006;
+    //@Trans 无法找到
+	RESOURCE_NOT_FOUND = 100007;
+	//@Trans 无效请求
+	BAD_REQUEST = 100008;
 
     ///### 500500-500999: Common error codes.
 
@@ -40,8 +46,8 @@ enum ErrorCode {
     NODATA_ERROR = 500503;
     //@Trans 用户不存在或已停用
     USER_ERROR = 500504;
-    //@Trans 参数不合法
-	BADPARAM_ERROR = 500513;
+	//@Trans 无效验签
+	INVALID_SIGNATURE = 500505;
 
     ///### 620000-629999: 主线
 

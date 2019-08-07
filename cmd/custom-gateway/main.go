@@ -15,8 +15,8 @@ import (
 )
 
 var (
-	host        = flag.String("host", "", "The janus service host ")
-	port        = flag.Int("port", 6666, "The janus service port")
+	host        = flag.String("host", "", "The gateway service host ")
+	port        = flag.Int("port", 6666, "The gateway service port")
 )
 
 func usage() {
@@ -54,7 +54,7 @@ func main() {
 	mux := runtime.NewServeMux()
 	runtime.SetGatewayServiceHook(integrate.NewGatewayHook(mux, hostPort))
 
-	glog.Infof("***** Starting janus at %s. *****", hostPort)
+	glog.Infof("***** Starting ease-gateway at %s. *****", hostPort)
 
 	startHTTPGateway(mux, hostPort)
 }

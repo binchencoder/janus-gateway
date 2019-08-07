@@ -33,7 +33,7 @@ func PreLoadBalance(ctx context.Context, balancer, hashHeyType string, req proto
 			// Also put to gRPC metadata.
 			ctx = grpc.ToMetadataOutgoing(ctx, "")
 		} else if hashHeyType == hashKeySession {
-			// TODO(zhwang): implement it.
+			// TODO(chenbin): implement it.
 			return ctx
 		} else {
 			// Hash key is a proto field.

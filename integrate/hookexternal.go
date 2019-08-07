@@ -1,5 +1,4 @@
-// Note: this file is for janus-gateway and open-gateway which are exposed to
-// Jingoal external users.
+// Note: this file is for ease-gateway  which are exposed to external users.
 
 package integrate
 
@@ -13,6 +12,7 @@ import (
 	gr "google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
+	options "github.com/binchencoder/ease-gateway/gateway/options"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/binchencoder/ease-gateway/util"
 	"github.com/binchencoder/letsgo/grpc"
@@ -214,7 +214,7 @@ func verifyHeader(ctx context.Context, header http.Header, svc *runtime.Service,
 	return nil
 }
 
-// getClient returns client value who request janus from header.
+// getClient returns client value who request ease-gateway from header.
 func getClientFromHeader(header http.Header) string {
 	xs := header.Get(XSource)
 	cl := header.Get(XClient)
@@ -237,7 +237,7 @@ func apiNil(ctx context.Context, svc *runtime.Service, m *runtime.Method, clt, t
 	// record stat logs.
 	util.Logf(util.StatLogger, util.StatFormat, tid, svc.Spec.GetServiceName(), m.HttpMethod, m.Path, clt, "N", codes.PermissionDenied, ms)
 
-	ger := grpcError(codes.PermissionDenied, fpb.ErrorCode_NOT_FOUND, []string{"There is no api config."})
+	ger := grpcError(codes.PermissionDenied, fpb.ErrorCode_RESOURCE_NOT_FOUND, []string{"There is no api config."})
 	// record rest logs.
 	util.Logf(util.RestLogger, util.ResponseRestFormat, tid, codes.PermissionDenied, gr.ErrorDesc(ger))
 
