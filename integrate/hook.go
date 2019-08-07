@@ -13,13 +13,15 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/binchencoder/ease-gateway/gateway/options"
+	options "github.com/binchencoder/ease-gateway/gateway/options"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/binchencoder/ease-gateway/util"
 	"github.com/binchencoder/ease-gateway/integrate/metrics"
+
+	"github.com/binchencoder/letsgo/grpc"
 	"github.com/binchencoder/letsgo/trace"
 
-	vexpb "github.com/binchencoder/ease-gateway/proto/data"
+	// vexpb "github.com/binchencoder/ease-gateway/proto/data"
 	fpb "github.com/binchencoder/ease-gateway/proto/frontend"
 )
 
@@ -31,12 +33,12 @@ var (
 	debugService = flag.String("debug-service", "", "Specifies service which will be started, be used only in debug mode.")
 
 	// For docker-compose command line override only.
-	ectdEndpointsStr     = flag.String("etcd-endpoints", "", "ETCD endpoints")
-	mysqlHostsStr        = flag.String("mysql-hosts", "", "Mysql hosts")
-	mysqlUserStr         = flag.String("mysql-user", "", "Mysql user")
-	mysqlPwdStr          = flag.String("mysql-password", "", "Mysql password")
-	redisAddressesStr    = flag.String("redis-addresses", "", "Redis addresses")
-	redisMgwAddressesStr = flag.String("redis-mgw-addresses", "", "Redis mgw addresses")
+	// ectdEndpointsStr     = flag.String("etcd-endpoints", "", "ETCD endpoints")
+	// mysqlHostsStr        = flag.String("mysql-hosts", "", "Mysql hosts")
+	// mysqlUserStr         = flag.String("mysql-user", "", "Mysql user")
+	// mysqlPwdStr          = flag.String("mysql-password", "", "Mysql password")
+	// redisAddressesStr    = flag.String("redis-addresses", "", "Redis addresses")
+	// redisMgwAddressesStr = flag.String("redis-mgw-addresses", "", "Redis mgw addresses")
 )
 
 // gatewayHook implements interface GatewayServiceHook in package

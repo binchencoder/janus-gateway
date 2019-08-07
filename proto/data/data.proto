@@ -13,12 +13,10 @@ package data;
 // so their service IDs could be defined as:
 //
 //   <blank line>
-//   // Vexillary service IDs.
+//   //### 2700-2709 Approval services.
 //   <blank line>
-//   VexillaryBackend   = 34;
-//   VexillaryDashboard = 35;
-//   VexillaryFrontend  = 36;
-//   VexillaryScheduler = 37;
+//   APPROVAL_GRPC_SERVICE = 2700;
+//   APPROVAL_SCHEDULE_SERVICE = 2701;
 //   <blank line>
 //
 enum ServiceId {
@@ -29,11 +27,11 @@ enum ServiceId {
     EASE_GATEWAY           = 12;
     CUSTOM_GATEWAY         = 13;
 
-    //### 2700-2709 Jingoal purchase services.
-    PURCHASE_JD_SERVICE = 2700;
-    PURCHASE_PRODUCT_SERVICE = 2701;
+    //### 2700-2709 Approval services.
+    APPROVAL_GRPC_SERVICE = 2700;
+    APPROVAL_SCHEDULE_SERVICE = 2701;
 
-    // test service begins from 2147470000
+    //### Test services begins from 2147470000.
     SHARED_TEST_CLIENT_SERVICE  = 2147470000; // public test client service.
     SHARED_TEST_SERVER_SERVICE  = 2147470001; // public test server service.
     VEXILLARY_TEST_SERVICE      = 2147470002; // test service for vexillary.
@@ -41,12 +39,6 @@ enum ServiceId {
     SHARED_TEST_SERVER2_SERVICE = 2147470004; // public test server service.
     SHARED_TEST_CLIENT3_SERVICE = 2147470005; // public test client service.
     SHARED_TEST_SERVER3_SERVICE = 2147470006; // public test server service.
-    // The private service ID used for private testing only.
-    // Warning: This should not be expose to production gateway!!!
-    PRIVATE_CUSTOMER_JANUS_SERVICE = 2147470007;
-
-    SKYLB_DEMO_CLIENT  = 2147470008;
-    SKYLB_DEMO_SERVICE = 2147470009;
 
     VEXILLARY_DEVELOPER_SERVICE = 2147470010; // test service for vexillary developer.
     VEXILLARY_DEVELOPER_SERVICE2 = 2147470011; // test service2 for vexillary developer.
@@ -57,25 +49,11 @@ enum ServiceId {
     _ = 2147483647; // math.MaxInt32
 }
 
-// The error enum returned by vexillay frontend or backend service.
-enum Error {
-    // There are no error happening.
-    ERROR_NONE = 0;
-
-    // The requested service for feature flags is not found. Client should send
-    // next request with a longer delay.
-    SERVICE_NOT_FOUND = 1;
-
-    // The requested service for feature flags is timed out. Client should send
-    // next request with a shorter delay.
-    TIMEOUT = 2;
-}
-
 // AppType 定义应用类型.
 enum AppType {
-    ALL                    = 0; // All app types.
+    ALL                 = 0; // All app types.
 
-    PURCHASE_JD            = 1; // 今购模块id(与京东合作项目)
+    APPROVAL            = 1; // 审批应用.
 }
 
 // Locale represents a specific geographical, political, or cultural region.

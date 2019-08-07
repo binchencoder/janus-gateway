@@ -13,6 +13,7 @@ import (
 	gr "google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
+	options "github.com/binchencoder/ease-gateway/gateway/options"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/binchencoder/ease-gateway/util"
 	"github.com/binchencoder/letsgo/grpc"
@@ -237,7 +238,7 @@ func apiNil(ctx context.Context, svc *runtime.Service, m *runtime.Method, clt, t
 	// record stat logs.
 	util.Logf(util.StatLogger, util.StatFormat, tid, svc.Spec.GetServiceName(), m.HttpMethod, m.Path, clt, "N", codes.PermissionDenied, ms)
 
-	ger := grpcError(codes.PermissionDenied, fpb.ErrorCode_NOT_FOUND, []string{"There is no api config."})
+	ger := grpcError(codes.PermissionDenied, fpb.ErrorCode_RESOURCE_NOT_FOUND, []string{"There is no api config."})
 	// record rest logs.
 	util.Logf(util.RestLogger, util.ResponseRestFormat, tid, codes.PermissionDenied, gr.ErrorDesc(ger))
 

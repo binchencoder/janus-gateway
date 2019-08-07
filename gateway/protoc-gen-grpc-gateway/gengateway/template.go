@@ -657,7 +657,7 @@ func init() {
 	s = &runtime.Service {
 		Spec    : *spec,
 		Name    : "{{$svc.GetName}}",
-		Register: Register{{$svc.GetName}}HandlerFromEndpoint,
+		Register: Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint,
 		Enable  : Enable{{$svc.GetName}}_Service,
 		Disable : Disable{{$svc.GetName}}_Service,
 	}

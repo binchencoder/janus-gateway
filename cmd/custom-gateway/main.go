@@ -54,7 +54,10 @@ func main() {
 	mux := runtime.NewServeMux()
 	runtime.SetGatewayServiceHook(integrate.NewGatewayHook(mux, hostPort))
 
-	glog.Infof("***** Starting janus at %s. *****", hostPort)
+	glog.Infof("***** Starting custom gateway at %s. *****", hostPort)
+
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, os.Interrupt, os.Kill)
 
 	startHTTPGateway(mux, hostPort)
 }
