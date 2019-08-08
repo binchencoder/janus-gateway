@@ -37,7 +37,7 @@ message SimpleMessage {
 // Echo service responds to incoming echo requests.
 service EchoService {
     option (ease.api.service_spec) = {
-        service_id: VEXILLARY_SERVICE
+        service_id: CUSTOM_EASE_GATEWAY_TEST
         port_name : "grpc"
         namespace : "default"
         gen_controller: true

@@ -674,27 +674,28 @@ func init() {
 {{range $svc := .Services}}
 // Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint is same as Register{{$svc.GetName}}{{$.RegisterFuncSuffix}} but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.Dial(endpoint, opts...)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err != nil {
-			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
-			}
-			return
-		}
-		go func() {
-			<-ctx.Done()
-			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
-			}
-		}()
-	}()
+func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint(mux *runtime.ServeMux) (err error) {
+	// conn, err := grpc.Dial(endpoint, opts...)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer func() {
+	// 	if err != nil {
+	// 		if cerr := conn.Close(); cerr != nil {
+	// 			grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+	// 		}
+	// 		return
+	// 	}
+	// 	go func() {
+	// 		<-ctx.Done()
+	// 		if cerr := conn.Close(); cerr != nil {
+	// 			grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+	// 		}
+	// 	}()
+	// }()
 
-	return Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}(ctx, mux, conn)
+	// return Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}(ctx, mux, conn)
+	return Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}(nil, mux, nil)
 }
 
 // Register{{$svc.GetName}}{{$.RegisterFuncSuffix}} registers the http handlers for service {{$svc.GetName}} to "mux".
@@ -730,19 +731,28 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 			return
 		}
 
-		{{- if $UseRequestContext }}
+		{{ if $UseRequestContext }}
 			ctx, cancel := context.WithCancel(req.Context())
 		{{- else -}}
 			ctx, cancel := context.WithCancel(ctx)
 		{{- end }}
 		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)

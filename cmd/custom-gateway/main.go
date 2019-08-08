@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"os/signal"
 
 	"github.com/golang/glog"
 
@@ -39,7 +40,7 @@ func startHTTPGateway(mux *runtime.ServeMux, hostPort string) {
 
 func main() {
 	letsgo.Init(letsgo.FlagUsage(usage))
-	checkFlags()
+	// checkFlags()
 
 	debugMode := flag.Lookup("debug-mode")
 	debugMode.Value.Set("true")

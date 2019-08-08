@@ -29,7 +29,6 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/naming"
 	"google.golang.org/grpc/status"
 )
@@ -67,7 +66,7 @@ var (
 func request_EchoService_Echo_0(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -112,7 +111,7 @@ var (
 func request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -169,7 +168,7 @@ var (
 func request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -243,7 +242,7 @@ var (
 func request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -317,7 +316,7 @@ var (
 func request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -358,7 +357,7 @@ func request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Marshaler
 func request_EchoService_EchoBody_0(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
 	if berr != nil {
@@ -386,7 +385,7 @@ var (
 func request_EchoService_EchoDelete_0(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
@@ -413,7 +412,7 @@ func init() {
 	_ = s
 	_ = spec
 
-	spec = internal_EchoService_VEXILLARY_SERVICE_spec
+	spec = internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 	s = &runtime.Service{
 		Spec:     *spec,
 		Name:     "EchoService",
@@ -422,33 +421,34 @@ func init() {
 		Disable:  DisableEchoService_Service,
 	}
 
-	runtime.AddService(s, Enable_VEXILLARY_SERVICE__default__grpc_ServiceGroup, Disable_VEXILLARY_SERVICE__default__grpc_ServiceGroup)
+	runtime.AddService(s, Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup, Disable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup)
 
 }
 
 // RegisterEchoServiceHandlerFromEndpoint is same as RegisterEchoServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterEchoServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.Dial(endpoint, opts...)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err != nil {
-			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
-			}
-			return
-		}
-		go func() {
-			<-ctx.Done()
-			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
-			}
-		}()
-	}()
+func RegisterEchoServiceHandlerFromEndpoint(mux *runtime.ServeMux) (err error) {
+	// conn, err := grpc.Dial(endpoint, opts...)
+	// if err != nil {
+	// 	return err
+	// }
+	// defer func() {
+	// 	if err != nil {
+	// 		if cerr := conn.Close(); cerr != nil {
+	// 			grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+	// 		}
+	// 		return
+	// 	}
+	// 	go func() {
+	// 		<-ctx.Done()
+	// 		if cerr := conn.Close(); cerr != nil {
+	// 			grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+	// 		}
+	// 	}()
+	// }()
 
-	return RegisterEchoServiceHandler(ctx, mux, conn)
+	// return RegisterEchoServiceHandler(ctx, mux, conn)
+	return RegisterEchoServiceHandler(nil, mux, nil)
 }
 
 // RegisterEchoServiceHandler registers the http handlers for service EchoService to "mux".
@@ -463,33 +463,43 @@ func RegisterEchoServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "EchoServiceClient" to call the correct interceptors.
 func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client EchoServiceClient) error {
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
 	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}", "POST", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("POST", pattern_EchoService_Echo_0, vexpb.ServiceId_VEXILLARY_SERVICE, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_EchoService_Echo_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_VEXILLARY_SERVICE__default__grpc_lock.RLock()
-		// defer internal_VEXILLARY_SERVICE__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_VEXILLARY_SERVICE_client
+		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
 		if cli == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_VEXILLARY_SERVICE_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
+
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EchoService_Echo_0(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -501,30 +511,40 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 	})
 
 	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}/{num}", "GET", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("GET", pattern_EchoService_Echo_1, vexpb.ServiceId_VEXILLARY_SERVICE, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EchoService_Echo_1, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_VEXILLARY_SERVICE__default__grpc_lock.RLock()
-		// defer internal_VEXILLARY_SERVICE__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_VEXILLARY_SERVICE_client
+		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
 		if cli == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_VEXILLARY_SERVICE_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
+
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_1(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EchoService_Echo_1(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -536,30 +556,40 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 	})
 
 	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}/{num}/{lang}", "GET", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("GET", pattern_EchoService_Echo_2, vexpb.ServiceId_VEXILLARY_SERVICE, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EchoService_Echo_2, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_VEXILLARY_SERVICE__default__grpc_lock.RLock()
-		// defer internal_VEXILLARY_SERVICE__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_VEXILLARY_SERVICE_client
+		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
 		if cli == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_VEXILLARY_SERVICE_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
+
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_2(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EchoService_Echo_2(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -571,30 +601,40 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 	})
 
 	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo1/{id}/{line_num}/{status.note}", "GET", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("GET", pattern_EchoService_Echo_3, vexpb.ServiceId_VEXILLARY_SERVICE, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EchoService_Echo_3, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_VEXILLARY_SERVICE__default__grpc_lock.RLock()
-		// defer internal_VEXILLARY_SERVICE__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_VEXILLARY_SERVICE_client
+		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
 		if cli == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_VEXILLARY_SERVICE_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
+
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_3(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EchoService_Echo_3(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -606,30 +646,40 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 	})
 
 	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo2/{no.note}", "GET", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("GET", pattern_EchoService_Echo_4, vexpb.ServiceId_VEXILLARY_SERVICE, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EchoService_Echo_4, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_VEXILLARY_SERVICE__default__grpc_lock.RLock()
-		// defer internal_VEXILLARY_SERVICE__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_VEXILLARY_SERVICE_client
+		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
 		if cli == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_VEXILLARY_SERVICE_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
+
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_4(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EchoService_Echo_4(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -641,30 +691,40 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 	})
 
 	runtime.AddMethod(spec, "EchoService", "EchoBody", "/v1/example/echo_body", "POST", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("POST", pattern_EchoService_EchoBody_0, vexpb.ServiceId_VEXILLARY_SERVICE, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_EchoService_EchoBody_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_VEXILLARY_SERVICE__default__grpc_lock.RLock()
-		// defer internal_VEXILLARY_SERVICE__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_VEXILLARY_SERVICE_client
+		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
 		if cli == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_VEXILLARY_SERVICE_spec, "EchoService", "EchoBody", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoBody", w, req)
 		if err != nil {
 			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
+
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_EchoBody_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EchoService_EchoBody_0(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -676,30 +736,40 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 	})
 
 	runtime.AddMethod(spec, "EchoService", "EchoDelete", "/v1/example/echo_delete", "DELETE", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("DELETE", pattern_EchoService_EchoDelete_0, vexpb.ServiceId_VEXILLARY_SERVICE, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("DELETE", pattern_EchoService_EchoDelete_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_VEXILLARY_SERVICE__default__grpc_lock.RLock()
-		// defer internal_VEXILLARY_SERVICE__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_VEXILLARY_SERVICE_client
+		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
 		if cli == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_VEXILLARY_SERVICE_spec, "EchoService", "EchoDelete", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoDelete", w, req)
 		if err != nil {
 			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
+
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_EchoDelete_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_EchoService_EchoDelete_0(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -713,35 +783,35 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 	return nil
 }
 
-func Disable_VEXILLARY_SERVICE__default__grpc_ServiceGroup() {
-	// internal_VEXILLARY_SERVICE__default__grpc_lock.Lock()
-	// defer internal_VEXILLARY_SERVICE__default__grpc_lock.Unlock()
-	if internal_VEXILLARY_SERVICE__default__grpc_skycli != nil {
-		spec := internal_EchoService_VEXILLARY_SERVICE_spec
+func Disable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup() {
+	// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.Lock()
+	// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.Unlock()
+	if internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli != nil {
+		spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 		sg := runtime.GetServiceGroup(spec)
 		for _, svc := range sg.Services {
 			svc.Disable()
 		}
 
-		internal_EchoService_VEXILLARY_SERVICE_client = nil
-		internal_VEXILLARY_SERVICE__default__grpc_skycli.Shutdown()
-		internal_VEXILLARY_SERVICE__default__grpc_skycli = nil
+		internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client = nil
+		internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli.Shutdown()
+		internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli = nil
 	}
 }
 
-func Enable_VEXILLARY_SERVICE__default__grpc_ServiceGroup() {
-	// internal_VEXILLARY_SERVICE__default__grpc_lock.Lock()
-	// defer internal_VEXILLARY_SERVICE__default__grpc_lock.Unlock()
+func Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup() {
+	// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.Lock()
+	// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.Unlock()
 
-	internal_VEXILLARY_SERVICE__default__grpc_skycli = client.NewServiceCli(runtime.CallerServiceId)
+	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli = client.NewServiceCli(runtime.CallerServiceId)
 
 	// Resolve service
-	spec := internal_EchoService_VEXILLARY_SERVICE_spec
+	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
 
-	internal_VEXILLARY_SERVICE__default__grpc_skycli.Resolve(spec)
+	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli.Resolve(spec)
 
-	internal_VEXILLARY_SERVICE__default__grpc_skycli.EnableResolveFullEps()
-	internal_VEXILLARY_SERVICE__default__grpc_skycli.Start(func(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
+	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli.EnableResolveFullEps()
+	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli.Start(func(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
 		sg := runtime.GetServiceGroup(spec)
 		for _, svc := range sg.Services {
 			svc.Enable(spec, conn)
@@ -750,11 +820,11 @@ func Enable_VEXILLARY_SERVICE__default__grpc_ServiceGroup() {
 }
 
 func EnableEchoService_Service(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
-	internal_EchoService_VEXILLARY_SERVICE_client = NewEchoServiceClient(conn)
+	internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client = NewEchoServiceClient(conn)
 }
 
 func DisableEchoService_Service() {
-	internal_EchoService_VEXILLARY_SERVICE_client = nil
+	internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client = nil
 }
 
 var (
@@ -790,10 +860,10 @@ var (
 )
 
 var (
-	internal_EchoService_VEXILLARY_SERVICE_spec   = client.NewServiceSpec("default", vexpb.ServiceId_VEXILLARY_SERVICE, "grpc")
-	internal_EchoService_VEXILLARY_SERVICE_client EchoServiceClient
+	internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec   = client.NewServiceSpec("default", vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, "grpc")
+	internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client EchoServiceClient
 
-	internal_VEXILLARY_SERVICE__default__grpc_skycli client.ServiceCli
+	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli client.ServiceCli
 
-	internal_VEXILLARY_SERVICE__default__grpc_lock = sync.RWMutex{}
+	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock = sync.RWMutex{}
 )

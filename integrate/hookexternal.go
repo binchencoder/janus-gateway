@@ -88,9 +88,9 @@ func (gh *gatewayHook) bootstrap(sgs map[string]*runtime.ServiceGroup) error {
 func (gh *gatewayHook) requestAccepted(ctx context.Context, svc *runtime.Service, m *runtime.Method, w http.ResponseWriter,
 	r *http.Request) (context.Context, error) {
 	// client.
-	clt := getClientFromHeader(r.Header)
+	// clt := getClientFromHeader(r.Header)
 	// traceid.
-	tid := trace.GetTraceIdOrEmpty(ctx)
+	// tid := trace.GetTraceIdOrEmpty(ctx)
 
 	// 新增debug模式,默认uid和cid
 	if *debugMode {
@@ -104,7 +104,7 @@ func (gh *gatewayHook) requestAccepted(ctx context.Context, svc *runtime.Service
 			r.Header.Set(XAid, *debugAid)
 		}
 	} else {
-		xt, _ := ctx.Value(RequestReceivedTime).(time.Time)
+		// xt, _ := ctx.Value(RequestReceivedTime).(time.Time)
 		// 校验请求的http header.
 		if err := verifyHeader(ctx, r.Header, svc, m); err != nil {
 			return ctx, err

@@ -1,7 +1,6 @@
 package runtime
 
 import (
-	"context"
 	"google.golang.org/grpc"
 
 	options "github.com/binchencoder/ease-gateway/gateway/options"
@@ -36,7 +35,7 @@ type Service struct {
 	Spec     pb.ServiceSpec
 	Name     string
 	Methods  []*Method
-	Register func(context.Context, *ServeMux, string, []grpc.DialOption) error
+	Register func(*ServeMux) error
 	Enable   func(spec *skypb.ServiceSpec, conn *grpc.ClientConn)
 	Disable  func()
 }
