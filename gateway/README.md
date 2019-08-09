@@ -47,12 +47,14 @@ protoc -I/usr/local/include -I. \
 ```
 
 修改文件:
+
 - BUILD.bazel
 - main.go
 
 ### descriptor
 
 修改文件:
+
 - BUILD.bazel
 - grpc_api_service.go
 - registry.go
@@ -63,12 +65,14 @@ protoc -I/usr/local/include -I. \
 ### generator
 
 修改文件:
+
 - BUILD.bazel
 - generator.go
 
 ### gengateway
 
 修改文件:
+
 - BUILD.bazel
 - generator_test.go
 - generator.go
@@ -77,21 +81,78 @@ protoc -I/usr/local/include -I. \
 
 ### httprule
 
+该目录下没有修改代码，直接拷贝的。原因是 grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule 
+package visibility 只能在本项目内依赖
+
+```
+package(default_visibility = ["//:generators"])
+```
+
+修改文件:
+
+- BUILD.bazel
+
 ## protoc-gen-swagger
-
-### genswagger
-
-### options
 
 Link   [grpc-ecosystem/grpc-gateway/protoc-gen-swagger](https://github.com/grpc-ecosystem/grpc-gateway/tree/master/protoc-gen-swagger)
 
 ```protoc-gen-swagger``` 是生成swagger API定义的工具
+
+修改文件:
+
+- BUILD.bazel
+- defs.bzl
+- main.go
+
+### genswagger
+
+修改文件:
+
+- BUILD.bazel
+- generator.go
+- template.go
+- template_test.go
+- types.go
+
+### options
+
+修改文件:
+
+- BUILD.bazel
+- annotations.proto
+- openapiv2.proto
 
 ## runtime
 
 Link   [grpc-ecosystem/grpc-gateway/runtime](https://github.com/grpc-ecosystem/grpc-gateway/tree/master/runtime)
 
 这是```grpc-ecosystem/grpc-gateway/runtime``` 的核心模块
+
+新增文件:
+
+- service.go
+- balancer_test.go
+- balancer.go
+
+删除文件:
+
+- marshal_json_test.go
+- marshal_jsonpb_test.go
+- marshal_proto_test.go
+
+修改文件:
+
+- add hook_test.go
+- add hook.go
+- BUILD.bazel
+- context_test.go
+- error_test.go
+- handler_test.go
+- marshal_httpbodyproto_test.go
+- marshaler_registry_test.go
+- mux_test.go
+- mux.go
+- query_test.go
 
 ## grpc-ecosystem/grpc-gateway
 

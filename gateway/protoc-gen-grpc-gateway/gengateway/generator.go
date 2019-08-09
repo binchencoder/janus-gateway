@@ -52,13 +52,11 @@ func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, p
 		"strings":                  "",
 		"sync":                     "",
 		"unicode/utf8":             "",
-		// "golang.org/x/net/context": "",
-		// "github.com/grpc-ecosystem/grpc-gateway/runtime":   "",
+		"github.com/binchencoder/ease-gateway/gateway/runtime":   "",
 		"github.com/grpc-ecosystem/grpc-gateway/utilities": "",
 		"github.com/golang/protobuf/proto":                 "",
 		"github.com/binchencoder/ease-gateway/proto/data":               "vexpb",
 		"github.com/binchencoder/ease-gateway/proto/frontend":       "fpb",
-		"github.com/binchencoder/ease-gateway/gateway/runtime":   "",
 		"github.com/binchencoder/letsgo/grpc":                     "lgr",
 		"github.com/binchencoder/skylb-api/balancer":              "",
 		"github.com/binchencoder/skylb-api/client":                "",
@@ -71,8 +69,8 @@ func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, p
 		"google.golang.org/grpc/status":                    "",
 	} {
 		pkg := descriptor.GoPackage{
-			Path:  pkgpath,
-			Name:  path.Base(pkgpath),
+			Path: pkgpath,
+			Name: path.Base(pkgpath),
 			Alias: alias,
 		}
 		if alias == "" {

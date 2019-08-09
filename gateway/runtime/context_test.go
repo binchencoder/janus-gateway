@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"google.golang.org/grpc/metadata"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"google.golang.org/grpc/metadata"
 )
 
 const (

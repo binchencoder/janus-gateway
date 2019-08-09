@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"testing"
 
-	"google.golang.org/genproto/googleapis/api/httpbody"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"google.golang.org/genproto/googleapis/api/httpbody"
 )
 
 func TestHTTPBodyContentType(t *testing.T) {

@@ -8,11 +8,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
 )
 
 func TestMuxServeHTTP(t *testing.T) {

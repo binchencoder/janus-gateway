@@ -9,11 +9,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
 )
 
 func TestDefaultHTTPError(t *testing.T) {

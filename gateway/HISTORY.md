@@ -29,3 +29,14 @@ Date:   Mon Aug 5 16:08:44 2019 +0100
     
     Fixes #981
 ```
+Pull message
+```
+来自 https://github.com/grpc-ecosystem/grpc-gateway
+   fdf0635..b6e6efb  master     -> origin/master
+更新 fdf0635..b6e6efb
+Fast-forward
+ docs/_docs/customizingyourgateway.md           | 22 ++++++++++++++++++++++
+ protoc-gen-swagger/genswagger/BUILD.bazel      |  1 +
+ protoc-gen-swagger/genswagger/template.go      | 34 +++++++++++++++++++++++++++++-----
+ protoc-gen-swagger/genswagger/template_test.go | 61 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+```
