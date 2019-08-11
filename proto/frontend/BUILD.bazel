@@ -24,7 +24,7 @@ go_library(
     embed = [":error_go_proto"],
     importpath = "github.com/binchencoder/ease-gateway/proto/frontend",
     deps = [
-        "@com_github_golang_protobuf//proto:go_default_library",
+        "@binchencoder_third_party_go//vendor/github.com/golang/protobuf/proto:go_default_library",
     ],
 )
 

@@ -11,10 +11,10 @@ go_library(
     importpath = "github.com/binchencoder/ease-gateway/examples/gateway",
     visibility = ["//visibility:public"],
     deps = [
-        "//ease-gateway/examples/proto:go_default_library",
-        "//ease-gateway/gateway/runtime:go_default_library",
+        "//examples/proto:go_default_library",
+        "//gateway/runtime:go_default_library",
         "@com_github_golang_glog//:go_default_library",
-        "@org_golang_google_grpc//:go_default_library",
-        "@org_golang_google_grpc//connectivity:go_default_library",
+        "@binchencoder_third_party_go//vendor/google.golang.org/grpc:go_default_library",
+        "@binchencoder_third_party_go//vendor/google.golang.org/grpc/connectivity:go_default_library",
     ],
 )

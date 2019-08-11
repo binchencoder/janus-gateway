@@ -7,7 +7,7 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/binchencoder/ease-gateway/examples/cmd/example-grpc-server",
     deps = [
-        "//ease-gateway/examples/server:go_default_library",
+        "//examples/server:go_default_library",
         "@com_github_golang_glog//:go_default_library",
     ],
 )
