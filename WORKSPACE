@@ -64,9 +64,9 @@ http_archive(
 http_archive(
     name = "org_golang_google_grpc",
     urls = [
-        "https://codeload.github.com/grpc/grpc-go/tar.gz/ee87494b1f58190a421bb41cce5ccbe8e833c04b",
+        "https://codeload.github.com/grpc/grpc-go/tar.gz/df014850f6dee74ba2fc94874043a9f3f75fbfd8",
     ],
-    strip_prefix = "grpc-go-ee87494b1f58190a421bb41cce5ccbe8e833c04b",
+    strip_prefix = "grpc-go-df014850f6dee74ba2fc94874043a9f3f75fbfd8", # v1.17.0, latest as of 2019-01-15
     type = "tar.gz",
     patches = [
         "@io_bazel_rules_go//third_party:org_golang_google_grpc-gazelle.patch",

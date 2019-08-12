@@ -13,7 +13,7 @@ def go_repositories():
     )
     go_repository(
         name = "binchencoder_skylb_api",
-        commit = "97e33f7edd1cd58b836eef495802e7aebff27cda",
+        commit = "f6b037bb0a48844b2624b561feb88ee5ff223e17",
         importpath = "gitee.com/binchencoder/skylb-api",
     )
 
