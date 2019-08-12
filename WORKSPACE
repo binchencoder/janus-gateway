@@ -1,15 +1,14 @@
 workspace(name = "binchencoder_ease_gateway")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # ----------从github下载扩展 io_bazel_rules_go ----------
 http_archive(
     name = "io_bazel_rules_go",
     urls = [
-        "https://github.com/bazelbuild/rules_go/releases/download/0.18.7/rules_go-0.18.7.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/0.17.8/rules_go-0.17.8.tar.gz",
     ],
-    sha256 = "45409e6c4f748baa9e05f8f6ab6efaa05739aa064e3ab94e5a1a09849c51806a",
+    sha256 = "38113392bac83252d2e6450b0056e41f35b2469903e319688883598ce38f0377",
 )
 # 从下载的扩展里载入 go_rules_dependencies go_register_toolchains 函数
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
@@ -45,35 +44,58 @@ http_archive(
     strip_prefix = "buildtools-0.26.0",
     urls = ["https://github.com/bazelbuild/buildtools/archive/0.26.0.tar.gz"],
 )
-# git_repository(
-#     name = "com_github_bazelbuild_buildtools",
-#     commit = "680ef5165d2bf75d2e2fab17b5a87ce19767aaa6",
-#     remote = "https://gitee.com/binchencoder/buildtools",
-#     shallow_since = "1558721209 -0700",
-# )
 load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
 buildifier_dependencies()
 
-go_repository(
+# Overriding dependencies go_rules_dependencies
+http_archive(
     name = "com_github_golang_protobuf",
-    build_file_proto_mode = "disable_global",
-    commit = "b5d812f8a3706043e23a9cd5babf2e5423744d30",
-    importpath = "github.com/golang/protobuf",
+    urls = [
+        "https://github.com/golang/protobuf/archive/v1.2.0.tar.gz"
+    ],
+    strip_prefix = "protobuf-1.2.0",
     patches = [
+        "@io_bazel_rules_go//third_party:com_github_golang_protobuf-gazelle.patch",
         "@io_bazel_rules_go//third_party:com_github_golang_protobuf-extras.patch",
     ],
     patch_args = ["-p1"],
+    # gazelle args: -go_prefix github.com/golang/protobuf -proto disable_global
 )
-
-go_repository(
-    name = "org_golang_x_tools",
-    build_file_proto_mode = "disable_global",
-    commit = "b5d812f8a3706043e23a9cd5babf2e5423744d30",
-    importpath = "github.com/golang/protobuf",
+http_archive(
+    name = "org_golang_google_grpc",
+    urls = [
+        "https://codeload.github.com/grpc/grpc-go/tar.gz/ee87494b1f58190a421bb41cce5ccbe8e833c04b",
+    ],
+    strip_prefix = "grpc-go-ee87494b1f58190a421bb41cce5ccbe8e833c04b",
+    type = "tar.gz",
     patches = [
-        "@io_bazel_rules_go//third_party:org_golang_x_tools-extras.patch",
+        "@io_bazel_rules_go//third_party:org_golang_google_grpc-gazelle.patch",
+        "@io_bazel_rules_go//third_party:org_golang_google_grpc-crosscompile.patch",
     ],
     patch_args = ["-p1"],
+    # gazelle args: -go_prefix google.golang.org/grpc -proto disable
+)
+http_archive(
+    name = "org_golang_x_sys",
+    urls = [
+        "https://codeload.github.com/golang/sys/tar.gz/2be51725563103c17124a318f1745b66f2347acb",
+    ],
+    strip_prefix = "sys-2be51725563103c17124a318f1745b66f2347acb",
+    type = "tar.gz",
+    patches = ["@io_bazel_rules_go//third_party:org_golang_x_sys-gazelle.patch"],
+    patch_args = ["-p1"],
+    # gazelle args: -go_prefix golang.org/x/sys
+)
+http_archive(
+    name = "org_golang_x_text",
+    urls = [
+        "https://codeload.github.com/golang/text/tar.gz/f21a4dfb5e38f5895301dc265a8def02365cc3d0",
+    ],
+    strip_prefix = "text-f21a4dfb5e38f5895301dc265a8def02365cc3d0",
+    type = "tar.gz",
+    patches = ["@io_bazel_rules_go//third_party:org_golang_x_text-gazelle.patch"],
+    patch_args = ["-p1"],
+    # gazelle args: -go_prefix golang.org/x/text
 )
 
 # 注册一堆常用依赖 如github.com/google/protobuf golang.org/x/net
