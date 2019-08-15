@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/pborman/uuid"
+	"github.com/google/uuid"
 	"google.golang.org/grpc/grpclog"
 
 	options "github.com/binchencoder/ease-gateway/gateway/options"

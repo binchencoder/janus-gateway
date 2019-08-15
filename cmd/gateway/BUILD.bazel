@@ -1,21 +1,16 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 
 go_library(
     name = "ease-gateway",
-    srcs = [
-        "main.go",
-    ],
+    srcs = ["main.go"],
     importpath = "github.com/binchencoder/ease-gateway/cmd/gateway",
     visibility = ["//visibility:public"],
     deps = [
-        "//proto/frontend:go_default_library",
-        "//util:go_default_library",
+        "//gateway/runtime:go_default_library",
         "//integrate:go_default_library",
-        "@grpc_ecosystem_grpc_gateway//runtime:go_default_library",
+        "//util:go_default_library",
         "@com_github_golang_glog//:go_default_library",
-        "@binchencoder_third_party_go//vendor/google.golang.org/grpc:go_default_library",
-        "@binchencoder_third_party_go//vendor/google.golang.org/grpc/connectivity:go_default_library",
     ],
 )
 
@@ -25,4 +20,10 @@ pkg_tar(
         ":ease-gateway",
     ],
     package_dir = "/ease-gateway/bin",
+)
+
+go_binary(
+    name = "gateway",
+    embed = [":ease-gateway"],
+    visibility = ["//visibility:public"],
 )

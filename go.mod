@@ -1,16 +1,27 @@
 module github.com/binchencoder/ease-gateway
 
 require (
+	github.com/VividCortex/gohistogram v1.0.0 // indirect
+	github.com/binchencoder/letsgo v0.0.0-20190813050654-d221d6b03c21
+	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/fatih/color v1.7.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/golang/protobuf v1.3.1
+	github.com/golang/protobuf v1.3.2
+	github.com/google/uuid v1.0.0
 	github.com/grpc-ecosystem/grpc-gateway v1.9.4
 	github.com/klauspost/compress v1.5.0
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mattn/go-isatty v0.0.7 // indirect
-	golang.org/x/net v0.0.0-20190603091049-60506f45cf65
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+	github.com/modern-go/reflect2 v1.0.1 // indirect
+	github.com/opentracing/opentracing-go v1.1.0 // indirect
+	github.com/pborman/uuid v1.2.0
+	github.com/prometheus/client_golang v1.1.0
+	github.com/uber/jaeger-client-go v2.16.0+incompatible // indirect
+	github.com/uber/jaeger-lib v2.0.0+incompatible // indirect
+	golang.org/x/net v0.0.0-20190613194153-d28f0bde5980
 	google.golang.org/genproto v0.0.0-20190508193815-b515fa19cec8
 	google.golang.org/grpc v1.20.1
 )

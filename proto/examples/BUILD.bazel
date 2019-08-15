@@ -1,6 +1,6 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("@grpc_ecosystem_grpc_gateway//protoc-gen-swagger:defs.bzl", "protoc_gen_swagger")
+load("@com_github_grpc_ecosystem_grpc_gateway//protoc-gen-swagger:defs.bzl", "protoc_gen_swagger")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -10,7 +10,7 @@ proto_library(
         "echo_service.proto",
     ],
     deps = [
-        "@grpc_ecosystem_grpc_gateway//protoc-gen-swagger/options:options_proto",
+        "@com_github_grpc_ecosystem_grpc_gateway//protoc-gen-swagger/options:options_proto",
         "@com_google_protobuf//:duration_proto",
         "@com_google_protobuf//:empty_proto",
         "@com_google_protobuf//:field_mask_proto",
@@ -24,32 +24,26 @@ go_proto_library(
     name = "echo_go_proto",
     compilers = [
         "@io_bazel_rules_go//proto:go_grpc",
-        "@grpc_ecosystem_grpc_gateway//protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
+        "@com_github_grpc_ecosystem_grpc_gateway//protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
     ],
     importpath = "github.com/binchencoder/ease-gateway/proto/examples",
-    proto = ":echo_proto",
-    deps = [
-        "@grpc_ecosystem_grpc_gateway//protoc-gen-swagger/options:go_default_library",
-        "@go_googleapis//google/api:annotations_go_proto",
-    ],
+    proto = ":proto_proto",
+    deps = ["@go_googleapis//google/api:annotations_go_proto"],
 )
 
 go_library(
     name = "go_default_library",
     embed = [":echo_go_proto"],
     importpath = "github.com/binchencoder/ease-gateway/proto/examples",
-    deps = [
-        "@grpc_ecosystem_grpc_gateway//runtime:go_default_library",
-        "@grpc_ecosystem_grpc_gateway//utilities:go_default_library",
-        "@binchencoder_third_party_go//vendor/github.com/golang/protobuf/proto:go_default_library",
-        "@binchencoder_third_party_go//vendor/google.golang.org/grpc:go_default_library",
-        "@binchencoder_third_party_go//vendor/google.golang.org/grpc/codes:go_default_library",
-        "@binchencoder_third_party_go//vendor/google.golang.org/grpc/grpclog:go_default_library",
-        "@binchencoder_third_party_go//vendor/google.golang.org/grpc/status:go_default_library",
-    ],
 )
 
 protoc_gen_swagger(
     name = "echo_protoc_gen_swagger",
     proto = ":echo_proto",
+)
+
+proto_library(
+    name = "proto_proto",
+    srcs = ["echo_service.proto"],
+    deps = ["@go_googleapis//google/api:annotations_proto"],
 )
