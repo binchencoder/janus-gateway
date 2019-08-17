@@ -1,3 +1,0 @@
-[submodule "vendor/github.com/protocolbuffers/protobuf"]
-	path = vendor/github.com/protocolbuffers/protobuf
-	url = https://github.com/protocolbuffers/protobuf.git

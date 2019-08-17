@@ -31,7 +31,13 @@ go_proto_library(
     importpath = "github.com/binchencoder/ease-gateway/examples/proto",
     proto = ":examplepb_proto",
     deps = [
-        "//gateway/options:go_default_library"
+        "//gateway/options:go_default_library",
+        "@com_github_binchencoder_letsgo//grpc:go_default_library",
+        "@com_github_binchencoder_skylb_api//balancer:go_default_library",
+        "@com_github_binchencoder_skylb_api//client:go_default_library",
+        "@com_github_binchencoder_skylb_api//client/option:go_default_library",
+        "@com_github_binchencoder_skylb_api//proto:go_default_library",
+        "@org_golang_google_grpc//naming:go_default_library",
     ],
 )
 

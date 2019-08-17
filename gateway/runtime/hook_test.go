@@ -6,14 +6,12 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	"golang.org/x/net/context"
-
-	pb "github.com/binchencoder/skylb-api/proto"
 )
 
 type GatewayServiceHookFake struct {
 }
 
-func (g *GatewayServiceHookFake) Bootstrap(sgs map[pb.ServiceSpec]*ServiceGroup) error {
+func (g *GatewayServiceHookFake) Bootstrap(sgs map[string]*ServiceGroup) error {
 	return nil
 }
 func (g *GatewayServiceHookFake) RequestReceived(w http.ResponseWriter, r *http.Request) (ctx context.Context, err error) {

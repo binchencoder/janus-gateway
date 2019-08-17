@@ -5,18 +5,18 @@ def go_repositories():
         name = "com_github_binchencoder_letsgo",
         importpath = "github.com/binchencoder/letsgo",
         urls = [
-            "https://codeload.github.com/binchencoder/letsgo/tar.gz/e420efa5f54077d1405bdc0414d5b257c0fe5df6",
+            "https://codeload.github.com/binchencoder/letsgo/tar.gz/c227bc4824d51e2820ea3e9116c22094d6049b45",
         ],
-        strip_prefix = "letsgo-e420efa5f54077d1405bdc0414d5b257c0fe5df6",
+        strip_prefix = "letsgo-c227bc4824d51e2820ea3e9116c22094d6049b45",
         type = "tar.gz",
     )
     go_repository(
         name = "com_github_binchencoder_skylb_api",
         importpath = "github.com/binchencoder/skylb-api",
         urls = [
-            "https://codeload.github.com/binchencoder/skylb-api/tar.gz/706d65312987f510e7475201b0e7937a4dc9a98b",
+            "https://codeload.github.com/binchencoder/skylb-api/tar.gz/d6d09e7f54f772a83fa2085d9bdc4f77d92a8fed",
         ],
-        strip_prefix = "skylb-api-706d65312987f510e7475201b0e7937a4dc9a98b",
+        strip_prefix = "skylb-api-d6d09e7f54f772a83fa2085d9bdc4f77d92a8fed",
         type = "tar.gz",
     )
     go_repository(

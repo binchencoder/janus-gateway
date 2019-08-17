@@ -53,6 +53,16 @@ go_repository(
     # gazelle args: -go_prefix golang.org/x/net -proto disable
 )
 go_repository(
+    name = "org_golang_x_sys",
+    importpath = "golang.org/x/sys",
+    urls = [
+        "https://codeload.github.com/golang/sys/tar.gz/fde4db37ae7ad8191b03d30d27f258b5291ae4e3",
+    ],
+    strip_prefix = "sys-fde4db37ae7ad8191b03d30d27f258b5291ae4e3",
+    type = "tar.gz",
+    # gazelle args: -go_prefix golang.org/x/sys
+)
+go_repository(
     name = "org_golang_x_text",
     importpath = "golang.org/x/text",
     urls = [
@@ -89,18 +99,14 @@ gazelle_dependencies()
 load("//:repositories.bzl", "go_repositories")
 go_repositories()
 
-# go_repository(
-#     name = "com_google_protobuf",
-#     importpath = "github.com/protocolbuffers/protobuf",
-#     urls = [
-#         "https://codeload.github.com/protocolbuffers/protobuf/tar.gz/09745575a923640154bcf307fba8aedff47f240a",
-#     ],
-#     strip_prefix = "protobuf-09745575a923640154bcf307fba8aedff47f240a",
-#     type = "tar.gz",
-# )
-local_repository (
+go_repository(
     name = "com_google_protobuf",
-    path = "vendor/github.com/protocolbuffers/protobuf",
+    importpath = "github.com/protocolbuffers/protobuf",
+    urls = [
+        "https://codeload.github.com/protocolbuffers/protobuf/tar.gz/09745575a923640154bcf307fba8aedff47f240a",
+    ],
+    strip_prefix = "protobuf-09745575a923640154bcf307fba8aedff47f240a",
+    type = "tar.gz",
 )
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
