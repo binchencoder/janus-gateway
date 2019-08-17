@@ -20,8 +20,8 @@ import (
 	"github.com/binchencoder/letsgo/grpc"
 	"github.com/binchencoder/letsgo/trace"
 
-	// vexpb "github.com/binchencoder/ease-gateway/proto/data"
-	fpb "github.com/binchencoder/ease-gateway/proto/frontend"
+	// vexpb "github.com/binchencoder/gateway-proto/data"
+	fpb "github.com/binchencoder/gateway-proto/frontend"
 )
 
 var (

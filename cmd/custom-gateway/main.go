@@ -10,7 +10,7 @@ import (
 	"github.com/golang/glog"
 
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
-	"github.com/binchencoder/ease-gateway/proto/data"
+	"github.com/binchencoder/gateway-proto/data"
 	"github.com/binchencoder/ease-gateway/integrate"
 	"github.com/binchencoder/letsgo"
 )

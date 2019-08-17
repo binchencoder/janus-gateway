@@ -12,7 +12,7 @@ import (
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
 
 	options "github.com/binchencoder/ease-gateway/gateway/options"
-	"github.com/binchencoder/ease-gateway/proto/data"
+	"github.com/binchencoder/gateway-proto/data"
 )
 
 // IsWellKnownType returns true if the provided fully qualified type name is considered 'well-known'.

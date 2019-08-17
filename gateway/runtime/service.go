@@ -4,9 +4,9 @@ import (
 	"google.golang.org/grpc"
 
 	options "github.com/binchencoder/ease-gateway/gateway/options"
+	vexpb "github.com/binchencoder/gateway-proto/data"
 	pb "github.com/binchencoder/skylb-api/proto"
 	skypb "github.com/binchencoder/skylb-api/proto"
-	vexpb "github.com/binchencoder/ease-gateway/proto/data"
 )
 
 var (

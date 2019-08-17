@@ -3,6 +3,7 @@ module github.com/binchencoder/ease-gateway
 require (
 	github.com/VividCortex/gohistogram v1.0.0 // indirect
 	github.com/binchencoder/letsgo v0.0.0-20190813050654-d221d6b03c21
+	github.com/binchencoder/skylb-api v0.0.0-20190816070449-75a71296dbf2
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/fatih/color v1.7.0
 	github.com/ghodss/yaml v1.0.0
@@ -10,13 +11,13 @@ require (
 	github.com/golang/protobuf v1.3.2
 	github.com/google/uuid v1.0.0
 	github.com/grpc-ecosystem/grpc-gateway v1.9.4
+	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645 // indirect
 	github.com/klauspost/compress v1.5.0
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mattn/go-isatty v0.0.7 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
-	github.com/opentracing/opentracing-go v1.1.0 // indirect
 	github.com/pborman/uuid v1.2.0
 	github.com/prometheus/client_golang v1.1.0
 	github.com/uber/jaeger-client-go v2.16.0+incompatible // indirect

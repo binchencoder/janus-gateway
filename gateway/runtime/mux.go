@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"github.com/binchencoder/ease-gateway/proto/data"
+	"github.com/binchencoder/gateway-proto/data"
 )
 
 // A HandlerFunc handles a specific pair of path pattern and HTTP method.
@@ -304,7 +304,7 @@ func (s *ServeMux) isPathLengthFallback(r *http.Request) bool {
 }
 
 type handler struct {
-	pat Pattern
-	h   HandlerFunc
+	pat       Pattern
+	h         HandlerFunc
 	serviceId data.ServiceId
 }
