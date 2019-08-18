@@ -10,9 +10,9 @@ import (
 	"github.com/pborman/uuid"
 	"google.golang.org/grpc/grpclog"
 
-	options "github.com/binchencoder/ease-gateway/gateway/options"
-	"github.com/binchencoder/letsgo/grpc"
-	"github.com/binchencoder/letsgo/hashring"
+	options "binchencoder.com/ease-gateway/gateway/options"
+	"binchencoder.com/letsgo/grpc"
+	"binchencoder.com/letsgo/hashring"
 )
 
 const (

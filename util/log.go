@@ -3,7 +3,7 @@ package util
 import (
 	col "github.com/fatih/color"
 
-	"github.com/binchencoder/ease-gateway/util/glog"
+	"binchencoder.com/ease-gateway/util/glog"
 )
 
 func init() {

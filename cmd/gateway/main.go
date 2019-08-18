@@ -7,12 +7,12 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/binchencoder/ease-gateway/integrate"
-	"github.com/binchencoder/ease-gateway/util"
+	"binchencoder.com/ease-gateway/integrate"
+	"binchencoder.com/ease-gateway/util"
 	"github.com/golang/glog"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/gateway/runtime"
 )
 
 var (

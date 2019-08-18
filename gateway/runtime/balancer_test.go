@@ -6,8 +6,8 @@ import (
 
 	"github.com/golang/protobuf/proto"
 
-	options "github.com/binchencoder/ease-gateway/gateway/options"
-	"github.com/binchencoder/letsgo/hashring"
+	options "binchencoder.com/ease-gateway/gateway/options"
+	"binchencoder.com/letsgo/hashring"
 )
 
 const DefaultHashKey = "8daad76a-dbb6-4f95-855d-7cfceb89afa1"

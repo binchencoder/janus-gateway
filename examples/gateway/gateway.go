@@ -7,16 +7,25 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/binchencoder/ease-gateway/examples/proto"
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/examples/proto"
+	"binchencoder.com/ease-gateway/gateway/runtime"
 	"google.golang.org/grpc"
 )
 
 // newGateway returns a new gateway server which translates HTTP into gRPC.
 func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []runtime.ServeMuxOption) (http.Handler, error) {
+	sgs := runtime.GetServicGroups()
+	fmt.Printf("runtime.GetServicGroups: %v", sgs)
+	for _, sg := range sgs {
+		// go sg.Enable()
+		spec := sg.Spec
+		fmt.Printf("[serviceName:%s | namespace:%s | portName:%s]\n",
+			spec.ServiceName, spec.Namespace, spec.PortName)
+	}
 
 	mux := runtime.NewServeMux(opts...)
 
+	// proto.Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup()
 	for _, f := range []func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error{
 		proto.RegisterEchoServiceHandler,
 	} {

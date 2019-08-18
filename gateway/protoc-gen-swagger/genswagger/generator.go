@@ -17,13 +17,13 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/internal"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
 
 	// gen "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/generator"
-	gen "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/generator"
+	gen "binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/generator"
 
 	// swagger_options "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
-	swagger_options "github.com/binchencoder/ease-gateway/gateway/protoc-gen-swagger/options"
+	swagger_options "binchencoder.com/ease-gateway/gateway/protoc-gen-swagger/options"
 )
 
 var (

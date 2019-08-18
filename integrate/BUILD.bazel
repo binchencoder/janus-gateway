@@ -8,7 +8,7 @@ go_library(
         ["*.go"],
         exclude = ["*_test.go"],
     ),
-    importpath = "github.com/binchencoder/ease-gateway/integrate",
+    importpath = "binchencoder.com/ease-gateway/integrate",
     deps = [
         "//gateway/options:go_default_library",
         "//gateway/runtime:go_default_library",

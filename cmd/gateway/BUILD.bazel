@@ -4,7 +4,7 @@ load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 go_library(
     name = "ease-gateway",
     srcs = ["main.go"],
-    importpath = "github.com/binchencoder/ease-gateway/cmd/gateway",
+    importpath = "binchencoder.com/ease-gateway/cmd/gateway",
     visibility = ["//visibility:public"],
     deps = [
         "//gateway/runtime:go_default_library",
@@ -14,13 +14,13 @@ go_library(
     ],
 )
 
-pkg_tar(
-    name = "ease-gateway-tar",
-    srcs = [
-        ":ease-gateway",
-    ],
-    package_dir = "/ease-gateway/bin",
-)
+# pkg_tar(
+#     name = "ease-gateway-tar",
+#     srcs = [
+#         ":ease-gateway",
+#     ],
+#     package_dir = "/ease-gateway/bin",
+# )
 
 go_binary(
     name = "gateway",

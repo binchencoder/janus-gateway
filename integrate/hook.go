@@ -13,15 +13,15 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 
-	options "github.com/binchencoder/ease-gateway/gateway/options"
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
-	"github.com/binchencoder/ease-gateway/integrate/metrics"
-	"github.com/binchencoder/ease-gateway/util"
-	"github.com/binchencoder/letsgo/grpc"
-	"github.com/binchencoder/letsgo/trace"
+	options "binchencoder.com/ease-gateway/gateway/options"
+	"binchencoder.com/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/integrate/metrics"
+	"binchencoder.com/ease-gateway/util"
+	"binchencoder.com/letsgo/grpc"
+	"binchencoder.com/letsgo/trace"
 
-	// vexpb "github.com/binchencoder/gateway-proto/data"
-	fpb "github.com/binchencoder/gateway-proto/frontend"
+	// vexpb "binchencoder.com/gateway-proto/data"
+	fpb "binchencoder.com/gateway-proto/frontend"
 )
 
 var (
@@ -41,7 +41,7 @@ var (
 )
 
 // gatewayHook implements interface GatewayServiceHook in package
-// github.com/binchencoder/ease-gateway/gateway/runtime.
+// binchencoder.com/ease-gateway/gateway/runtime.
 type gatewayHook struct {
 	mux  *runtime.ServeMux
 	host string

@@ -4,7 +4,7 @@ import (
 	"flag"
 	"net/http"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/gateway/runtime"
 )
 
 var (

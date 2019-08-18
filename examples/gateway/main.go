@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/golang/glog"
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/gateway/runtime"
 )
 
 // Endpoint describes a gRPC endpoint

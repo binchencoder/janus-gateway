@@ -8,7 +8,7 @@ import (
 	"context"
 	"flag"
 
-	"github.com/binchencoder/ease-gateway/examples/server"
+	"binchencoder.com/ease-gateway/examples/server"
 	"github.com/golang/glog"
 )
 

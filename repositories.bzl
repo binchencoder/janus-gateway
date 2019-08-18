@@ -3,26 +3,33 @@ load("@bazel_gazelle//:deps.bzl", "go_repository")
 def go_repositories():
     go_repository(
         name = "com_github_binchencoder_letsgo",
-        importpath = "github.com/binchencoder/letsgo",
+        importpath = "binchencoder.com/letsgo",
         urls = [
-            "https://codeload.github.com/binchencoder/letsgo/tar.gz/c227bc4824d51e2820ea3e9116c22094d6049b45",
+            "https://codeload.github.com/binchencoder/letsgo/tar.gz/3a34eef5d1546b1be444e2e053d425e80afe100e",
         ],
-        strip_prefix = "letsgo-c227bc4824d51e2820ea3e9116c22094d6049b45",
+        strip_prefix = "letsgo-3a34eef5d1546b1be444e2e053d425e80afe100e",
         type = "tar.gz",
+        # gazelle args: -go_prefix binchencoder.com/letsgo
     )
     go_repository(
         name = "com_github_binchencoder_skylb_api",
-        importpath = "github.com/binchencoder/skylb-api",
+        importpath = "binchencoder.com/skylb-api",
         urls = [
-            "https://codeload.github.com/binchencoder/skylb-api/tar.gz/d6d09e7f54f772a83fa2085d9bdc4f77d92a8fed",
+            "https://codeload.github.com/binchencoder/skylb-api/tar.gz/43a2566186d2411255f6818afce1cb5639cf42c5",
         ],
-        strip_prefix = "skylb-api-d6d09e7f54f772a83fa2085d9bdc4f77d92a8fed",
+        strip_prefix = "skylb-api-43a2566186d2411255f6818afce1cb5639cf42c5",
         type = "tar.gz",
+        # gazelle args: -go_prefix binchencoder.com/skylb-api
     )
     go_repository(
         name = "com_github_binchencoder_gateway_proto",
-        importpath = "github.com/binchencoder/gateway-proto",
-        commit = "1ee4b0a8951fda57f986695253374d7847adbec6",
+        importpath = "binchencoder.com/gateway-proto",
+        urls = [
+            "https://codeload.github.com/binchencoder/gateway-proto/tar.gz/c099a5a6646c572557bc8326f4d952fba4165a3b",
+        ],
+        strip_prefix = "gateway-proto-c099a5a6646c572557bc8326f4d952fba4165a3b",
+        type = "tar.gz",
+        # gazelle args: -go_prefix binchencoder.com/gateway-proto
     )
 
     go_repository(

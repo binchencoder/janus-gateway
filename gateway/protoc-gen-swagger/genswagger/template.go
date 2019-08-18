@@ -16,10 +16,10 @@ import (
 	gogen "github.com/golang/protobuf/protoc-gen-go/generator"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
 
 	// swagger_options "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
-	swagger_options "github.com/binchencoder/ease-gateway/gateway/protoc-gen-swagger/options"
+	swagger_options "binchencoder.com/ease-gateway/gateway/protoc-gen-swagger/options"
 )
 
 var wktSchemas = map[string]schemaCore{

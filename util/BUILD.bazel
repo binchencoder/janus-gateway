@@ -10,7 +10,7 @@ go_library(
         ["*.go"],
         exclude = ["*_test.go"],
     ),
-    importpath = "github.com/binchencoder/ease-gateway/util",
+    importpath = "binchencoder.com/ease-gateway/util",
     deps = [
         "//util/glog:go_default_library",
         "@com_github_fatih_color//:go_default_library",

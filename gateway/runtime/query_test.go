@@ -16,7 +16,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/genproto/protobuf/field_mask"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/gateway/runtime"
 )
 
 func TestPopulateParameters(t *testing.T) {

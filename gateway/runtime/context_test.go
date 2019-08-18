@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/gateway/runtime"
 	"google.golang.org/grpc/metadata"
 )
 

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/gateway/runtime"
 	"google.golang.org/genproto/googleapis/api/httpbody"
 )
 

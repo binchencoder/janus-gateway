@@ -9,9 +9,9 @@ import (
 
 	"context"
 	"github.com/golang/protobuf/proto"
-	pb "github.com/binchencoder/ease-gateway/examples/proto"
+	pb "binchencoder.com/ease-gateway/examples/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/internal"
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/gateway/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

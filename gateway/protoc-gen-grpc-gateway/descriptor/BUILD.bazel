@@ -11,7 +11,7 @@ go_library(
         "services.go",
         "types.go",
     ],
-    importpath = "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor",
+    importpath = "binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor",
     deps = [
         "//gateway/options:go_default_library",
         "//gateway/protoc-gen-grpc-gateway/httprule:go_default_library",

@@ -9,15 +9,15 @@ import (
 
 	"github.com/golang/glog"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
-	"github.com/binchencoder/gateway-proto/data"
-	"github.com/binchencoder/ease-gateway/integrate"
-	"github.com/binchencoder/letsgo"
+	"binchencoder.com/ease-gateway/gateway/runtime"
+	"binchencoder.com/ease-gateway/integrate"
+	"binchencoder.com/gateway-proto/data"
+	"binchencoder.com/letsgo"
 )
 
 var (
-	host        = flag.String("host", "", "The gateway service host ")
-	port        = flag.Int("port", 6666, "The gateway service port")
+	host = flag.String("host", "", "The gateway service host ")
+	port = flag.Int("port", 6666, "The gateway service port")
 )
 
 func usage() {

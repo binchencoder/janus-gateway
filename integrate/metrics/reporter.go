@@ -5,7 +5,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	tm "github.com/binchencoder/letsgo/time"
+	tm "binchencoder.com/letsgo/time"
 )
 
 var (

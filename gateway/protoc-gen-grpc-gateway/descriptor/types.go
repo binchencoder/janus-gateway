@@ -9,10 +9,10 @@ import (
 	gogen "github.com/golang/protobuf/protoc-gen-go/generator"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
+	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
 
-	options "github.com/binchencoder/ease-gateway/gateway/options"
-	"github.com/binchencoder/gateway-proto/data"
+	options "binchencoder.com/ease-gateway/gateway/options"
+	"binchencoder.com/gateway-proto/data"
 )
 
 // IsWellKnownType returns true if the provided fully qualified type name is considered 'well-known'.
