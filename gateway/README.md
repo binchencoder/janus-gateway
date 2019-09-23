@@ -81,8 +81,9 @@ protoc -I/usr/local/include -I. \
 
 ### httprule
 
-该目录下没有修改代码，直接拷贝的。原因是 grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule 
-package visibility 只能在本项目内依赖
+Link [grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule](https://github.com/grpc-ecosystem/grpc-gateway/tree/master/protoc-gen-grpc-gateway/httprule)
+
+该目录下没有修改代码，直接拷贝的。原因是 grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule  package visibility 只能在本项目内依赖
 
 ```
 package(default_visibility = ["//:generators"])

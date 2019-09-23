@@ -11,6 +11,9 @@ Hosted on https://github.com/grpc-ecosystem/grpc-gateway.
 
 ### 2019/08/09
 
+Based on V1.9.5
+https://github.com/grpc-ecosystem/grpc-gateway/releases/tag/v1.9.5
+
 Based on commit ID fdf063599d922ec89a70819e2d5b7b4b5c642b92
 
 Commit message
