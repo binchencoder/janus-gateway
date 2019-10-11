@@ -21,9 +21,13 @@ start gateway server
 ease-gateway/bazel-bin/examples/cmd/example-gateway-server/linux_amd64_stripped/example-gateway-server
 ```
 
+```
+bazel-bin/cmd/custom-gateway/linux_amd64_stripped/ease-gateway-demo -skylb-endpoints="127.0.0.1:1900" -debug-service=custom-ease-gateway-test -debug-svc-endpoint=custom-ease-gateway-test=localhost:9090
+```
+
 start gRPC server
 ```
-ease-gateway/bazel-bin/examples/cmd/example-grpc-server/linux_amd64_stripped/example-server
+ease-gateway/bazel-bin/examples/cmd/example-grpc-server/linux_amd64_stripped/example-server -skylb-endpoints="127.0.0.1:1900"
 ```
 
 # Usage

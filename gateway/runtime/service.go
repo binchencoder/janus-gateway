@@ -53,11 +53,11 @@ var (
 )
 
 // AddMethod adds an API method to the service object with the given spec.
-func AddMethod(spec *pb.ServiceSpec, svcName, methName, path, httpMethod string, loginRequired, clientSignRequired, isThirdParty bool, specSource, apiSource, tokenType, timeout string) {
-	sg := GetServiceGroup(spec)
+func AddMethod(spec *pb.ServiceSpec, svcName, methodName, path, httpMethod string, loginRequired, clientSignRequired, isThirdParty bool, specSource, apiSource, tokenType, timeout string) {
+	sg := availableServiceGroups[spec.String()]
 	svc := sg.Services[svcName]
 	m := Method{
-		Name:               methName,
+		Name:               methodName,
 		Path:               path,
 		HttpMethod:         httpMethod,
 		LoginRequired:      loginRequired,

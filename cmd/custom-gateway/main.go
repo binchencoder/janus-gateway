@@ -17,7 +17,7 @@ import (
 
 var (
 	host = flag.String("host", "", "The gateway service host ")
-	port = flag.Int("port", 6666, "The gateway service port")
+	port = flag.Int("port", 8080, "The gateway service port")
 )
 
 func usage() {
@@ -45,7 +45,7 @@ func main() {
 	debugMode := flag.Lookup("debug-mode")
 	debugMode.Value.Set("true")
 
-	runtime.CallerServiceId = data.ServiceId_CUSTOM_GATEWAY
+	runtime.CallerServiceId = data.ServiceId_EASE_GATEWAY
 	// integrate.SetAllowCredentials(true)
 	// integrate.SetAllowHostsRegexp([]string{"*"})
 

@@ -15,10 +15,10 @@ import (
 	options "binchencoder.com/ease-gateway/gateway/options"
 	"binchencoder.com/ease-gateway/gateway/runtime"
 	"binchencoder.com/ease-gateway/util"
-	"binchencoder.com/letsgo/grpc"
-	"binchencoder.com/letsgo/trace"
 	vexpb "binchencoder.com/gateway-proto/data"
 	fpb "binchencoder.com/gateway-proto/frontend"
+	"binchencoder.com/letsgo/grpc"
+	"binchencoder.com/letsgo/trace"
 )
 
 // Bootstrap starts the gateway and sets up the housekeeping goroutine.
@@ -61,26 +61,26 @@ func (gh *gatewayHook) bootstrap(sgs map[string]*runtime.ServiceGroup) error {
 		}
 	}
 	//  else {
-		 
-		// initEtcd()
 
-		// initMysql()
+	// initEtcd()
 
-		// // 注册服务及接口.
-		// if err := cache.RegisterService(sgs); err != nil {
-		// 	panic(err)
-		// }
+	// initMysql()
 
-		// // 注册etcd通知.
-		// notify.RegisterEtcdNotify()
+	// // 注册服务及接口.
+	// if err := cache.RegisterService(sgs); err != nil {
+	// 	panic(err)
+	// }
 
-		// // 初始化限流配置.
-		// go initRateLimit()
+	// // 注册etcd通知.
+	// notify.RegisterEtcdNotify()
 
-		// // 非debug模式才启动redis连接
-		// initRedis()
+	// // 初始化限流配置.
+	// go initRateLimit()
 
-		// go util.SkylbInit()
+	// // 非debug模式才启动redis连接
+	// initRedis()
+
+	// go util.SkylbInit()
 	// }
 	return nil
 }
