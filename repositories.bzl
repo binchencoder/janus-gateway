@@ -152,6 +152,11 @@ def go_repositories():
         commit = "221dbe5ed46703ee255b1da0dec05086f5035f62",
     )
     go_repository(
+        name = "com_github_soheilhy_cmux",
+        importpath = "github.com/soheilhy/cmux",
+        commit = "8a8ea3c53959009183d7914522833c1ed8835020",
+    )
+    go_repository(
         name = "com_github_uber_jaeger_client_go",
         importpath = "github.com/uber/jaeger-client-go",
         urls = [

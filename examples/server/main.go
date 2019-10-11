@@ -23,7 +23,7 @@ func Run(ctx context.Context, network, address string) error {
 	}()
 
 	s := grpc.NewServer()
-	examples.RegisterEchoServiceServer(s, newEchoServer())
+	examples.RegisterEchoServiceServer(s, NewEchoServer())
 
 	go func() {
 		defer s.GracefulStop()
