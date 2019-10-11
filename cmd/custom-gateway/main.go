@@ -42,8 +42,8 @@ func main() {
 	letsgo.Init(letsgo.FlagUsage(usage))
 	// checkFlags()
 
-	debugMode := flag.Lookup("debug-mode")
-	debugMode.Value.Set("true")
+	// debugMode := flag.Lookup("debug-mode")
+	// debugMode.Value.Set("true")
 
 	runtime.CallerServiceId = data.ServiceId_EASE_GATEWAY
 	// integrate.SetAllowCredentials(true)

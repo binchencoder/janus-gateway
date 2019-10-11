@@ -59,29 +59,32 @@ func (gh *gatewayHook) bootstrap(sgs map[string]*runtime.ServiceGroup) error {
 				util.Logf(util.DefaultLogger, "&&&Do not service %s.", spec.ServiceName)
 			}
 		}
+	} else {
+		// TODO(chenbin): 由于没有后台管理来控制APIs的开启和关闭, 默认全部开启
+		for _, sg := range sgs {
+			go sg.Enable()
+		}
+
+		// initEtcd()
+
+		// initMysql()
+
+		// // 注册服务及接口.
+		// if err := cache.RegisterService(sgs); err != nil {
+		// 	panic(err)
+		// }
+
+		// // 注册etcd通知.
+		// notify.RegisterEtcdNotify()
+
+		// // 初始化限流配置.
+		// go initRateLimit()
+
+		// // 非debug模式才启动redis连接
+		// initRedis()
+
+		// go util.SkylbInit()
 	}
-	//  else {
-
-	// initEtcd()
-
-	// initMysql()
-
-	// // 注册服务及接口.
-	// if err := cache.RegisterService(sgs); err != nil {
-	// 	panic(err)
-	// }
-
-	// // 注册etcd通知.
-	// notify.RegisterEtcdNotify()
-
-	// // 初始化限流配置.
-	// go initRateLimit()
-
-	// // 非debug模式才启动redis连接
-	// initRedis()
-
-	// go util.SkylbInit()
-	// }
 	return nil
 }
 
