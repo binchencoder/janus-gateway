@@ -76,7 +76,7 @@ func main() {
 		hostPort = fmt.Sprintf("%s:%d", *host, *port)
 	}
 	mux := runtime.NewServeMux()
-	// runtime.SetGatewayServiceHook(integrate.NewGatewayHook(mux, hostPort))
+	runtime.SetGatewayServiceHook(integrate.NewGatewayHook(mux, hostPort))
 
 	// util.Logf(util.DefaultLogger, "*****Starting ease-gateway at %s.*****", hostPort)
 
