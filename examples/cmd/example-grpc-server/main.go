@@ -8,8 +8,8 @@ import (
 	"flag"
 	"fmt"
 
-	examples "binchencoder.com/ease-gateway/examples/proto"
 	"binchencoder.com/ease-gateway/examples/server"
+	examples "binchencoder.com/ease-gateway/proto/examples"
 	"binchencoder.com/gateway-proto/data"
 	skylb "binchencoder.com/skylb-api/server"
 	"github.com/golang/glog"

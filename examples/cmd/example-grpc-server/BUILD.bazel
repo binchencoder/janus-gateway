@@ -7,7 +7,7 @@ go_library(
     srcs = ["main.go"],
     importpath = "binchencoder.com/ease-gateway/examples/cmd/example-grpc-server",
     deps = [
-        "//examples/proto:go_default_library",
+        "//proto/examples:go_default_library",
         "//examples/server:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_binchencoder_skylb_api//server:go_default_library",

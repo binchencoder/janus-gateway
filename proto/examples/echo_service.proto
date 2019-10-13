@@ -7,7 +7,8 @@ option go_package = "proto";
 // a message.
 package ease.gateway.examples.proto;
 
-import "google/api/annotations.proto";
+// import "google/api/annotations.proto";
+import "gateway/options/annotations.proto";
 
 // Embedded represents a message embedded in SimpleMessage.
 message Embedded {
@@ -35,12 +36,19 @@ message SimpleMessage {
 
 // Echo service responds to incoming echo requests.
 service EchoService {
+    option (ease.api.service_spec) = {
+        service_id: CUSTOM_EASE_GATEWAY_TEST
+        port_name : "grpc"
+        namespace : "default"
+        gen_controller: true
+    };
+
 	// Echo method receives a simple message and returns it.
 	//
 	// The message posted as the id parameter will also be
 	// returned.
 	rpc Echo(SimpleMessage) returns (SimpleMessage) {
-		option (google.api.http) = {
+		option (ease.api.http) = {
 			post: "/v1/example/echo/{id}"
 			additional_bindings {
 				get: "/v1/example/echo/{id}/{num}"
@@ -58,14 +66,14 @@ service EchoService {
 	}
 	// EchoBody method receives a simple message and returns it.
 	rpc EchoBody(SimpleMessage) returns (SimpleMessage) {
-		option (google.api.http) = {
+		option (ease.api.http) = {
 			post: "/v1/example/echo_body"
 			body: "*"
 		};
 	}
 	// EchoDelete method receives a simple message and returns it.
 	rpc EchoDelete(SimpleMessage) returns (SimpleMessage) {
-		option (google.api.http) = {
+		option (ease.api.http) = {
 			delete: "/v1/example/echo_delete"
 		};
 	}

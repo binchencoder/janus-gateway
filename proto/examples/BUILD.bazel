@@ -1,16 +1,18 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("@com_github_grpc_ecosystem_grpc_gateway//protoc-gen-swagger:defs.bzl", "protoc_gen_swagger")
+load("//gateway/protoc-gen-swagger:defs.bzl", "protoc_gen_swagger")
 
 package(default_visibility = ["//visibility:public"])
 
+# gazelle:exclude echo_service.pb.gw.go
+
 proto_library(
-    name = "echo_proto",
-    srcs = [
-        "echo_service.proto",
-    ],
+    name = "examplepb_proto",
+    srcs = glob(["*.proto"]),
     deps = [
-        "@com_github_grpc_ecosystem_grpc_gateway//protoc-gen-swagger/options:options_proto",
+        "//gateway/options:options_proto",
+        "@com_github_binchencoder_gateway_proto//data:data_proto",
+        "@com_github_binchencoder_gateway_proto//frontend:error_proto",
         "@com_google_protobuf//:duration_proto",
         "@com_google_protobuf//:empty_proto",
         "@com_google_protobuf//:field_mask_proto",
@@ -21,29 +23,41 @@ proto_library(
 )
 
 go_proto_library(
-    name = "echo_go_proto",
+    name = "examplepb_go_proto",
     compilers = [
         "@io_bazel_rules_go//proto:go_grpc",
-        "@com_github_grpc_ecosystem_grpc_gateway//protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
+        "//gateway/protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
     ],
     importpath = "binchencoder.com/ease-gateway/proto/examples",
-    proto = ":proto_proto",
-    deps = ["@go_googleapis//google/api:annotations_go_proto"],
+    proto = ":examplepb_proto",
+    deps = [
+        "//gateway/options:go_default_library",
+        "//gateway/runtime:go_default_library",
+        "@com_github_binchencoder_letsgo//grpc:go_default_library",
+        "@com_github_binchencoder_skylb_api//balancer:go_default_library",
+        "@com_github_binchencoder_skylb_api//client:go_default_library",
+        "@com_github_binchencoder_skylb_api//client/option:go_default_library",
+        "@com_github_binchencoder_skylb_api//proto:go_default_library",
+        "@org_golang_google_grpc//naming:go_default_library",
+    ],
 )
 
 go_library(
     name = "go_default_library",
-    embed = [":echo_go_proto"],
+    embed = [":examplepb_go_proto"],
     importpath = "binchencoder.com/ease-gateway/proto/examples",
+    deps = [
+        "//gateway/options:go_default_library",
+        "//gateway/runtime:go_default_library",
+        "@com_github_binchencoder_gateway_proto//data:go_default_library",
+        "@com_github_binchencoder_gateway_proto//frontend:go_default_library",
+        "@com_github_binchencoder_skylb_api//balancer:go_default_library",
+        "@com_github_binchencoder_skylb_api//client:go_default_library",
+    ],
 )
 
 protoc_gen_swagger(
-    name = "echo_protoc_gen_swagger",
-    proto = ":echo_proto",
-)
-
-proto_library(
-    name = "proto_proto",
-    srcs = ["echo_service.proto"],
-    deps = ["@go_googleapis//google/api:annotations_proto"],
+    name = "expamplepb_protoc_gen_swagger",
+    proto = ":examplepb_proto",
+    single_output = False,  # Outputs a single swagger.json file.
 )
