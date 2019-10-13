@@ -4,7 +4,7 @@ import (
 	"context"
 	"net"
 
-	examples "binchencoder.com/ease-gateway/proto/examples"
+	examples "binchencoder.com/ease-gateway/examples/proto"
 	"github.com/golang/glog"
 	"google.golang.org/grpc"
 )
