@@ -17,7 +17,7 @@ go_library(
 )
 
 go_binary(
-    name = "example-server",
+    name = "example-grpc-server",
     embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )

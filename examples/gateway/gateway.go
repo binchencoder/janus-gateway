@@ -17,7 +17,7 @@ func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []runtime.Serve
 	sgs := runtime.GetServicGroups()
 	fmt.Printf("runtime.GetServicGroups: %v", sgs)
 	for _, sg := range sgs {
-		// go sg.Enable()
+		go sg.Enable()
 		spec := sg.Spec
 		fmt.Printf("[serviceName:%s | namespace:%s | portName:%s]\n",
 			spec.ServiceName, spec.Namespace, spec.PortName)

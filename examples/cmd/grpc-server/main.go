@@ -1,6 +1,6 @@
 /*
- * Command example-grpc-server is an example grpc server
- * to be called by example-gateway-server.
+ * Command grpc-server is an example gRPC server
+ * to be called by //cmd/gateway.
  */
 package main
 
@@ -25,6 +25,7 @@ func main() {
 	flag.Parse()
 	defer glog.Flush()
 
+	// Regist to skylbserver
 	skylb.Register(data.ServiceId_CUSTOM_EASE_GATEWAY_TEST, "grpc", *port)
 	skylb.EnableHistogram()
 	skylb.Start(fmt.Sprintf(":%d", *port), func(s *grpc.Server) error {

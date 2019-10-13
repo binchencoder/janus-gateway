@@ -5,7 +5,6 @@ import (
 
 	options "binchencoder.com/ease-gateway/gateway/options"
 	vexpb "binchencoder.com/gateway-proto/data"
-	pb "binchencoder.com/skylb-api/proto"
 	skypb "binchencoder.com/skylb-api/proto"
 )
 
@@ -32,7 +31,7 @@ type Method struct {
 
 // Service is the controller class for each grpc service handler.
 type Service struct {
-	Spec     pb.ServiceSpec
+	Spec     skypb.ServiceSpec
 	Name     string
 	Methods  []*Method
 	Register func(*ServeMux) error
@@ -42,7 +41,7 @@ type Service struct {
 
 // ServiceGroup groups services with the same spec.
 type ServiceGroup struct {
-	Spec     pb.ServiceSpec
+	Spec     skypb.ServiceSpec
 	Enable   func()
 	Disable  func()
 	Services map[string]*Service
@@ -53,7 +52,7 @@ var (
 )
 
 // AddMethod adds an API method to the service object with the given spec.
-func AddMethod(spec *pb.ServiceSpec, svcName, methodName, path, httpMethod string, loginRequired, clientSignRequired, isThirdParty bool, specSource, apiSource, tokenType, timeout string) {
+func AddMethod(spec *skypb.ServiceSpec, svcName, methodName, path, httpMethod string, loginRequired, clientSignRequired, isThirdParty bool, specSource, apiSource, tokenType, timeout string) {
 	sg := availableServiceGroups[spec.String()]
 	svc := sg.Services[svcName]
 	m := Method{
@@ -98,6 +97,6 @@ func GetServicGroups() map[string]*ServiceGroup {
 }
 
 // GetServiceGroup returns the ServiceGroup with the given spec.
-func GetServiceGroup(spec *pb.ServiceSpec) *ServiceGroup {
+func GetServiceGroup(spec *skypb.ServiceSpec) *ServiceGroup {
 	return availableServiceGroups[spec.String()]
 }
