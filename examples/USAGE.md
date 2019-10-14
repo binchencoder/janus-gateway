@@ -38,7 +38,7 @@ ease-gateway/bazel-bin/examples/cmd/grpc-server/linux_amd64_stripped/grpc-server
 
 start //cmd/gateway
 ```
-ease-gateway/bazel-bin/cmd/gateway/linux_amd64_stripped/gateway -skylb-endpoints="127.0.0.1:1900"
+ease-gateway/bazel-bin/cmd/gateway/linux_amd64_stripped/gateway -skylb-endpoints="127.0.0.1:1900" -v=2 -log_dir=.
 ```
 
 # Usage
