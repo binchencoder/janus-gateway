@@ -2,22 +2,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.binchencoder.gateway.proto</groupId>
-	<artifactId>gateway-proto</artifactId>
+	<groupId>com.binchencoder.easegw</groupId>
+	<artifactId>easegw-proto</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
 
+    <organization>
+        <name>Binchencoder</name>
+        <url>https://www.github.com/binchencoder</url>
+    </organization>
+    <repositories>
+        <repository>
+            <id>github-maven-snapshot-repository</id>
+            <name>github-maven-snapshot-repository</name>
+            <url>https://raw.github.com/binchencoder/maven/snapshot/</url>
+        </repository>
+        <repository>
+            <id>github-maven-release-repository</id>
+            <name>github-maven-release-repository</name>
+            <url>https://raw.github.com/binchencoder/maven/release/</url>
+        </repository>
+    </repositories>
+
 	<modules>
-		<module>frontend</module>
-        <module>data</module>
         <module>examples</module>
 	</modules>
 
 	<properties>
 		<!-- gRPC -->
-		<grpc.version>1.2.0</grpc.version>
+		<grpc.version>1.3.1</grpc.version>
 		<!-- ProtoBuf -->
-		<protobuf.version>3.2.0</protobuf.version>
+		<protobuf.version>3.4.0</protobuf.version>
 		<!-- Googleapis -->
 		<googleapis.version>0.0.3</googleapis.version>
 	</properties>
@@ -55,6 +70,12 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+
+            <dependency>
+                <groupId>com.binchencoder.gateway</groupId>
+                <artifactId>data-proto</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

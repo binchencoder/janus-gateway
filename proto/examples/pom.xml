@@ -8,8 +8,8 @@
 
 	<!-- parent -->
 	<parent>
-		<groupId>com.binchencoder.gateway.proto</groupId>
-		<artifactId>gateway-proto</artifactId>
+		<groupId>com.binchencoder.easegw</groupId>
+		<artifactId>easegw-proto</artifactId>
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
@@ -32,6 +32,11 @@
 			<groupId>com.google.api.grpc</groupId>
 			<artifactId>googleapis-common-protos</artifactId>
 		</dependency>
+
+        <dependency>
+                <groupId>com.binchencoder.gateway</groupId>
+                <artifactId>data-proto</artifactId>
+            </dependency>
 	</dependencies>
 
 	<build>
@@ -48,6 +53,8 @@
 					<includes>
 						<param>ease-gateway/proto/examples/*.proto</param>
 						<param>ease-gateway/proto/examples/*/*.proto</param>
+                        <param>ease-gateway/gateway/options/http.proto</param>
+                        <param>ease-gateway/gateway/options/annotations.proto</param>
 					</includes>
 				</configuration>
 				<executions>

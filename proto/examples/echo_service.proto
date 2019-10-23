@@ -1,11 +1,14 @@
 syntax = "proto3";
 option go_package = "proto";
 
+option java_package = "com.binchencoder.easegw.examples";
+option java_outer_classname = "ExamplesProto";
+
 // Echo Service
 //
 // Echo Service API consists of a single service which returns
 // a message.
-package ease.gateway.examples.proto;
+package examples;
 
 // import "google/api/annotations.proto";
 import "gateway/options/annotations.proto";
