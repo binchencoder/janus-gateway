@@ -33,10 +33,10 @@
 			<artifactId>googleapis-common-protos</artifactId>
 		</dependency>
 
-        <dependency>
-                <groupId>com.binchencoder.gateway</groupId>
-                <artifactId>data-proto</artifactId>
-            </dependency>
+		<dependency>
+			<groupId>com.binchencoder.gateway</groupId>
+			<artifactId>data-proto</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -53,8 +53,8 @@
 					<includes>
 						<param>ease-gateway/proto/examples/*.proto</param>
 						<param>ease-gateway/proto/examples/*/*.proto</param>
-                        <param>ease-gateway/gateway/options/http.proto</param>
-                        <param>ease-gateway/gateway/options/annotations.proto</param>
+						<param>ease-gateway/gateway/options/http.proto</param>
+						<param>ease-gateway/gateway/options/annotations.proto</param>
 					</includes>
 				</configuration>
 				<executions>
