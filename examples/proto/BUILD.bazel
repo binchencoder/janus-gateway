@@ -10,7 +10,7 @@ proto_library(
     name = "examplepb_proto",
     srcs = glob(["*.proto"]),
     deps = [
-        "//gateway/options:options_proto",
+        "//httpoptions:options_proto",
         "@com_github_binchencoder_gateway_proto//data:data_proto",
         "@com_github_binchencoder_gateway_proto//frontend:error_proto",
         "@com_google_protobuf//:duration_proto",
@@ -31,7 +31,7 @@ go_proto_library(
     importpath = "binchencoder.com/ease-gateway/examples/proto",
     proto = ":examplepb_proto",
     deps = [
-        "//gateway/options:go_default_library",
+        "//httpoptions:go_default_library",
         "//gateway/runtime:go_default_library",
         "@com_github_binchencoder_letsgo//grpc:go_default_library",
         "@com_github_binchencoder_skylb_api//balancer:go_default_library",
@@ -47,7 +47,7 @@ go_library(
     embed = [":examplepb_go_proto"],
     importpath = "binchencoder.com/ease-gateway/examples/proto",
     deps = [
-        "//gateway/options:go_default_library",
+        "//httpoptions:go_default_library",
         "//gateway/runtime:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_binchencoder_gateway_proto//frontend:go_default_library",

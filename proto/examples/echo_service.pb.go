@@ -4,7 +4,7 @@
 package proto
 
 import (
-	_ "binchencoder.com/ease-gateway/gateway/options"
+	_ "binchencoder.com/ease-gateway/httpoptions"
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"

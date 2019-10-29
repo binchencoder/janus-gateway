@@ -3,7 +3,7 @@ package runtime
 import (
 	"google.golang.org/grpc"
 
-	options "binchencoder.com/ease-gateway/gateway/options"
+	options "binchencoder.com/ease-gateway/httpoptions"
 	vexpb "binchencoder.com/gateway-proto/data"
 	skypb "binchencoder.com/skylb-api/proto"
 )

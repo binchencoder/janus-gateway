@@ -8,7 +8,7 @@ option go_package = "proto";
 package ease.gateway.examples.proto;
 
 // import "google/api/annotations.proto";
-import "gateway/options/annotations.proto";
+import "httpoptions/annotations.proto";
 
 // Embedded represents a message embedded in SimpleMessage.
 message Embedded {

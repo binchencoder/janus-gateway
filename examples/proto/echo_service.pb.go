@@ -6,7 +6,7 @@ package proto
 import (
 	context "context"
 	fmt "fmt"
-	_ "binchencoder.com/ease-gateway/gateway/options"
+	_ "binchencoder.com/ease-gateway/httpoptions"
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	math "math"

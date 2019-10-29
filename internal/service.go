@@ -3,7 +3,7 @@ package internal
 import (
 	"google.golang.org/grpc"
 
-	options "binchencoder.com/ease-gateway/gateway/options"
+	options "binchencoder.com/ease-gateway/httpoptions"
 	"binchencoder.com/ease-gateway/gateway/runtime"
 	vexpb "binchencoder.com/gateway-proto/data"
 	pb "binchencoder.com/skylb-api/proto"

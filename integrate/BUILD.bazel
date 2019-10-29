@@ -10,7 +10,7 @@ go_library(
     ),
     importpath = "binchencoder.com/ease-gateway/integrate",
     deps = [
-        "//gateway/options:go_default_library",
+        "//httpoptions:go_default_library",
         "//gateway/runtime:go_default_library",
         "//integrate/metrics:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",

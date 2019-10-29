@@ -120,3 +120,9 @@ http_archive(
 )
 load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
 buildifier_dependencies()
+
+# ---------- local repositories
+local_repository(
+    name = "com_github_binchencoder_gateway_proto",
+    path = "../gateway-proto",
+)

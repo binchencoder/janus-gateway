@@ -12,7 +12,7 @@ import (
 	gr "google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	options "binchencoder.com/ease-gateway/gateway/options"
+	options "binchencoder.com/ease-gateway/httpoptions"
 	"binchencoder.com/ease-gateway/gateway/runtime"
 	"binchencoder.com/ease-gateway/util"
 	vexpb "binchencoder.com/gateway-proto/data"

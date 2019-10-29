@@ -18,7 +18,7 @@ import (
 	// gen "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/generator"
 	gen "binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/generator"
 
-	options "binchencoder.com/ease-gateway/gateway/options"
+	options "binchencoder.com/ease-gateway/httpoptions"
 )
 
 var (
@@ -45,28 +45,28 @@ type generator struct {
 func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, pathTypeString string, allowPatchFeature bool) gen.Generator {
 	var imports []descriptor.GoPackage
 	for pkgpath, alias := range map[string]string{
-		"context":      "",
-		"io":           "",
-		"net/http":     "",
-		"regexp":       "",
-		"strings":      "",
-		"sync":         "",
-		"unicode/utf8": "",
-		"binchencoder.com/ease-gateway/gateway/runtime": "",
-		"github.com/grpc-ecosystem/grpc-gateway/utilities":     "",
-		"github.com/golang/protobuf/proto":                     "",
-		"binchencoder.com/gateway-proto/data":           "vexpb",
-		"binchencoder.com/gateway-proto/frontend":       "fpb",
-		"binchencoder.com/letsgo/grpc":                  "lgr",
-		"binchencoder.com/skylb-api/balancer":           "",
-		"binchencoder.com/skylb-api/client":             "",
-		"binchencoder.com/skylb-api/client/option":      "",
-		"binchencoder.com/skylb-api/proto":              "skypb",
-		"google.golang.org/grpc":                               "",
-		"google.golang.org/grpc/codes":                         "",
-		"google.golang.org/grpc/naming":                        "",
-		// "google.golang.org/grpc/grpclog":                   "",
-		"google.golang.org/grpc/status": "",
+		"context":                                          "",
+		"io":                                               "",
+		"net/http":                                         "",
+		"regexp":                                           "",
+		"strings":                                          "",
+		"sync":                                             "",
+		"unicode/utf8":                                     "",
+		"binchencoder.com/ease-gateway/gateway/runtime":    "",
+		"github.com/grpc-ecosystem/grpc-gateway/utilities": "",
+		"github.com/golang/protobuf/proto":                 "",
+		"binchencoder.com/gateway-proto/data":              "vexpb",
+		"binchencoder.com/gateway-proto/frontend":          "fpb",
+		"binchencoder.com/letsgo/grpc":                     "lgr",
+		"binchencoder.com/skylb-api/balancer":              "",
+		"binchencoder.com/skylb-api/client":                "",
+		"binchencoder.com/skylb-api/client/option":         "",
+		"binchencoder.com/skylb-api/proto":                 "skypb",
+		"google.golang.org/grpc":                           "",
+		"google.golang.org/grpc/codes":                     "",
+		"google.golang.org/grpc/naming":                    "",
+		"google.golang.org/grpc/grpclog":                   "",
+		"google.golang.org/grpc/status":                    "",
 	} {
 		pkg := descriptor.GoPackage{
 			Path:  pkgpath,

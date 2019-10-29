@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang/protobuf/proto"
 
-	options "binchencoder.com/ease-gateway/gateway/options"
+	options "binchencoder.com/ease-gateway/httpoptions"
 	"binchencoder.com/letsgo/hashring"
 )
 

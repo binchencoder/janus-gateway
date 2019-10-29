@@ -11,7 +11,7 @@ import (
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
 	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
 
-	options "binchencoder.com/ease-gateway/gateway/options"
+	options "binchencoder.com/ease-gateway/httpoptions"
 	"binchencoder.com/gateway-proto/data"
 )
 

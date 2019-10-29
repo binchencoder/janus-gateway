@@ -54,6 +54,8 @@ $ curl -XPOST  -H "x-source: web" http://localhost:8080/v1/example/echo/foo
 
 $ curl -H "x-source: web"  http://localhost:8080/v1/example/echo/foo/123
 {"id":"foo","num":"123"}
+
+$ curl -XDELETE -H "x-source: web"  http://localhost:8080/v1/example/echo_delete
 ```
 
 > NOTE: 请注意当前用户是否是管理员

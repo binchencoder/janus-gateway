@@ -11,7 +11,7 @@ go_library(
     importpath = "binchencoder.com/ease-gateway/internal",
     visibility = ["//visibility:public"],
     deps = [
-        "//gateway/options:go_default_library",
+        "//httpoptions:go_default_library",
         "//gateway/runtime:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_binchencoder_letsgo//grpc:go_default_library",
@@ -37,7 +37,7 @@ go_test(
     ],
     deps = [
         "//examples/proto:go_default_library",
-        "//gateway/options:go_default_library",
+        "//httpoptions:go_default_library",
         "//gateway/runtime:go_default_library",
         "@com_github_binchencoder_letsgo//hashring:go_default_library",
         "@com_github_binchencoder_skylb_api//proto:go_default_library",

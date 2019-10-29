@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 
-	options "binchencoder.com/ease-gateway/gateway/options"
+	options "binchencoder.com/ease-gateway/httpoptions"
 	"binchencoder.com/ease-gateway/gateway/runtime"
 	"binchencoder.com/ease-gateway/integrate/metrics"
 	"binchencoder.com/ease-gateway/util"

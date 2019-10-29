@@ -10,7 +10,7 @@ import (
 	"github.com/pborman/uuid"
 	"google.golang.org/grpc/grpclog"
 
-	options "binchencoder.com/ease-gateway/gateway/options"
+	options "binchencoder.com/ease-gateway/httpoptions"
 	"binchencoder.com/letsgo/grpc"
 	"binchencoder.com/letsgo/hashring"
 )

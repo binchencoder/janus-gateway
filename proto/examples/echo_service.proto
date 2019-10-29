@@ -11,7 +11,7 @@ option java_outer_classname = "ExamplesProto";
 package examples;
 
 // import "google/api/annotations.proto";
-import "gateway/options/annotations.proto";
+import "httpoptions/annotations.proto";
 
 // Embedded represents a message embedded in SimpleMessage.
 message Embedded {

@@ -21,16 +21,16 @@ def go_repositories():
         type = "tar.gz",
         # gazelle args: -go_prefix binchencoder.com/skylb-api
     )
-    go_repository(
-        name = "com_github_binchencoder_gateway_proto",
-        importpath = "binchencoder.com/gateway-proto",
-        urls = [
-            "https://codeload.github.com/binchencoder/gateway-proto/tar.gz/c099a5a6646c572557bc8326f4d952fba4165a3b",
-        ],
-        strip_prefix = "gateway-proto-c099a5a6646c572557bc8326f4d952fba4165a3b",
-        type = "tar.gz",
-        # gazelle args: -go_prefix binchencoder.com/gateway-proto
-    )
+    # go_repository(
+    #     name = "com_github_binchencoder_gateway_proto",
+    #     importpath = "binchencoder.com/gateway-proto",
+    #     urls = [
+    #         "https://codeload.github.com/binchencoder/gateway-proto/tar.gz/c099a5a6646c572557bc8326f4d952fba4165a3b",
+    #     ],
+    #     strip_prefix = "gateway-proto-c099a5a6646c572557bc8326f4d952fba4165a3b",
+    #     type = "tar.gz",
+    #     # gazelle args: -go_prefix binchencoder.com/gateway-proto
+    # )
 
     go_repository(
         name = "com_github_grpc_ecosystem_grpc_gateway",
