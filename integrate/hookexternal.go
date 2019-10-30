@@ -12,8 +12,8 @@ import (
 	gr "google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	options "binchencoder.com/ease-gateway/httpoptions"
 	"binchencoder.com/ease-gateway/gateway/runtime"
+	options "binchencoder.com/ease-gateway/httpoptions"
 	"binchencoder.com/ease-gateway/util"
 	vexpb "binchencoder.com/gateway-proto/data"
 	fpb "binchencoder.com/gateway-proto/frontend"
@@ -90,11 +90,6 @@ func (gh *gatewayHook) bootstrap(sgs map[string]*runtime.ServiceGroup) error {
 
 func (gh *gatewayHook) requestAccepted(ctx context.Context, svc *runtime.Service, m *runtime.Method, w http.ResponseWriter,
 	r *http.Request) (context.Context, error) {
-	// client.
-	// clt := getClientFromHeader(r.Header)
-	// traceid.
-	// tid := trace.GetTraceIdOrEmpty(ctx)
-
 	// 新增debug模式,默认uid和cid
 	if *debugMode {
 		if r.Header.Get(XUid) == "" {
@@ -107,7 +102,12 @@ func (gh *gatewayHook) requestAccepted(ctx context.Context, svc *runtime.Service
 			r.Header.Set(XAid, *debugAid)
 		}
 	} else {
+		// // client.
+		// clt := getClientFromHeader(r.Header)
+		// // traceid.
+		// tid := trace.GetTraceIdOrEmpty(ctx)
 		// xt, _ := ctx.Value(RequestReceivedTime).(time.Time)
+
 		// 校验请求的http header.
 		if err := verifyHeader(ctx, r.Header, svc, m); err != nil {
 			return ctx, err

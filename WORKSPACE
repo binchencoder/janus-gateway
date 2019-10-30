@@ -126,3 +126,13 @@ local_repository(
     name = "com_github_binchencoder_gateway_proto",
     path = "../gateway-proto",
 )
+
+local_repository(
+    name = "com_github_binchencoder_letsgo",
+    path = "../letsgo",
+)
+
+local_repository(
+    name = "com_github_binchencoder_skylb_api",
+    path = "../skylb-api",
+)

@@ -32,6 +32,8 @@ Link  [grpc-ecosystem/grpc-gateway/codegenerator](https://github.com/grpc-ecosys
 - loadbalancer
 - parameter validation(定义validation rules)
 
+> **NOTE :** 移到根目录下 => httpoptions 
+
 ## protoc-gen-grpc-gateway
 
 Link   [grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway/tree/master/protoc-gen-grpc-gateway)
@@ -49,7 +51,7 @@ protoc -I/usr/local/include -I. \
 修改文件:
 
 - BUILD.bazel
-- main.go
+- main.go (只修改import path)
 
 ### descriptor
 
@@ -67,11 +69,11 @@ protoc -I/usr/local/include -I. \
 修改文件:
 
 - BUILD.bazel
-- generator.go
+- generator.go  (只修改import path)
 
 ### gengateway
 
-修改文件:
+**这个目录下改动比较大**, 修改文件:
 
 - BUILD.bazel
 - generator_test.go

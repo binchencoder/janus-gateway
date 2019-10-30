@@ -5,11 +5,15 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 	"github.com/golang/protobuf/ptypes/any"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/status"
+
+	fpb "binchencoder.com/gateway-proto/frontend"
 )
 
 // HTTPStatusFromCode converts a gRPC error code into the corresponding HTTP response status.
@@ -66,7 +70,7 @@ var (
 )
 
 type errorBody struct {
-	Error string `protobuf:"bytes,1,name=error" json:"error"`
+	Error *fpb.Error `protobuf:"bytes,1,name=error" json:"error"`
 	// This is to make the error more compatible with users that expect errors to be Status objects:
 	// https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto
 	// It should be the exact same message as the Error field.
@@ -106,8 +110,14 @@ func DefaultHTTPError(ctx context.Context, mux *ServeMux, marshaler Marshaler, w
 	}
 	w.Header().Set("Content-Type", contentType)
 
+	e := fpb.Error{}
+	desc := grpc.ErrorDesc(err)
+	if erru := jsonpb.UnmarshalString(desc, &e); erru != nil {
+		e.Code = fpb.ErrorCode_UNDEFINED
+		e.Params = []string{desc}
+	}
 	body := &errorBody{
-		Error:   s.Message(),
+		Error:   &e,
 		Message: s.Message(),
 		Code:    int32(s.Code()),
 		Details: s.Proto().GetDetails(),

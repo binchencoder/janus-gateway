@@ -1,26 +1,26 @@
 load("@bazel_gazelle//:deps.bzl", "go_repository")
 
 def go_repositories():
-    go_repository(
-        name = "com_github_binchencoder_letsgo",
-        importpath = "binchencoder.com/letsgo",
-        urls = [
-            "https://codeload.github.com/binchencoder/letsgo/tar.gz/3a34eef5d1546b1be444e2e053d425e80afe100e",
-        ],
-        strip_prefix = "letsgo-3a34eef5d1546b1be444e2e053d425e80afe100e",
-        type = "tar.gz",
-        # gazelle args: -go_prefix binchencoder.com/letsgo
-    )
-    go_repository(
-        name = "com_github_binchencoder_skylb_api",
-        importpath = "binchencoder.com/skylb-api",
-        urls = [
-            "https://codeload.github.com/binchencoder/skylb-api/tar.gz/43a2566186d2411255f6818afce1cb5639cf42c5",
-        ],
-        strip_prefix = "skylb-api-43a2566186d2411255f6818afce1cb5639cf42c5",
-        type = "tar.gz",
-        # gazelle args: -go_prefix binchencoder.com/skylb-api
-    )
+    # go_repository(
+    #     name = "com_github_binchencoder_letsgo",
+    #     importpath = "binchencoder.com/letsgo",
+    #     urls = [
+    #         "https://codeload.github.com/binchencoder/letsgo/tar.gz/3a34eef5d1546b1be444e2e053d425e80afe100e",
+    #     ],
+    #     strip_prefix = "letsgo-3a34eef5d1546b1be444e2e053d425e80afe100e",
+    #     type = "tar.gz",
+    #     # gazelle args: -go_prefix binchencoder.com/letsgo
+    # )
+    # go_repository(
+    #     name = "com_github_binchencoder_skylb_api",
+    #     importpath = "binchencoder.com/skylb-api",
+    #     urls = [
+    #         "https://codeload.github.com/binchencoder/skylb-api/tar.gz/43a2566186d2411255f6818afce1cb5639cf42c5",
+    #     ],
+    #     strip_prefix = "skylb-api-43a2566186d2411255f6818afce1cb5639cf42c5",
+    #     type = "tar.gz",
+    #     # gazelle args: -go_prefix binchencoder.com/skylb-api
+    # )
     # go_repository(
     #     name = "com_github_binchencoder_gateway_proto",
     #     importpath = "binchencoder.com/gateway-proto",
