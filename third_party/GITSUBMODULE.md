@@ -67,3 +67,30 @@ git rm --cached {MOD_NAME}
 # 提交更改到代码库，可观察到'.gitmodules'内容发生变更
 git commit -am "Remove a submodule." 
 ```
+
+## 切换指定版本
+
+在使用gitsubmodule时希望切换到指定的版本上(指定commit id 或 branch), 这是一种比较常见的场景. 我们可以这样做:
+
+1. cd {submodule_path}
+
+2. git checkout {branch_name} or {commit_id}
+    ```
+    git checkout v3.8.0
+
+    HEAD 目前位于 09745575a Merge pull request #6160 from haon4/3.8.x-20190521140707
+    ```
+
+3. Check submodule status
+    ```
+    git status
+
+    头指针分离于 09745575a
+    ```
+
+4. Git commit and push
+    ```
+    git add .
+    git commit -m "xxx"
+    git push
+    ```
