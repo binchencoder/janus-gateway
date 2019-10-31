@@ -36,6 +36,11 @@ git submodule init
 git submodule update
 ```
 
+在第一次检出主项目时, 可以直接检出子项目
+```
+git clone --recurse-submodules https://github.com/binchencoder/ease-gateway.git
+```
+
 ## Bazel build gateway
 
 ```
