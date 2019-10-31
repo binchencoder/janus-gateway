@@ -111,19 +111,19 @@ load("//:repositories.bzl", "go_repositories")
 
 go_repositories()
 
-go_repository(
-    name = "com_google_protobuf",
-    importpath = "github.com/protocolbuffers/protobuf",
-    urls = [
-        "https://codeload.github.com/protocolbuffers/protobuf/tar.gz/09745575a923640154bcf307fba8aedff47f240a",
-    ],
-    strip_prefix = "protobuf-09745575a923640154bcf307fba8aedff47f240a",
-    type = "tar.gz",
-)
-# local_repository(
+# go_repository(
 #     name = "com_google_protobuf",
-#     path = "third_party/protobuf",
+#     importpath = "github.com/protocolbuffers/protobuf",
+#     urls = [
+#         "https://codeload.github.com/protocolbuffers/protobuf/tar.gz/09745575a923640154bcf307fba8aedff47f240a",
+#     ],
+#     strip_prefix = "protobuf-09745575a923640154bcf307fba8aedff47f240a",
+#     type = "tar.gz",
 # )
+local_repository(
+    name = "com_google_protobuf",
+    path = "third_party/protobuf",
+)
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
