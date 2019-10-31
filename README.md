@@ -29,6 +29,13 @@ git clone https://github.com/binchencoder/letsgo.git
 git clone https://github.com/binchencoder/skylb-api.git
 ```
 
+## Sync submodule
+
+```
+git submodule init
+git submodule update
+```
+
 ## Bazel build gateway
 
 ```
