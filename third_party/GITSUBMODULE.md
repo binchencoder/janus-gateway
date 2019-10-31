@@ -5,7 +5,7 @@
 git submodule add <submodule_url>  # 添加子项目
 
 如：
-git submodule add https://github.com/protocolbuffers/protobuf
+git submodule add https://github.com/protocolbuffers/protobuf.git
 ```
 
 添加子项目后会出现.gitmodules的文件，这是一个配置文件，记录mapping between the project's URL and the local subdirectory。且.gitmodules在git版本控制中，这样其他参与项目的人才能知道submodule projects的情况。
