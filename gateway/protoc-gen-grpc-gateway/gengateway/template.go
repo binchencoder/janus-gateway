@@ -611,7 +611,7 @@ var (
 	ctx = runtime.PreLoadBalance(ctx, "{{$.Method.Service.Balancer.String}}", "{{.Method.HashKey}}", &protoReq)
 	msg, err := client.{{.Method.GetName}}(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	if err != nil {
-		grpclog.Errorf("client.%s returns error: %v", "{{.Method.GetName}}", err)		
+		// grpclog.Errorf("client.%s returns error: %v", "{{.Method.GetName}}", err)		
 	}
 	runtime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", msg, &metadata, err)
 	return msg, metadata, err
@@ -899,7 +899,7 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec, "{{$svc.GetName}}", "{{$m.GetName}}", w, req)
 		if err != nil {
-			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			// grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
@@ -922,14 +922,14 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			grpclog.Errorf("rruntime.AnnotateContext returns error: %v", err)
+			// grpclog.Errorf("runtime.AnnotateContext returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		resp, md, err := request_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}(rctx, inboundMarshaler, cli, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			grpclog.Errorf("request_%s_%s_%s returns error: %v", "{{$svc.GetName}}", "{{$m.GetName}}", "{{$b.Index}}", err)
+			// grpclog.Errorf("request_%s_%s_%s returns error: %v", "{{$svc.GetName}}", "{{$m.GetName}}", "{{$b.Index}}", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
