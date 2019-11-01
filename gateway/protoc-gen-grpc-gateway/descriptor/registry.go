@@ -165,9 +165,17 @@ func (r *Registry) registerMsg(file *File, outerPath []string, msgs []*descripto
 			Index:           i,
 		}
 		for _, fd := range md.GetField() {
+			rule, _ := extractFieldRules(fd)
+			var rules []*Rule
+			if rule != nil {
+				for _, r := range rule.Rules {
+					rules = append(rules, &Rule{rule: r})
+				}
+			}
 			m.Fields = append(m.Fields, &Field{
 				Message:              m,
 				FieldDescriptorProto: fd,
+				Rules:                rules,
 			})
 		}
 		file.Messages = append(file.Messages, m)

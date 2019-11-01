@@ -6,6 +6,7 @@ import (
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
 	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+	options "binchencoder.com/ease-gateway/httpoptions"
 )
 
 type param struct {
@@ -145,8 +146,9 @@ type schemaCore struct {
 	// If the item is an enumeration include a list of all the *NAMES* of the
 	// enum values.  I'm not sure how well this will work but assuming all enums
 	// start from 0 index it will be great. I don't think that is a good assumption.
-	Enum    []string `json:"enum,omitempty"`
-	Default string   `json:"default,omitempty"`
+	Enum    []string                 `json:"enum,omitempty"`
+	Default string                   `json:"default,omitempty"`
+	Rules   []options.ValidationRule `json:"rules,omitempty"`
 }
 
 type swaggerItemsObject schemaCore

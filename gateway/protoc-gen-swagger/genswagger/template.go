@@ -17,6 +17,7 @@ import (
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
 	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+	options "binchencoder.com/ease-gateway/httpoptions"
 
 	// swagger_options "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 	swagger_options "binchencoder.com/ease-gateway/gateway/protoc-gen-swagger/options"
@@ -416,7 +417,11 @@ func schemaOfField(f *descriptor.Field, reg *descriptor.Registry, refs refMap) s
 	default:
 		ftype, format, ok := primitiveSchema(ft)
 		if ok {
-			core = schemaCore{Type: ftype, Format: format}
+			if f.HasRule() {
+				core = schemaCore{Type: ftype, Format: format, Rules: getRules(f.Rules)}
+			} else {
+				core = schemaCore{Type: ftype, Format: format}
+			}
 		} else {
 			core = schemaCore{Type: ft.String(), Format: "UNKNOWN"}
 		}
@@ -500,6 +505,15 @@ func primitiveSchema(t pbdescriptor.FieldDescriptorProto_Type) (ftype, format st
 	default:
 		return "", "", false
 	}
+}
+
+// getRules returns a swagger rule slice.
+func getRules(rules []*descriptor.Rule) []options.ValidationRule {
+	rs := []options.ValidationRule{}
+	for _, v := range rules {
+		rs = append(rs, *v.Rule())
+	}
+	return rs
 }
 
 // renderEnumerationsAsDefinition inserts enums into the definitions object.
