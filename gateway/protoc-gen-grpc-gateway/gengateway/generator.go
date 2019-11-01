@@ -144,8 +144,6 @@ func (g *generator) Generate(targets []*descriptor.File) ([]*plugin.CodeGenerato
 func (g *generator) generate(file *descriptor.File) (string, error) {
 	pkgSeen := make(map[string]bool)
 	var imports []descriptor.GoPackage
-
-	glog.Errorf("generate g.baseImports: %+v", g.baseImports)
 	for _, pkg := range g.baseImports {
 		pkgSeen[pkg.Path] = true
 		imports = append(imports, pkg)
