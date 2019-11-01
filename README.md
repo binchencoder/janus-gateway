@@ -62,4 +62,4 @@ TODO
 
 ## Run Examples
 
-See [examples/README.md](https://github.com/binchencoder/ease-gateway/blob/master/examples/README.md)
+See [examples/README.md](https://github.com/binchencoder/ease-gateway/tree/master/examples)

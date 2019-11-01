@@ -1,6 +1,6 @@
 # Overrview
 
-ease-gateway/examples 是使用ease-gateway的一个完整示例，包含gateway-server 和 gRPC-server
+ease-gateway/examples 是使用ease-gateway的一个完整示例，包含gateway-server 和 gRPC-server. 还有Java实现gRPC Server的例子 [https://github.com/binchencoder/spring-boot-grpc/tree/master/spring-boot-grpc-examples]
 
 # Build the example
 
