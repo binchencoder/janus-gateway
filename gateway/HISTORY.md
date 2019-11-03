@@ -9,6 +9,20 @@ Hosted on https://github.com/grpc-ecosystem/grpc-gateway.
 
 ## Update History
 
+### 2019/11/03
+
+Based on commit ID 58a91c2b3020ee25e5d3cf49cf7d342544ab773d
+
+Commit message
+
+```
+commit 58a91c2b3020ee25e5d3cf49cf7d342544ab773d (HEAD -> master, origin/master, origin/HEAD)
+Author: Prateek Malhotra <someone1@gmail.com>
+Date:   Fri Nov 1 10:32:09 2019 -0400
+
+    annotations: Sort import order.
+```
+
 ### 2019/08/09
 
 Based on V1.9.5

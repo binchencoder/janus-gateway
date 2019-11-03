@@ -1,20 +1,26 @@
 package genswagger
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/url"
 	"os"
 	"reflect"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
+	"text/template"
 
 	"github.com/golang/glog"
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
 	pbdescriptor "github.com/golang/protobuf/protoc-gen-go/descriptor"
 	gogen "github.com/golang/protobuf/protoc-gen-go/generator"
-
+	structpb "github.com/golang/protobuf/ptypes/struct"
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
 	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
 	options "binchencoder.com/ease-gateway/httpoptions"
@@ -67,6 +73,21 @@ var wktSchemas = map[string]schemaCore{
 		Format: "boolean",
 	},
 	".google.protobuf.Empty": schemaCore{},
+	".google.protobuf.Struct": schemaCore{
+		Type: "object",
+	},
+	".google.protobuf.Value": schemaCore{
+		Type: "object",
+	},
+	".google.protobuf.ListValue": schemaCore{
+		Type: "array",
+		Items: (*swaggerItemsObject)(&schemaCore{
+			Type: "object",
+		}),
+	},
+	".google.protobuf.NullValue": schemaCore{
+		Type: "string",
+	},
 }
 
 func listEnumNames(enum *descriptor.Enum) (names []string) {
@@ -109,7 +130,7 @@ func queryParams(message *descriptor.Message, field *descriptor.Field, prefix st
 	fieldType := field.GetTypeName()
 	if message.File != nil {
 		comments := fieldProtoComments(reg, message, field)
-		if err := updateSwaggerDataFromComments(&schema, comments, false); err != nil {
+		if err := updateSwaggerDataFromComments(reg, &schema, message, comments, false); err != nil {
 			return nil, err
 		}
 	}
@@ -272,7 +293,7 @@ func renderMessagesAsDefinition(messages messageMap, d swaggerDefinitionsObject,
 			},
 		}
 		msgComments := protoComments(reg, msg.File, msg.Outers, "MessageType", int32(msg.Index))
-		if err := updateSwaggerDataFromComments(&schema, msgComments, false); err != nil {
+		if err := updateSwaggerDataFromComments(reg, &schema, msg, msgComments, false); err != nil {
 			panic(err)
 		}
 		opts, err := extractSchemaOptionFromMessageDescriptor(msg.DescriptorProto)
@@ -280,7 +301,7 @@ func renderMessagesAsDefinition(messages messageMap, d swaggerDefinitionsObject,
 			panic(err)
 		}
 		if opts != nil {
-			protoSchema := swaggerSchemaFromProtoSchema(opts, reg, customRefs)
+			protoSchema := swaggerSchemaFromProtoSchema(opts, reg, customRefs, msg)
 
 			// Warning: Make sure not to overwrite any fields already set on the schema type.
 			schema.ExternalDocs = protoSchema.ExternalDocs
@@ -317,7 +338,7 @@ func renderMessagesAsDefinition(messages messageMap, d swaggerDefinitionsObject,
 		for _, f := range msg.Fields {
 			fieldValue := schemaOfField(f, reg, customRefs)
 			comments := fieldProtoComments(reg, msg, f)
-			if err := updateSwaggerDataFromComments(&fieldValue, comments, false); err != nil {
+			if err := updateSwaggerDataFromComments(reg, &fieldValue, f, comments, false); err != nil {
 				panic(err)
 			}
 
@@ -452,7 +473,7 @@ func schemaOfField(f *descriptor.Field, reg *descriptor.Registry, refs refMap) s
 	}
 
 	if j, err := extractJSONSchemaFromFieldDescriptor(fd); err == nil {
-		updateSwaggerObjectFromJSONSchema(&ret, j)
+		updateSwaggerObjectFromJSONSchema(&ret, j, reg, f)
 	}
 
 	return ret
@@ -535,7 +556,7 @@ func renderEnumerationsAsDefinition(enums enumMap, d swaggerDefinitionsObject, r
 				Default: defaultValue,
 			},
 		}
-		if err := updateSwaggerDataFromComments(&enumSchemaObject, enumComments, false); err != nil {
+		if err := updateSwaggerDataFromComments(reg, &enumSchemaObject, enum, enumComments, false); err != nil {
 			panic(err)
 		}
 
@@ -615,6 +636,8 @@ func resolveFullyQualifiedNameToSwaggerNames(messages []string, useFQNForSwagger
 	return uniqueNames
 }
 
+var canRegexp = regexp.MustCompile("{([a-zA-Z][a-zA-Z0-9_.]*).*}")
+
 // Swagger expects paths of the form /path/{string_value} but grpc-gateway paths are expected to be of the form /path/{string_value=strprefix/*}. This should reformat it correctly.
 func templateToSwaggerPath(path string, reg *descriptor.Registry) string {
 	// It seems like the right thing to do here is to just use
@@ -644,7 +667,7 @@ func templateToSwaggerPath(path string, reg *descriptor.Registry) string {
 			buffer += string(char)
 			if reg.GetUseJSONNamesForFields() &&
 				len(jsonBuffer) > 1 {
-				jsonSnakeCaseName := string(jsonBuffer[1 : len(buffer)-1])
+				jsonSnakeCaseName := string(jsonBuffer[1:])
 				jsonCamelCaseName := string(lowerCamelCase(jsonSnakeCaseName))
 				prev := string(buffer[:len(buffer)-len(jsonSnakeCaseName)-2])
 				buffer = strings.Join([]string{prev, "{", jsonCamelCaseName, "}"}, "")
@@ -659,6 +682,7 @@ func templateToSwaggerPath(path string, reg *descriptor.Registry) string {
 				continue
 			}
 			buffer += string(char)
+			jsonBuffer += string(char)
 		default:
 			buffer += string(char)
 			jsonBuffer += string(char)
@@ -672,14 +696,18 @@ func templateToSwaggerPath(path string, reg *descriptor.Registry) string {
 	// Parts is now an array of segments of the path. Interestingly, since the
 	// syntax for this subsection CAN be handled by a regexp since it has no
 	// memory.
-	re := regexp.MustCompile("{([a-zA-Z][a-zA-Z0-9_.]*).*}")
+	keyre := regexp.MustCompile("{(.*)}")
 	for index, part := range parts {
 		// If part is a resource name such as "parent", "name", "user.name", the format info must be retained.
-		prefix := re.ReplaceAllString(part, "$1")
+		prefix := canRegexp.ReplaceAllString(part, "$1")
 		if isResourceName(prefix) {
-			continue
+			sm := keyre.FindStringSubmatch(part)
+			key := sm[1]
+			esckey := url.PathEscape(key)
+			parts[index] = keyre.ReplaceAllString(part, fmt.Sprintf("{%s}", esckey))
+		} else {
+			parts[index] = canRegexp.ReplaceAllString(part, "{$1}")
 		}
-		parts[index] = re.ReplaceAllString(part, "{$1}")
 	}
 
 	return strings.Join(parts, "/")
@@ -694,11 +722,31 @@ func isResourceName(prefix string) bool {
 	return field == "parent" || field == "name"
 }
 
+func extractResourceName(path string) map[string]string {
+	m := map[string]string{}
+	keyre := regexp.MustCompile("{(.*)}")
+	sm := keyre.FindStringSubmatch(path)
+	count := len(sm)
+	for i := 0; i < count; i++ {
+		key := sm[1]
+		parts := strings.Split(key, "=")
+		label := parts[0]
+		parts = strings.Split(label, ".")
+		l := len(parts)
+		field := parts[l-1]
+		if field == "parent" || field == "name" {
+			m[label] = key
+		}
+	}
+	return m
+}
+
 func renderServices(services []*descriptor.Service, paths swaggerPathsObject, reg *descriptor.Registry, requestResponseRefs, customRefs refMap) error {
 	// Correctness of svcIdx and methIdx depends on 'services' containing the services in the same order as the 'file.Service' array.
 	for svcIdx, svc := range services {
 		for methIdx, meth := range svc.Methods {
 			for bIdx, b := range meth.Bindings {
+				pathParamMap := extractResourceName(templateToSwaggerPath(b.PathTmpl.Template, reg))
 				// Iterate over all the swagger parameters
 				parameters := swaggerParametersObject{}
 				for _, parameter := range b.PathParams {
@@ -765,6 +813,9 @@ func renderServices(services []*descriptor.Service, paths swaggerPathsObject, re
 					parameterString := parameter.String()
 					if reg.GetUseJSONNamesForFields() {
 						parameterString = lowerCamelCase(parameterString)
+					}
+					if esckey, ok := pathParamMap[parameterString]; ok {
+						parameterString = esckey
 					}
 					parameters = append(parameters, swaggerParameterObject{
 						Name:        parameterString,
@@ -906,7 +957,7 @@ func renderServices(services []*descriptor.Service, paths swaggerPathsObject, re
 				}
 
 				methComments := protoComments(reg, svc.File, nil, "Method", int32(svcIdx), methProtoPath, int32(methIdx))
-				if err := updateSwaggerDataFromComments(operationObject, methComments, false); err != nil {
+				if err := updateSwaggerDataFromComments(reg, operationObject, meth, methComments, false); err != nil {
 					panic(err)
 				}
 
@@ -915,7 +966,7 @@ func renderServices(services []*descriptor.Service, paths swaggerPathsObject, re
 					if err != nil {
 						panic(err)
 					}
-					operationObject.ExternalDocs = protoExternalDocumentationToSwaggerExternalDocumentation(opts.ExternalDocs)
+					operationObject.ExternalDocs = protoExternalDocumentationToSwaggerExternalDocumentation(opts.ExternalDocs, reg, meth)
 					// TODO(ivucica): this would be better supported by looking whether the method is deprecated in the proto file
 					operationObject.Deprecated = opts.Deprecated
 
@@ -954,11 +1005,27 @@ func renderServices(services []*descriptor.Service, paths swaggerPathsObject, re
 					}
 					if opts.Responses != nil {
 						for name, resp := range opts.Responses {
-							operationObject.Responses[name] = swaggerResponseObject{
+							respObj := swaggerResponseObject{
 								Description: resp.Description,
-								Schema:      swaggerSchemaFromProtoSchema(resp.Schema, reg, customRefs),
+								Schema:      swaggerSchemaFromProtoSchema(resp.Schema, reg, customRefs, meth),
 							}
+							if resp.Extensions != nil {
+								exts, err := processExtensions(resp.Extensions)
+								if err != nil {
+									return err
+								}
+								respObj.extensions = exts
+							}
+							operationObject.Responses[name] = respObj
 						}
+					}
+
+					if opts.Extensions != nil {
+						exts, err := processExtensions(opts.Extensions)
+						if err != nil {
+							return err
+						}
+						operationObject.extensions = exts
 					}
 
 					// TODO(ivucica): add remaining fields of operation object
@@ -1030,7 +1097,7 @@ func applyTemplate(p param) (*swaggerObject, error) {
 	// File itself might have some comments and metadata.
 	packageProtoPath := protoPathIndex(reflect.TypeOf((*pbdescriptor.FileDescriptorProto)(nil)), "Package")
 	packageComments := protoComments(p.reg, p.File, nil, "Package", packageProtoPath)
-	if err := updateSwaggerDataFromComments(&s, packageComments, true); err != nil {
+	if err := updateSwaggerDataFromComments(p.reg, &s, p, packageComments, true); err != nil {
 		panic(err)
 	}
 
@@ -1080,6 +1147,13 @@ func applyTemplate(p param) (*swaggerObject, error) {
 				if spb.Info.License.Url != "" {
 					s.Info.License.URL = spb.Info.License.Url
 				}
+			}
+			if spb.Info.Extensions != nil {
+				exts, err := processExtensions(spb.Info.Extensions)
+				if err != nil {
+					return nil, err
+				}
+				s.Info.extensions = exts
 			}
 		}
 		if spb.Host != "" {
@@ -1163,6 +1237,13 @@ func applyTemplate(p param) (*swaggerObject, error) {
 						newSecDefValue.Scopes[scopeKey] = scopeDesc
 					}
 				}
+				if secDefValue.Extensions != nil {
+					exts, err := processExtensions(secDefValue.Extensions)
+					if err != nil {
+						return nil, err
+					}
+					newSecDefValue.extensions = exts
+				}
 				s.SecurityDefinitions[secDefKey] = newSecDefValue
 			}
 		}
@@ -1184,7 +1265,7 @@ func applyTemplate(p param) (*swaggerObject, error) {
 			}
 			s.Security = newSecurity
 		}
-		s.ExternalDocs = protoExternalDocumentationToSwaggerExternalDocumentation(spb.ExternalDocs)
+		s.ExternalDocs = protoExternalDocumentationToSwaggerExternalDocumentation(spb.ExternalDocs, p.reg, spb)
 		// Populate all Paths with Responses set at top level,
 		// preferring Responses already set over those at the top level.
 		if spb.Responses != nil {
@@ -1214,11 +1295,19 @@ func applyTemplate(p param) (*swaggerObject, error) {
 						}
 						respMap[k] = swaggerResponseObject{
 							Description: v.Description,
-							Schema:      swaggerSchemaFromProtoSchema(v.Schema, p.reg, customRefs),
+							Schema:      swaggerSchemaFromProtoSchema(v.Schema, p.reg, customRefs, nil),
 						}
 					}
 				}
 			}
+		}
+
+		if spb.Extensions != nil {
+			exts, err := processExtensions(spb.Extensions)
+			if err != nil {
+				return nil, err
+			}
+			s.extensions = exts
 		}
 
 		// Additional fields on the OpenAPI v2 spec's "Swagger" object
@@ -1230,6 +1319,22 @@ func applyTemplate(p param) (*swaggerObject, error) {
 	addCustomRefs(s.Definitions, p.reg, customRefs)
 
 	return &s, nil
+}
+
+func processExtensions(inputExts map[string]*structpb.Value) ([]extension, error) {
+	exts := []extension{}
+	for k, v := range inputExts {
+		if !strings.HasPrefix(k, "x-") {
+			return nil, fmt.Errorf("Extension keys need to start with \"x-\": %q", k)
+		}
+		ext, err := (&jsonpb.Marshaler{Indent: "  "}).MarshalToString(v)
+		if err != nil {
+			return nil, err
+		}
+		exts = append(exts, extension{key: k, value: json.RawMessage(ext)})
+	}
+	sort.Slice(exts, func(i, j int) bool { return exts[i].key < exts[j].key })
+	return exts, nil
 }
 
 // updateSwaggerDataFromComments updates a Swagger object based on a comment
@@ -1244,9 +1349,14 @@ func applyTemplate(p param) (*swaggerObject, error) {
 //
 // If there is no 'Summary', the same behavior will be attempted on 'Title',
 // but only if the last character is not a period.
-func updateSwaggerDataFromComments(swaggerObject interface{}, comment string, isPackageObject bool) error {
+func updateSwaggerDataFromComments(reg *descriptor.Registry, swaggerObject interface{}, data interface{}, comment string, isPackageObject bool) error {
 	if len(comment) == 0 {
 		return nil
+	}
+
+	// Checks whether the "use_go_templates" flag is set to true
+	if reg.GetUseGoTemplate() {
+		comment = goTemplateComments(comment, data, reg)
 	}
 
 	// Figure out what to apply changes to.
@@ -1377,6 +1487,37 @@ func protoComments(reg *descriptor.Registry, file *descriptor.File, outers []str
 		return comments
 	}
 	return ""
+}
+
+func goTemplateComments(comment string, data interface{}, reg *descriptor.Registry) string {
+	var temp bytes.Buffer
+	tpl, err := template.New("").Funcs(template.FuncMap{
+		// Allows importing documentation from a file
+		"import": func(name string) string {
+			file, err := ioutil.ReadFile(name)
+			if err != nil {
+				return err.Error()
+			}
+			// Runs template over imported file
+			return goTemplateComments(string(file), data, reg)
+		},
+		// Grabs title and description from a field
+		"fieldcomments": func(msg *descriptor.Message, field *descriptor.Field) string {
+			return strings.Replace(fieldProtoComments(reg, msg, field), "\n", "<br>", -1)
+		},
+	}).Parse(comment)
+	if err != nil {
+		// If there is an error parsing the templating insert the error as string in the comment
+		// to make it easier to debug the template error
+		return err.Error()
+	}
+	err = tpl.Execute(&temp, data)
+	if err != nil {
+		// If there is an error executing the templating insert the error as string in the comment
+		// to make it easier to debug the error
+		return err.Error()
+	}
+	return temp.String()
 }
 
 var messageProtoPath = protoPathIndex(reflect.TypeOf((*pbdescriptor.FileDescriptorProto)(nil)), "MessageType")
@@ -1582,9 +1723,14 @@ func protoJSONSchemaToSwaggerSchemaCore(j *swagger_options.JSONSchema, reg *desc
 	return ret
 }
 
-func updateSwaggerObjectFromJSONSchema(s *swaggerSchemaObject, j *swagger_options.JSONSchema) {
+func updateSwaggerObjectFromJSONSchema(s *swaggerSchemaObject, j *swagger_options.JSONSchema, reg *descriptor.Registry, data interface{}) {
 	s.Title = j.GetTitle()
 	s.Description = j.GetDescription()
+	if reg.GetUseGoTemplate() {
+		s.Title = goTemplateComments(s.Title, data, reg)
+		s.Description = goTemplateComments(s.Description, data, reg)
+	}
+
 	s.ReadOnly = j.GetReadOnly()
 	s.MultipleOf = j.GetMultipleOf()
 	s.Maximum = j.GetMaximum()
@@ -1601,15 +1747,18 @@ func updateSwaggerObjectFromJSONSchema(s *swaggerSchemaObject, j *swagger_option
 	s.MaxProperties = j.GetMaxProperties()
 	s.MinProperties = j.GetMinProperties()
 	s.Required = j.GetRequired()
+	if overrideType := j.GetType(); len(overrideType) > 0 {
+		s.Type = strings.ToLower(overrideType[0].String())
+	}
 }
 
-func swaggerSchemaFromProtoSchema(s *swagger_options.Schema, reg *descriptor.Registry, refs refMap) swaggerSchemaObject {
+func swaggerSchemaFromProtoSchema(s *swagger_options.Schema, reg *descriptor.Registry, refs refMap, data interface{}) swaggerSchemaObject {
 	ret := swaggerSchemaObject{
-		ExternalDocs: protoExternalDocumentationToSwaggerExternalDocumentation(s.GetExternalDocs()),
+		ExternalDocs: protoExternalDocumentationToSwaggerExternalDocumentation(s.GetExternalDocs(), reg, data),
 	}
 
 	ret.schemaCore = protoJSONSchemaToSwaggerSchemaCore(s.GetJsonSchema(), reg, refs)
-	updateSwaggerObjectFromJSONSchema(&ret, s.GetJsonSchema())
+	updateSwaggerObjectFromJSONSchema(&ret, s.GetJsonSchema(), reg, data)
 
 	if s != nil && s.Example != nil {
 		ret.Example = json.RawMessage(s.Example.Value)
@@ -1653,9 +1802,13 @@ func protoJSONSchemaTypeToFormat(in []swagger_options.JSONSchema_JSONSchemaSimpl
 	}
 }
 
-func protoExternalDocumentationToSwaggerExternalDocumentation(in *swagger_options.ExternalDocumentation) *swaggerExternalDocumentationObject {
+func protoExternalDocumentationToSwaggerExternalDocumentation(in *swagger_options.ExternalDocumentation, reg *descriptor.Registry, data interface{}) *swaggerExternalDocumentationObject {
 	if in == nil {
 		return nil
+	}
+
+	if reg.GetUseGoTemplate() {
+		in.Description = goTemplateComments(in.Description, data, reg)
 	}
 
 	return &swaggerExternalDocumentationObject{

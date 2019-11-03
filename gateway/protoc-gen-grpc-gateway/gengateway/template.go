@@ -895,8 +895,8 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.RLock()
 		// defer internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_lock.RUnlock()
-		cli := internal_{{$svc.GetName}}_{{$svc.ServiceId}}_client
-		if cli == nil {
+		client := internal_{{$svc.GetName}}_{{$svc.ServiceId}}_client
+		if client == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
@@ -914,26 +914,15 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 			ctx, cancel := context.WithCancel(ctx)
 		{{- end }}
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
-			// grpclog.Errorf("runtime.AnnotateContext returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}(rctx, inboundMarshaler, cli, req, pathParams)
+		resp, md, err := request_{{$svc.GetName}}_{{$m.GetName}}_{{$b.Index}}(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			// grpclog.Errorf("request_%s_%s_%s returns error: %v", "{{$svc.GetName}}", "{{$m.GetName}}", "{{$b.Index}}", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
