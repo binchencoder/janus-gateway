@@ -56,6 +56,8 @@ $ curl -H "x-source: web"  http://localhost:8080/v1/example/echo/foo/123
 {"id":"foo","num":"123"}
 
 $ curl -XDELETE -H "x-source: web"  http://localhost:8080/v1/example/echo_delete
+
+$ curl -XPOST -H "Content-Type:application/json" -H "x-source:web" -d '{"id": "11", "num": 1}' http://localhost:8080/v1/example/echo_body
 ```
 
 > NOTE: 请注意当前用户是否是管理员

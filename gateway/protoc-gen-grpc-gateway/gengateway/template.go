@@ -523,16 +523,15 @@ var (
 		runtime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", nil, &metadata, err)
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	{{- if and $AllowPatchFeature (and (eq (.HTTPMethod) "PATCH") (.FieldMaskField))}}
-	if protoReq.{{.FieldMaskField}} != nil && len(protoReq.{{.FieldMaskField}}.GetPaths()) > 0 {
-		runtime.CamelCaseFieldMask(protoReq.{{.FieldMaskField}})
-	} {{if not (eq "*" .GetBodyFieldPath)}} else {
-			if fieldMask, err := runtime.FieldMaskFromRequestBody(newReader()); err != nil {
+	{{- if and $AllowPatchFeature (eq (.HTTPMethod) "PATCH") (.FieldMaskField) (not (eq "*" .GetBodyFieldPath)) }}
+	if protoReq.{{.FieldMaskField}} == nil || len(protoReq.{{.FieldMaskField}}.GetPaths()) == 0 {
+			_, md := descriptor.ForMessage(protoReq.{{.GetBodyFieldStructName}})
+			if fieldMask, err := runtime.FieldMaskFromRequestBody(newReader(), md); err != nil {
 				return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 			} else {
 				protoReq.{{.FieldMaskField}} = fieldMask
 			}
-	}{{end}}
+	}
 	{{end}}
 {{end}}
 {{if .PathParams}}
@@ -558,6 +557,9 @@ var (
 	}
 {{if $param.IsNestedProto3}}
 	err = runtime.PopulateFieldFromPath(&protoReq, {{$param | printf "%q"}}, val)
+	{{if $enum}}
+		e{{if $param.IsRepeated}}s{{end}}, err = {{$param.ConvertFuncExpr}}(val{{if $param.IsRepeated}}, {{$binding.Registry.GetRepeatedPathParamSeparator | printf "%c" | printf "%q"}}{{end}}, {{$enum.GoType $param.Target.Message.File.GoPkg.Path}}_value)
+	{{end}}
 {{else if $enum}}
 	e{{if $param.IsRepeated}}s{{end}}, err = {{$param.ConvertFuncExpr}}(val{{if $param.IsRepeated}}, {{$binding.Registry.GetRepeatedPathParamSeparator | printf "%c" | printf "%q"}}{{end}}, {{$enum.GoType $param.Target.Message.File.GoPkg.Path}}_value)
 {{else}}
@@ -610,9 +612,9 @@ var (
 	runtime.RequestParsed(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "{{$.Method.Service.Balancer.String}}", "{{.Method.HashKey}}", &protoReq)
 	msg, err := client.{{.Method.GetName}}(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	if err != nil {
-		// grpclog.Errorf("client.%s returns error: %v", "{{.Method.GetName}}", err)		
-	}
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "{{.Method.GetName}}", err)		
+	// }
 	runtime.RequestHandled(ctx, spec, "{{.Method.Service.GetName}}", "{{.Method.GetName}}", msg, &metadata, err)
 	return msg, metadata, err
 {{end}}
@@ -700,16 +702,15 @@ func local_request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ct
 	if err := marshaler.NewDecoder(newReader()).Decode(&{{.Body.AssignableExpr "protoReq"}}); err != nil && err != io.EOF  {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	{{- if and $AllowPatchFeature (and (eq (.HTTPMethod) "PATCH") (.FieldMaskField))}}
-	if protoReq.{{.FieldMaskField}} != nil && len(protoReq.{{.FieldMaskField}}.GetPaths()) > 0 {
-		runtime.CamelCaseFieldMask(protoReq.{{.FieldMaskField}})
-	} {{if not (eq "*" .GetBodyFieldPath)}} else {
-			if fieldMask, err := runtime.FieldMaskFromRequestBody(newReader()); err != nil {
+	{{- if and $AllowPatchFeature (eq (.HTTPMethod) "PATCH") (.FieldMaskField) (not (eq "*" .GetBodyFieldPath)) }}
+	if protoReq.{{.FieldMaskField}} == nil || len(protoReq.{{.FieldMaskField}}.GetPaths()) == 0 {
+			_, md := descriptor.ForMessage(protoReq.{{.GetBodyFieldStructName}})
+			if fieldMask, err := runtime.FieldMaskFromRequestBody(newReader(), md); err != nil {
 				return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 			} else {
 				protoReq.{{.FieldMaskField}} = fieldMask
-			}		
-	} {{end}}		
+			}
+	}
 	{{end}}
 {{end}}
 {{if .PathParams}}
@@ -734,6 +735,9 @@ func local_request_{{.Method.Service.GetName}}_{{.Method.GetName}}_{{.Index}}(ct
 	}
 {{if $param.IsNestedProto3}}
 	err = runtime.PopulateFieldFromPath(&protoReq, {{$param | printf "%q"}}, val)
+	{{if $enum}}
+		e{{if $param.IsRepeated}}s{{end}}, err = {{$param.ConvertFuncExpr}}(val{{if $param.IsRepeated}}, {{$binding.Registry.GetRepeatedPathParamSeparator | printf "%c" | printf "%q"}}{{end}}, {{$enum.GoType $param.Target.Message.File.GoPkg.Path}}_value)
+	{{end}}
 {{else if $enum}}
 	e{{if $param.IsRepeated}}s{{end}}, err = {{$param.ConvertFuncExpr}}(val{{if $param.IsRepeated}}, {{$binding.Registry.GetRepeatedPathParamSeparator | printf "%c" | printf "%q"}}{{end}}, {{$enum.GoType $param.Target.Message.File.GoPkg.Path}}_value)
 {{else}}
@@ -904,7 +908,7 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 			return
 		}
 
-		{{ if $UseRequestContext }}
+		{{- if $UseRequestContext }}
 			ctx, cancel := context.WithCancel(req.Context())
 		{{- else -}}
 			ctx, cancel := context.WithCancel(ctx)

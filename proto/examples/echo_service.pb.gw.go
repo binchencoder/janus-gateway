@@ -60,6 +60,54 @@ var proto_examples_echo_service_error = lgr.ToGrpcError(codes.InvalidArgument, &
 
 // Validation methods start
 
+func Validate__examples_SimpleMessage(v *SimpleMessage) error {
+	if v == nil {
+		return nil
+	}
+	// Validation for each Fields
+
+	{
+		vv2 := v.Id
+
+		// Validation Field: Id
+
+		// TODO(jiezmo): fail the build
+		// Err
+
+		if utf8.RuneCountInString(strings.TrimSpace(vv2)) <= 2 {
+			return proto_examples_echo_service_error
+		}
+
+		if utf8.RuneCountInString(strings.TrimSpace(vv2)) >= 61 {
+			return proto_examples_echo_service_error
+		}
+
+	}
+
+	{
+		vv2 := v.Num
+
+		// Validation Field: Num
+
+		if vv2 <= 0 {
+			return proto_examples_echo_service_error
+		}
+
+	}
+
+	// Validation Field: GetLineNum()
+
+	// Validation Field: GetLang()
+
+	// Validation Field: Status
+
+	// Validation Field: GetEn()
+
+	// Validation Field: GetNo()
+
+	return nil
+}
+
 // Validation methods done
 
 var (
@@ -99,12 +147,19 @@ func request_EchoService_Echo_0(ctx context.Context, marshaler runtime.Marshaler
 
 	// Only hook up for non-stream call for now.
 
+	// Validate
+	// SimpleMessage
+	if err := Validate__examples_SimpleMessage(&protoReq); err != nil {
+		runtime.RequestHandled(ctx, spec, "EchoService", "Echo", nil, &metadata, err)
+		return nil, metadata, err
+	}
+
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	if err != nil {
-		// grpclog.Errorf("client.%s returns error: %v", "Echo", err)
-	}
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
 	return msg, metadata, err
 
@@ -190,12 +245,19 @@ func request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Marshaler
 
 	// Only hook up for non-stream call for now.
 
+	// Validate
+	// SimpleMessage
+	if err := Validate__examples_SimpleMessage(&protoReq); err != nil {
+		runtime.RequestHandled(ctx, spec, "EchoService", "Echo", nil, &metadata, err)
+		return nil, metadata, err
+	}
+
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	if err != nil {
-		// grpclog.Errorf("client.%s returns error: %v", "Echo", err)
-	}
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
 	return msg, metadata, err
 
@@ -309,12 +371,19 @@ func request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler
 
 	// Only hook up for non-stream call for now.
 
+	// Validate
+	// SimpleMessage
+	if err := Validate__examples_SimpleMessage(&protoReq); err != nil {
+		runtime.RequestHandled(ctx, spec, "EchoService", "Echo", nil, &metadata, err)
+		return nil, metadata, err
+	}
+
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	if err != nil {
-		// grpclog.Errorf("client.%s returns error: %v", "Echo", err)
-	}
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
 	return msg, metadata, err
 
@@ -444,12 +513,19 @@ func request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler
 
 	// Only hook up for non-stream call for now.
 
+	// Validate
+	// SimpleMessage
+	if err := Validate__examples_SimpleMessage(&protoReq); err != nil {
+		runtime.RequestHandled(ctx, spec, "EchoService", "Echo", nil, &metadata, err)
+		return nil, metadata, err
+	}
+
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	if err != nil {
-		// grpclog.Errorf("client.%s returns error: %v", "Echo", err)
-	}
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
 	return msg, metadata, err
 
@@ -550,12 +626,19 @@ func request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Marshaler
 
 	// Only hook up for non-stream call for now.
 
+	// Validate
+	// SimpleMessage
+	if err := Validate__examples_SimpleMessage(&protoReq); err != nil {
+		runtime.RequestHandled(ctx, spec, "EchoService", "Echo", nil, &metadata, err)
+		return nil, metadata, err
+	}
+
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	if err != nil {
-		// grpclog.Errorf("client.%s returns error: %v", "Echo", err)
-	}
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
 	return msg, metadata, err
 
@@ -608,12 +691,19 @@ func request_EchoService_EchoBody_0(ctx context.Context, marshaler runtime.Marsh
 
 	// Only hook up for non-stream call for now.
 
+	// Validate
+	// SimpleMessage
+	if err := Validate__examples_SimpleMessage(&protoReq); err != nil {
+		runtime.RequestHandled(ctx, spec, "EchoService", "EchoBody", nil, &metadata, err)
+		return nil, metadata, err
+	}
+
 	runtime.RequestParsed(ctx, spec, "EchoService", "EchoBody", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.EchoBody(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	if err != nil {
-		// grpclog.Errorf("client.%s returns error: %v", "EchoBody", err)
-	}
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "EchoBody", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "EchoBody", msg, &metadata, err)
 	return msg, metadata, err
 
@@ -654,12 +744,19 @@ func request_EchoService_EchoDelete_0(ctx context.Context, marshaler runtime.Mar
 
 	// Only hook up for non-stream call for now.
 
+	// Validate
+	// SimpleMessage
+	if err := Validate__examples_SimpleMessage(&protoReq); err != nil {
+		runtime.RequestHandled(ctx, spec, "EchoService", "EchoDelete", nil, &metadata, err)
+		return nil, metadata, err
+	}
+
 	runtime.RequestParsed(ctx, spec, "EchoService", "EchoDelete", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.EchoDelete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	if err != nil {
-		// grpclog.Errorf("client.%s returns error: %v", "EchoDelete", err)
-	}
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "EchoDelete", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "EchoDelete", msg, &metadata, err)
 	return msg, metadata, err
 
@@ -756,7 +853,6 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -804,7 +900,6 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -852,7 +947,6 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -900,7 +994,6 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -948,7 +1041,6 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -996,7 +1088,6 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -1044,7 +1135,6 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {

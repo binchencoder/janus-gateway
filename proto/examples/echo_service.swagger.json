@@ -479,19 +479,9 @@
           "type": "string",
           "rules": [
             {
-              "operator": 5,
-              "type": 2
-            },
-            {
-              "operator": 6,
+              "operator": 3,
               "type": 2,
               "value": "2",
-              "function": 1
-            },
-            {
-              "operator": 7,
-              "type": 2,
-              "value": "61",
               "function": 1
             }
           ],
@@ -499,7 +489,14 @@
         },
         "num": {
           "type": "string",
-          "format": "int64"
+          "format": "int64",
+          "rules": [
+            {
+              "operator": 1,
+              "type": 1,
+              "value": "0"
+            }
+          ]
         },
         "line_num": {
           "type": "string",

@@ -126,6 +126,10 @@ func (m *Message) FQMN() string {
 // field recursively.
 func (m *Message) HasRule() bool {
 	for _, f := range m.Fields {
+		if len(f.Rules) > 0 {
+			return true
+		}
+
 		if *f.Type == descriptor.FieldDescriptorProto_TYPE_MESSAGE {
 			// It looks the field's type name is prefixed with package already.
 			// To make it consistent with parameters passing to Reg.LookupMessage,
