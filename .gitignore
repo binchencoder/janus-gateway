@@ -23,6 +23,9 @@ bin/
 # Go vendor directory
 #vendor
 
+# Go third_party directory
+third_party/
+
 # Generated travis files
 .travis.yml
 
