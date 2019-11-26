@@ -35,13 +35,13 @@ git clone https://github.com/binchencoder/skylb-api.git
 
 ```
 git clone https://github.com/binchencoder/ease-gateway.git
-or
-git clone --recurse-submodules https://github.com/binchencoder/ease-gateway.git
 
 git clone https://github.com/binchencoder/gateway-proto.git
 git clone https://github.com/binchencoder/letsgo.git
 git clone https://github.com/binchencoder/skylb-api.git
 ```
+> 也可以连同submodules一起clone到本地
+> git clone --recurse-submodules https://github.com/binchencoder/ease-gateway.git
 
 ## Sync submodule
 
