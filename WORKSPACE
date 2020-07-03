@@ -11,9 +11,6 @@ http_archive(
     ],
 )
 
-# 从下载的扩展里载入 go_rules_dependencies go_register_toolchains 函数
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-
 # ---------- bazel_gazelle ----------
 # 一般来说都会使用gazelle工具来自动生成 BUILD 文件, 而不是手写.
 http_archive(
@@ -24,83 +21,16 @@ http_archive(
     ],
 )
 
-# 从gazelle中加载gazelle_dependencies
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
-
-# Overriding dependencies go_rules_dependencies
-http_archive(
-    name = "go_googleapis",
-    patch_args = [
-        "-E",
-        "-p1",
-    ],
-    patches = [
-        "@io_bazel_rules_go//third_party:go_googleapis-deletebuild.patch",
-        "@io_bazel_rules_go//third_party:go_googleapis-directives.patch",
-        "@io_bazel_rules_go//third_party:go_googleapis-gazelle.patch",
-        "@io_bazel_rules_go//third_party:go_googleapis-fix.patch",
-    ],
-    strip_prefix = "googleapis-b4c73face84fefb967ef6c72f0eae64faf67895f",
-    type = "tar.gz",
-    urls = [
-        "https://codeload.github.com/googleapis/googleapis/tar.gz/b4c73face84fefb967ef6c72f0eae64faf67895f",
-    ],
-    # gazelle args: -go_prefix google.golang.org/genproto/googleapi -proto disable
-)
-
-go_repository(
-    name = "org_golang_x_net",
-    importpath = "golang.org/x/net",
-    strip_prefix = "net-16b79f2e4e95ea23b2bf9903c9809ff7b013ce85",
-    type = "tar.gz",
-    urls = [
-        "https://codeload.github.com/golang/net/tar.gz/16b79f2e4e95ea23b2bf9903c9809ff7b013ce85",  # master, as of 2019-03-3
-    ],
-    # gazelle args: -go_prefix golang.org/x/net -proto disable
-)
-
-go_repository(
-    name = "org_golang_x_sys",
-    importpath = "golang.org/x/sys",
-    strip_prefix = "sys-fde4db37ae7ad8191b03d30d27f258b5291ae4e3",
-    type = "tar.gz",
-    urls = [
-        "https://codeload.github.com/golang/sys/tar.gz/fde4db37ae7ad8191b03d30d27f258b5291ae4e3",
-    ],
-    # gazelle args: -go_prefix golang.org/x/sys
-)
-
-go_repository(
-    name = "org_golang_x_text",
-    importpath = "golang.org/x/text",
-    strip_prefix = "text-f21a4dfb5e38f5895301dc265a8def02365cc3d0",
-    type = "tar.gz",
-    urls = [
-        "https://codeload.github.com/golang/text/tar.gz/f21a4dfb5e38f5895301dc265a8def02365cc3d0",  # v0.3.0, latest as of 2019-03-03
-    ],
-    # gazelle args: -go_prefix golang.org/x/text -proto disable
-)
-
-go_repository(
-    name = "org_golang_x_tools",
-    importpath = "golang.org/x/tools",
-    patch_args = ["-p1"],
-    patches = [
-        "@io_bazel_rules_go//third_party:org_golang_x_tools-extras.patch",
-    ],
-    strip_prefix = "tools-c8855242db9c1762032abe33c2dff50de3ec9d05",
-    type = "tar.gz",
-    urls = [
-        "https://codeload.github.com/golang/tools/tar.gz/c8855242db9c1762032abe33c2dff50de3ec9d05",
-    ],
-    # gazelle args: -go_prefix golang.org/x/tools -proto disable
-)
+# 从下载的扩展里载入 go_rules_dependencies go_register_toolchains 函数
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 # 注册一堆常用依赖 如github.com/google/protobuf golang.org/x/net
 go_rules_dependencies()
 
 # 下载golang工具链
 go_register_toolchains()
+
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 # 加载gazelle依赖
 gazelle_dependencies()
@@ -111,15 +41,15 @@ load("//:repositories.bzl", "go_repositories")
 
 go_repositories()
 
-# go_repository(
+# load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+# git_repository(
 #     name = "com_google_protobuf",
-#     importpath = "github.com/protocolbuffers/protobuf",
-#     urls = [
-#         "https://codeload.github.com/protocolbuffers/protobuf/tar.gz/09745575a923640154bcf307fba8aedff47f240a",
-#     ],
-#     strip_prefix = "protobuf-09745575a923640154bcf307fba8aedff47f240a",
-#     type = "tar.gz",
+#     commit = "09745575a923640154bcf307fba8aedff47f240a",
+#     remote = "https://github.com/protocolbuffers/protobuf",
+#     shallow_since = "1558721209 -0700",
 # )
+
 local_repository(
     name = "com_google_protobuf",
     path = "third_party/protobuf",
@@ -140,6 +70,34 @@ http_archive(
 load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
 
 buildifier_dependencies()
+
+go_repository(
+    name = "org_golang_x_net",
+    importpath = "golang.org/x/net",
+    sum = "h1:vGXIOMxbNfDTk/aXCmfdLgkrSV+Z2tcbze+pEc3v5W4=",
+    version = "v0.0.0-20200625001655-4c5254603344",
+)
+
+go_repository(
+    name = "org_golang_x_sys",
+    importpath = "golang.org/x/sys",
+    sum = "h1:Ih9Yo4hSPImZOpfGuA4bR/ORKTAbhZo2AbWNRCnevdo=",
+    version = "v0.0.0-20200625212154-ddb9806d33ae",
+)
+
+go_repository(
+    name = "org_golang_x_text",
+    importpath = "golang.org/x/text",
+    sum = "h1:cokOdA+Jmi5PJGXLlLllQSgYigAEfHXJAERHVMaCc2k=",
+    version = "v0.3.3",
+)
+
+go_repository(
+    name = "org_golang_x_tools",
+    importpath = "golang.org/x/tools",
+    sum = "h1:/e4fNMHdLn7SQSxTrRZTma2xjQW6ELdxcnpqMhpo9X4=",
+    version = "v0.0.0-20200702044944-0cc1aa72b347",
+)
 
 # ---------- local repositories
 local_repository(

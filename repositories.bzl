@@ -208,37 +208,24 @@ def go_repositories():
     go_repository(
         name = "com_github_prometheus_procfs",
         importpath = "github.com/prometheus/procfs",
-        urls = [
-            "https://codeload.github.com/prometheus/procfs/tar.gz/6df11039f8de6804bb01c0ebd52cde9c26091e1c",
-        ],
-        strip_prefix = "procfs-6df11039f8de6804bb01c0ebd52cde9c26091e1c",
-        type = "tar.gz",
+        sum = "h1:F0+tqvhOksq22sc6iCHF5WGlWjdwj92p0udFh1VFBS8=",
+        version = "v0.1.3",
     )
     go_repository(
         name = "in_gopkg_yaml_v2",
         importpath = "gopkg.in/yaml.v2",
-        replace = "github.com/go-yaml/yaml",
-        sum = "h1:eZqMvILvSB6AhTa+FGXHupLRXfU8SFxBP4IW1wetpT4=",
-        version = "v2.0.0-20170812160011-eb3733d160e7",
-        # gazelle args: -go-prefix gopkg.in/yaml.v2
+        sum = "h1:uUkhRGrsEyx/laRdeS6YIQKIys8pg+lRSRdVMTYjivs=",
+        version = "v2.0.0",
     )
     go_repository(
         name = "org_golang_google_grpc",
         importpath = "google.golang.org/grpc",
-        urls = [
-            "https://codeload.github.com/grpc/grpc-go/tar.gz/df014850f6dee74ba2fc94874043a9f3f75fbfd8",
-        ],
-        strip_prefix = "grpc-go-df014850f6dee74ba2fc94874043a9f3f75fbfd8", # v1.17.0, latest as of 2019-01-15
-        type = "tar.gz",
-        # gazelle args: -go_prefix google.golang.org/grpc -proto disable
+        sum = "h1:TRJYBgMclJvGYn2rIMjj+h9KtMt5r1Ij7ODVRIZkwhk=",
+        version = "v1.17.0",
     )
     go_repository(
         name = "org_golang_x_oauth2",
         importpath = "golang.org/x/oauth2",
-        urls = [
-            "https://codeload.github.com/golang/oauth2/tar.gz/0f29369cfe4552d0e4bcddc57cc75f4d7e672a33",
-        ],
-        strip_prefix = "oauth2-0f29369cfe4552d0e4bcddc57cc75f4d7e672a33",
-        type = "tar.gz",
-        # gazelle args: -go_prefix golang.org/x/oauth2
+        sum = "v0.0.0-20200107190931-bf48bf16ab8d",
+        version = "h1:TzXSXBo42m9gQenoE3b9BGiEpg5IG2JkU5FkPIawgtw=",
     )
