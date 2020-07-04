@@ -53,8 +53,8 @@ go_repositories()
 go_repository(
     name = "com_google_protobuf",
     importpath = "github.com/protocolbuffers/protobuf",
-    sum = "h1:QqbYMyZnsw7sFse1zxZY4E1uPAOcwPBHmG6fcdAEq+U=",
-    version = "v3.12.3+incompatible",
+    sum = "h1:QbxPofk2041MRNYwie5F79xezBbVhMzoWy23+dKfgMY=",
+    version = "v3.9.0+incompatible",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
