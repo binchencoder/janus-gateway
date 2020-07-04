@@ -13,7 +13,7 @@ go_library(
         "main.go",
         "registrydemo.go",
     ],
-    importpath = "binchencoder.com/ease-gateway/cmd/custom-gateway",
+    importpath = "github.com/binchencoder/ease-gateway/cmd/custom-gateway",
     deps = [
         "//examples/proto:go_default_library",
         "//gateway/runtime:go_default_library",

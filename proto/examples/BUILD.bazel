@@ -28,7 +28,7 @@ go_proto_library(
         "@io_bazel_rules_go//proto:go_grpc",
         "//gateway/protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
     ],
-    importpath = "binchencoder.com/ease-gateway/proto/examples",
+    importpath = "github.com/binchencoder/ease-gateway/proto/examples",
     proto = ":examplepb_proto",
     deps = [
         "//httpoptions:go_default_library",
@@ -45,7 +45,7 @@ go_proto_library(
 go_library(
     name = "go_default_library",
     embed = [":examplepb_go_proto"],
-    importpath = "binchencoder.com/ease-gateway/proto/examples",
+    importpath = "github.com/binchencoder/ease-gateway/proto/examples",
     deps = [
         "//httpoptions:go_default_library",
         "//gateway/runtime:go_default_library",

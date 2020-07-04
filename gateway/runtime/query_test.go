@@ -16,7 +16,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/genproto/protobuf/field_mask"
 
-	"binchencoder.com/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 )
 
 func BenchmarkPopulateQueryParameters(b *testing.B) {

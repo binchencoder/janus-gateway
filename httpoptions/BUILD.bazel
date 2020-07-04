@@ -14,7 +14,7 @@ filegroup(
 go_library(
     name = "go_default_library",
     embed = [":options_go_proto"],
-    importpath = "binchencoder.com/ease-gateway/httpoptions",
+    importpath = "github.com/binchencoder/ease-gateway/httpoptions",
 )
 
 proto_library(
@@ -33,7 +33,7 @@ proto_library(
 go_proto_library(
     name = "options_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
-    importpath = "binchencoder.com/ease-gateway/httpoptions",
+    importpath = "github.com/binchencoder/ease-gateway/httpoptions",
     proto = ":ease_api_proto",
     deps = [
         "@com_github_binchencoder_gateway_proto//data:go_default_library",

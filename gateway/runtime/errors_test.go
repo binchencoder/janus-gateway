@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"binchencoder.com/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

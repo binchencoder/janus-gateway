@@ -8,10 +8,10 @@ import (
 	"context"
 	"flag"
 
-	// examples "binchencoder.com/ease-gateway/examples/proto"
-	"binchencoder.com/ease-gateway/examples/server"
-	// "binchencoder.com/gateway-proto/data"
-	// skylb "binchencoder.com/skylb-api/server"
+	// examples "github.com/binchencoder/ease-gateway/examples/proto"
+	"github.com/binchencoder/ease-gateway/examples/server"
+	// "github.com/binchencoder/gateway-proto/data"
+	// skylb "github.com/binchencoder/skylb-api/server"
 	"github.com/golang/glog"
 )
 

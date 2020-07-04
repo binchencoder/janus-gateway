@@ -21,7 +21,7 @@ Link  [grpc-ecosystem/grpc-gateway/codegenerator](https://github.com/grpc-ecosys
 这个目录下没有修改核心代码，只修改path
 
 - package default_visibility
-- import "binchencoder.com/ease-gateway/gateway/codegenerator" => "github.com/grpc-ecosystem/grpc-gateway/codegenerator"
+- import "github.com/binchencoder/ease-gateway/gateway/codegenerator" => "github.com/grpc-ecosystem/grpc-gateway/codegenerator"
 
 ## options
 

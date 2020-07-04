@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"binchencoder.com/ease-gateway/examples/proto"
-	"binchencoder.com/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/ease-gateway/examples/proto"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"google.golang.org/grpc"
 )
 

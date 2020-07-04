@@ -2,5 +2,5 @@ package main
 
 // Import so that applications register themselves to gateway.
 import (
-	_ "binchencoder.com/ease-gateway/proto/examples"
+	_ "github.com/binchencoder/ease-gateway/proto/examples"
 )

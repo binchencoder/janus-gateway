@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/status"
 
-	fpb "binchencoder.com/gateway-proto/frontend"
+	fpb "github.com/binchencoder/gateway-proto/frontend"
 )
 
 // HTTPStatusFromCode converts a gRPC error code into the corresponding HTTP response status.

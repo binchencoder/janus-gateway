@@ -12,13 +12,13 @@ import (
 	gr "google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	"binchencoder.com/ease-gateway/gateway/runtime"
-	options "binchencoder.com/ease-gateway/httpoptions"
-	"binchencoder.com/ease-gateway/util"
-	vexpb "binchencoder.com/gateway-proto/data"
-	fpb "binchencoder.com/gateway-proto/frontend"
-	"binchencoder.com/letsgo/grpc"
-	"binchencoder.com/letsgo/trace"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	options "github.com/binchencoder/ease-gateway/httpoptions"
+	"github.com/binchencoder/ease-gateway/util"
+	vexpb "github.com/binchencoder/gateway-proto/data"
+	fpb "github.com/binchencoder/gateway-proto/frontend"
+	"github.com/binchencoder/letsgo/grpc"
+	"github.com/binchencoder/letsgo/trace"
 )
 
 // Bootstrap starts the gateway and sets up the housekeeping goroutine.

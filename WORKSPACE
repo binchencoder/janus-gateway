@@ -5,9 +5,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # ----------从github下载扩展 io_bazel_rules_go ----------
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "8df59f11fb697743cbb3f26cfb8750395f30471e9eabde0d174c3aebc7a1cd39",
+    sha256 = "7b9bbe3ea1fccb46dcfa6c3f3e29ba7ec740d8733370e21cdc8937467b4a4349",
     urls = [
-        "https://github.com/bazelbuild/rules_go/releases/download/0.19.1/rules_go-0.19.1.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.22.4/rules_go-v0.22.4.tar.gz",
     ],
 )
 
@@ -15,9 +15,9 @@ http_archive(
 # 一般来说都会使用gazelle工具来自动生成 BUILD 文件, 而不是手写.
 http_archive(
     name = "bazel_gazelle",
-    sha256 = "be9296bfd64882e3c08e3283c58fcb461fa6dd3c171764fcc4cf322f60615a9b",
+    sha256 = "d8c45ee70ec39a57e7a05e5027c32b1576cc7f16d9dd37135b0eddde45cf1b10",
     urls = [
-        "https://github.com/bazelbuild/bazel-gazelle/releases/download/0.18.1/bazel-gazelle-0.18.1.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.20.0/bazel-gazelle-v0.20.0.tar.gz",
     ],
 )
 
@@ -50,9 +50,11 @@ go_repositories()
 #     shallow_since = "1558721209 -0700",
 # )
 
-local_repository(
+go_repository(
     name = "com_google_protobuf",
-    path = "third_party/protobuf",
+    importpath = "github.com/protocolbuffers/protobuf",
+    sum = "h1:QqbYMyZnsw7sFse1zxZY4E1uPAOcwPBHmG6fcdAEq+U=",
+    version = "v3.12.3+incompatible",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -100,17 +102,17 @@ go_repository(
 )
 
 # ---------- local repositories
-local_repository(
-    name = "com_github_binchencoder_gateway_proto",
-    path = "../gateway-proto",
-)
+# local_repository(
+#     name = "com_github_binchencoder_gateway_proto",
+#     path = "../gateway-proto",
+# )
 
-local_repository(
-    name = "com_github_binchencoder_letsgo",
-    path = "../letsgo",
-)
+# local_repository(
+#     name = "com_github_binchencoder_letsgo",
+#     path = "../letsgo",
+# )
 
-local_repository(
-    name = "com_github_binchencoder_skylb_api",
-    path = "../skylb-api",
-)
+# local_repository(
+#     name = "com_github_binchencoder_skylb_api",
+#     path = "../skylb-api",
+# )

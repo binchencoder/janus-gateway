@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"binchencoder.com/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

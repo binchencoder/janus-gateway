@@ -8,9 +8,9 @@ import (
 	"flag"
 	"fmt"
 
-	examples "binchencoder.com/ease-gateway/proto/examples"
-	"binchencoder.com/gateway-proto/data"
-	skylb "binchencoder.com/skylb-api/server"
+	examples "github.com/binchencoder/ease-gateway/proto/examples"
+	"github.com/binchencoder/gateway-proto/data"
+	skylb "github.com/binchencoder/skylb-api/server"
 	"github.com/golang/glog"
 	"google.golang.org/grpc"
 )

@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	"binchencoder.com/gateway-proto/data"
+	"github.com/binchencoder/gateway-proto/data"
 )
 
 // A HandlerFunc handles a specific pair of path pattern and HTTP method.

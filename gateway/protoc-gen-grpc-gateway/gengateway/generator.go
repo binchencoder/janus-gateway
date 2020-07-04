@@ -13,12 +13,12 @@ import (
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
 
 	// gen "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/generator"
-	gen "binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/generator"
+	gen "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/generator"
 
-	options "binchencoder.com/ease-gateway/httpoptions"
+	options "github.com/binchencoder/ease-gateway/httpoptions"
 )
 
 var (
@@ -52,16 +52,16 @@ func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, p
 		"strings":      "",
 		"sync":         "",
 		"unicode/utf8": "",
-		"binchencoder.com/ease-gateway/gateway/runtime":    "",
+		"github.com/binchencoder/ease-gateway/gateway/runtime":    "",
 		"github.com/grpc-ecosystem/grpc-gateway/utilities": "",
 		"github.com/golang/protobuf/proto":                 "",
-		"binchencoder.com/gateway-proto/data":              "vexpb",
-		"binchencoder.com/gateway-proto/frontend":          "fpb",
-		"binchencoder.com/letsgo/grpc":                     "lgr",
-		"binchencoder.com/skylb-api/balancer":              "",
-		"binchencoder.com/skylb-api/client":                "",
-		"binchencoder.com/skylb-api/client/option":         "",
-		"binchencoder.com/skylb-api/proto":                 "skypb",
+		"github.com/binchencoder/gateway-proto/data":              "vexpb",
+		"github.com/binchencoder/gateway-proto/frontend":          "fpb",
+		"github.com/binchencoder/letsgo/grpc":                     "lgr",
+		"github.com/binchencoder/skylb-api/balancer":              "",
+		"github.com/binchencoder/skylb-api/client":                "",
+		"github.com/binchencoder/skylb-api/client/option":         "",
+		"github.com/binchencoder/skylb-api/proto":                 "skypb",
 		"google.golang.org/grpc":                           "",
 		"google.golang.org/grpc/codes":                     "",
 		"google.golang.org/grpc/naming":                    "",

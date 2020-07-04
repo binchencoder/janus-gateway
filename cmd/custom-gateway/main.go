@@ -9,10 +9,10 @@ import (
 
 	"github.com/golang/glog"
 
-	"binchencoder.com/ease-gateway/gateway/runtime"
-	"binchencoder.com/ease-gateway/integrate"
-	"binchencoder.com/gateway-proto/data"
-	"binchencoder.com/letsgo"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/ease-gateway/integrate"
+	"github.com/binchencoder/gateway-proto/data"
+	"github.com/binchencoder/letsgo"
 )
 
 var (

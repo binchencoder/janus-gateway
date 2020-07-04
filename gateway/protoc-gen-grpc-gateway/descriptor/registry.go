@@ -11,7 +11,7 @@ import (
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
 
 	// "google.golang.org/genproto/googleapis/api/annotations"
-	annotations "binchencoder.com/ease-gateway/httpoptions"
+	annotations "github.com/binchencoder/ease-gateway/httpoptions"
 )
 
 // Registry is a registry of information extracted from plugin.CodeGeneratorRequest.

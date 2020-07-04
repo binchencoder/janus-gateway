@@ -3,9 +3,9 @@ package runtime
 import (
 	"google.golang.org/grpc"
 
-	options "binchencoder.com/ease-gateway/httpoptions"
-	vexpb "binchencoder.com/gateway-proto/data"
-	skypb "binchencoder.com/skylb-api/proto"
+	options "github.com/binchencoder/ease-gateway/httpoptions"
+	vexpb "github.com/binchencoder/gateway-proto/data"
+	skypb "github.com/binchencoder/skylb-api/proto"
 )
 
 var (

@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"binchencoder.com/ease-gateway/util/glog"
+	"github.com/binchencoder/ease-gateway/util/glog"
 )
 
 func main() {

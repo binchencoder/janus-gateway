@@ -8,7 +8,7 @@ go_library(
         "handlers.go",
         "main.go",
     ],
-    importpath = "binchencoder.com/ease-gateway/examples/gateway",
+    importpath = "github.com/binchencoder/ease-gateway/examples/gateway",
     visibility = ["//visibility:public"],
     deps = [
         "//examples/proto:go_default_library",

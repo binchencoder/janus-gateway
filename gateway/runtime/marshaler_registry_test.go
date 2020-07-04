@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"testing"
 
-	"binchencoder.com/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/ease-gateway/gateway/runtime"
 )
 
 func TestMarshalerForRequest(t *testing.T) {

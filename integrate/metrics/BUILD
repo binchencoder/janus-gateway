@@ -5,7 +5,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "go_default_library",
     srcs = ["reporter.go"],
-    importpath = "binchencoder.com/ease-gateway/integrate/metrics",
+    importpath = "github.com/binchencoder/ease-gateway/integrate/metrics",
     deps = [
         "@com_github_binchencoder_letsgo//time:go_default_library",
         "@com_github_prometheus_client_golang//prometheus:go_default_library",

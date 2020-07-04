@@ -7,7 +7,7 @@ go_library(
         "main.go",
         "registryprod.go",
     ],
-    importpath = "binchencoder.com/ease-gateway/cmd/gateway",
+    importpath = "github.com/binchencoder/ease-gateway/cmd/gateway",
     visibility = ["//visibility:public"],
     deps = [
         "//gateway/runtime:go_default_library",

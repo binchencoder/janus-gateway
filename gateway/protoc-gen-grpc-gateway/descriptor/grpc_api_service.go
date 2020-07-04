@@ -3,7 +3,7 @@ package descriptor
 import (
 	"github.com/golang/protobuf/proto"
 	// "google.golang.org/genproto/googleapis/api/annotations"
-	annotations "binchencoder.com/ease-gateway/httpoptions"
+	annotations "github.com/binchencoder/ease-gateway/httpoptions"
 )
 
 // GrpcAPIService represents a stripped down version of google.api.Service .

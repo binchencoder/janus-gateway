@@ -4,7 +4,7 @@ package generator
 import (
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"binchencoder.com/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
 )
 
 // Generator is an abstraction of code generators.

@@ -5,7 +5,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	"binchencoder.com/letsgo/trace"
+	"github.com/binchencoder/letsgo/trace"
 )
 
 const (
