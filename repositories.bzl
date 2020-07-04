@@ -4,8 +4,8 @@ def go_repositories():
     go_repository(
         name = "com_github_binchencoder_letsgo",
         importpath = "github.com/binchencoder/letsgo",
-        sum = "h1:8E8vMuWkOJ5JSTEY6v9ksOKwVQOzUEJ23mtPayS/BW4=",
-        version = "v0.0.1",
+        sum = "h1:TJt33qi4WOB85ZlWqrbyB41WG29HiJobyksvdI/vGrc=",
+        version = "v0.0.2",
     )
     go_repository(
         name = "com_github_binchencoder_skylb_api",
@@ -16,8 +16,8 @@ def go_repositories():
     go_repository(
         name = "com_github_binchencoder_gateway_proto",
         importpath = "github.com/binchencoder/gateway-proto",
-        sum = "h1:PV1+MVSmf//uOLw66dYvgNt5ES3EBPchGb5kv+BnIqc=",
-        version = "v0.0.0-20200704113548-1f95467cf2bd",
+        sum = "h1:k7krrAyUmeHnDbcR2DnZp1jSUQ9+ZyZV1UPEQssvCn8=",
+        version = "v0.0.1",
     )
 
     go_repository(
@@ -204,8 +204,8 @@ def go_repositories():
     go_repository(
         name = "org_golang_x_oauth2",
         importpath = "golang.org/x/oauth2",
-        sum = "v0.0.0-20200107190931-bf48bf16ab8d",
-        version = "h1:TzXSXBo42m9gQenoE3b9BGiEpg5IG2JkU5FkPIawgtw=",
+        sum = "h1:TzXSXBo42m9gQenoE3b9BGiEpg5IG2JkU5FkPIawgtw=",
+        version = "v0.0.0-20200107190931-bf48bf16ab8d",
     )
     go_repository(
         name = "org_uber_go_atomic",
