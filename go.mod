@@ -2,39 +2,25 @@ module github.com/binchencoder/ease-gateway
 
 go 1.13
 
+replace (
+	github.com/coreos/bbolt v1.3.4 => go.etcd.io/bbolt v1.3.4
+	github.com/coreos/bbolt v1.3.5 => go.etcd.io/bbolt v1.3.5
+)
+
 require (
-	github.com/VividCortex/gohistogram v1.0.0
-	github.com/beorn7/perks v1.0.1
-	github.com/binchencoder/gateway-proto v0.0.1
-	github.com/binchencoder/letsgo v0.0.2
-	github.com/binchencoder/skylb-api v0.0.1
-	github.com/cenkalti/backoff v2.2.1+incompatible
+	github.com/binchencoder/gateway-proto v0.0.3
+	github.com/binchencoder/letsgo v0.0.3
+	github.com/binchencoder/skylb-api v0.0.3
 	github.com/fatih/color v1.9.0
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-kit/kit v0.10.0
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/google/uuid v1.1.1
-	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0
-	github.com/grpc-ecosystem/grpc-gateway v1.12.1
-	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645
+	github.com/golang/protobuf v1.4.2
+	github.com/grpc-ecosystem/grpc-gateway v1.14.6
 	github.com/klauspost/compress v1.10.10
-	github.com/klauspost/cpuid v1.3.0
-	github.com/mattn/go-colorable v0.1.7
-	github.com/mattn/go-isatty v0.0.12
-	github.com/matttproud/golang_protobuf_extensions v1.0.1
-	github.com/opentracing/opentracing-go v1.2.0
 	github.com/pborman/uuid v1.2.0
-	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v0.9.4
-	github.com/prometheus/client_model v0.2.0
-	github.com/prometheus/common v0.10.0
-	github.com/prometheus/procfs v0.1.3
-	github.com/soheilhy/cmux v0.1.4
-	github.com/stretchr/testify v1.6.1
-	github.com/uber/jaeger-client-go v2.24.0+incompatible
-	github.com/uber/jaeger-lib v2.2.0+incompatible
-	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	google.golang.org/grpc v1.27.1
-	gopkg.in/yaml.v2 v2.0.0
-	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
+	github.com/prometheus/client_golang v1.7.1
+	golang.org/x/net v0.0.0-20200625001655-4c5254603344
+	google.golang.org/genproto v0.0.0-20200702021140-07506425bd67
+	google.golang.org/grpc v1.30.0
+	google.golang.org/grpc/examples v0.0.0-20200630190442-3de8449f8555 // indirect
 )
