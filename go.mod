@@ -8,7 +8,7 @@ replace (
 )
 
 require (
-	github.com/binchencoder/gateway-proto v0.0.3
+	github.com/binchencoder/gateway-proto v0.0.3 // indirect
 	github.com/binchencoder/letsgo v0.0.3
 	github.com/binchencoder/skylb-api v0.0.3
 	github.com/fatih/color v1.9.0
