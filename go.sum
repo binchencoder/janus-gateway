@@ -29,6 +29,8 @@ github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6r
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
 github.com/binchencoder/gateway-proto v0.0.3 h1:xU2ZVx5Zjub5P/WIl12FeCII1vGdV2THWtfm7fUR7z8=
 github.com/binchencoder/gateway-proto v0.0.3/go.mod h1:081rlF+665EejkDRHi7gTLpZvK0eDwVX23xviXQCjV0=
+github.com/binchencoder/gateway-proto v0.0.5 h1:2oh9Y8/qlMX1K3m73XDMU9U3mA06WMkLmJrMi4nFlCc=
+github.com/binchencoder/gateway-proto v0.0.5/go.mod h1:853l4bAOm0Gt8XrDy+9obeKRlBLwP4HAk9tVYbgnSmU=
 github.com/binchencoder/letsgo v0.0.3 h1:hEDDOeGdX9R/JPYMdVo9N/9iQa5BeBLluTssrNYy/ng=
 github.com/binchencoder/letsgo v0.0.3/go.mod h1:WbqNFa5gFsogqe3gtycvPYswprKV7eGJIxScwQhAg44=
 github.com/binchencoder/skylb-api v0.0.3 h1:NnlPmEjTgOjH+s9TK3rBEY4Kn9aEzZkuEBUV2aR8UTM=
@@ -441,6 +443,7 @@ google.golang.org/grpc v1.24.0/go.mod h1:XDChyiUovWa60DnaeDeZmSW86xtLtjtZbwvSiRn
 google.golang.org/grpc v1.25.1/go.mod h1:c3i+UQWmh7LiEpx4sFZnkU36qjEYZ0imhYfXVyQciAY=
 google.golang.org/grpc v1.26.0/go.mod h1:qbnxyOmOxrQa7FizSgH+ReBfzJrCY1pSN7KXBS8abTk=
 google.golang.org/grpc v1.27.0/go.mod h1:qbnxyOmOxrQa7FizSgH+ReBfzJrCY1pSN7KXBS8abTk=
+google.golang.org/grpc v1.27.1 h1:zvIju4sqAGvwKspUQOhwnpcqSbzi7/H6QomNNjTL4sk=
 google.golang.org/grpc v1.27.1/go.mod h1:qbnxyOmOxrQa7FizSgH+ReBfzJrCY1pSN7KXBS8abTk=
 google.golang.org/grpc v1.29.1/go.mod h1:itym6AZVZYACWQqET3MqgPpjcuV5QH3BxFS3IjizoKk=
 google.golang.org/grpc v1.30.0 h1:M5a8xTlYTxwMn5ZFkwhRabsygDY5G8TYLyQDBxJNAxE=

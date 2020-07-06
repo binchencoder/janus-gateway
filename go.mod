@@ -5,10 +5,11 @@ go 1.13
 replace (
 	github.com/coreos/bbolt v1.3.4 => go.etcd.io/bbolt v1.3.4
 	github.com/coreos/bbolt v1.3.5 => go.etcd.io/bbolt v1.3.5
+	google.golang.org/grpc v1.30.0 => google.golang.org/grpc v1.27.1
 )
 
 require (
-	github.com/binchencoder/gateway-proto v0.0.3 // indirect
+	github.com/binchencoder/gateway-proto v0.0.5
 	github.com/binchencoder/letsgo v0.0.3
 	github.com/binchencoder/skylb-api v0.0.3
 	github.com/fatih/color v1.9.0
