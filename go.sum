@@ -27,6 +27,7 @@ github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+Ce
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
+github.com/binchencoder/ease-gateway v0.0.4/go.mod h1:L8fCaUA1FaYO0ReFNAri15ozAj9NeJ9B+Q6CQAyPFqY=
 github.com/binchencoder/gateway-proto v0.0.3 h1:xU2ZVx5Zjub5P/WIl12FeCII1vGdV2THWtfm7fUR7z8=
 github.com/binchencoder/gateway-proto v0.0.3/go.mod h1:081rlF+665EejkDRHi7gTLpZvK0eDwVX23xviXQCjV0=
 github.com/binchencoder/gateway-proto v0.0.5 h1:2oh9Y8/qlMX1K3m73XDMU9U3mA06WMkLmJrMi4nFlCc=
@@ -35,6 +36,8 @@ github.com/binchencoder/letsgo v0.0.3 h1:hEDDOeGdX9R/JPYMdVo9N/9iQa5BeBLluTssrNY
 github.com/binchencoder/letsgo v0.0.3/go.mod h1:WbqNFa5gFsogqe3gtycvPYswprKV7eGJIxScwQhAg44=
 github.com/binchencoder/skylb-api v0.0.3 h1:NnlPmEjTgOjH+s9TK3rBEY4Kn9aEzZkuEBUV2aR8UTM=
 github.com/binchencoder/skylb-api v0.0.3/go.mod h1:j/ATHuW3TU7M5+fWeTqrvOzmFQI7Z4AVerdP6JYOkUk=
+github.com/binchencoder/skylb-api v0.0.4 h1:HFQk6U+IerXWuQD6bxtGR6Zf7Q2Ulj87CZAd9G0vcnc=
+github.com/binchencoder/skylb-api v0.0.4/go.mod h1:HoLyR+KbCm7bI2sRp+AA1pj159KRutdVYow6w3tbOLs=
 github.com/casbin/casbin/v2 v2.1.2/go.mod h1:YcPU1XXisHhLzuxH9coDNf2FbKpjGlbCg3n9yuLkIJQ=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
@@ -313,6 +316,7 @@ github.com/urfave/cli v1.22.1/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtX
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.4/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=
+go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=
 go.etcd.io/etcd v0.0.0-20191023171146-3cf2f69b5738/go.mod h1:dnLIgRNXwCJa5e+c6mIZCrds/GIG4ncV9HhK5PX7jPg=
 go.opencensus.io v0.20.1/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=
 go.opencensus.io v0.20.2/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=
