@@ -38,6 +38,8 @@ github.com/binchencoder/skylb-api v0.0.3 h1:NnlPmEjTgOjH+s9TK3rBEY4Kn9aEzZkuEBUV
 github.com/binchencoder/skylb-api v0.0.3/go.mod h1:j/ATHuW3TU7M5+fWeTqrvOzmFQI7Z4AVerdP6JYOkUk=
 github.com/binchencoder/skylb-api v0.0.4 h1:HFQk6U+IerXWuQD6bxtGR6Zf7Q2Ulj87CZAd9G0vcnc=
 github.com/binchencoder/skylb-api v0.0.4/go.mod h1:HoLyR+KbCm7bI2sRp+AA1pj159KRutdVYow6w3tbOLs=
+github.com/binchencoder/skylb-api v0.0.5 h1:BM11MtrX7DrUKacLTEqudd4hietFlXRNr8Nh6dLSOCk=
+github.com/binchencoder/skylb-api v0.0.5/go.mod h1:fUK5XeSBmuARvLeg+pab1FplK4x2+Q9zsmg4U8KNDBQ=
 github.com/casbin/casbin/v2 v2.1.2/go.mod h1:YcPU1XXisHhLzuxH9coDNf2FbKpjGlbCg3n9yuLkIJQ=
 github.com/cenkalti/backoff v2.2.1+incompatible h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=
 github.com/cenkalti/backoff v2.2.1+incompatible/go.mod h1:90ReRw6GdpyfrHakVjL/QHaoyV4aDUVVkXQJJJ3NXXM=
