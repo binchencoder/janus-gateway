@@ -2,11 +2,6 @@ module github.com/binchencoder/ease-gateway
 
 go 1.13
 
-replace (
-	github.com/coreos/bbolt v1.3.4 => go.etcd.io/bbolt v1.3.4
-	github.com/coreos/bbolt v1.3.5 => go.etcd.io/bbolt v1.3.5
-)
-
 require (
 	github.com/binchencoder/gateway-proto v0.0.5
 	github.com/binchencoder/letsgo v0.0.3
@@ -22,4 +17,10 @@ require (
 	golang.org/x/net v0.0.0-20200625001655-4c5254603344
 	google.golang.org/genproto v0.0.0-20200702021140-07506425bd67
 	google.golang.org/grpc v1.30.0
+)
+
+replace (
+	github.com/coreos/bbolt v1.3.4 => go.etcd.io/bbolt v1.3.4
+	github.com/coreos/bbolt v1.3.5 => go.etcd.io/bbolt v1.3.5
+	google.golang.org/grpc v1.30.0 => google.golang.org/grpc v1.27.1
 )
