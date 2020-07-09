@@ -9,7 +9,6 @@ go_library(
         exclude = ["*_test.go"],
     ),
     importpath = "github.com/binchencoder/ease-gateway/gateway/runtime",
-    visibility = ["//visibility:public"],
     deps = [
         "//httpoptions:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
@@ -17,7 +16,7 @@ go_library(
         "@com_github_binchencoder_letsgo//grpc:go_default_library",
         "@com_github_binchencoder_letsgo//hashring:go_default_library",
         "@com_github_binchencoder_skylb_api//proto:go_default_library",
-	    "@com_github_golang_protobuf//descriptor:go_default_library_gen",
+        "@com_github_golang_protobuf//descriptor:go_default_library_gen",
         "@com_github_golang_protobuf//jsonpb:go_default_library_gen",
         "@com_github_golang_protobuf//proto:go_default_library",
         "@com_github_grpc_ecosystem_grpc_gateway//internal:go_default_library",
@@ -34,7 +33,7 @@ go_library(
         "@org_golang_google_grpc//grpclog:go_default_library",
         "@org_golang_google_grpc//metadata:go_default_library",
         "@org_golang_google_grpc//status:go_default_library",
-	    "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
         "@org_golang_x_net//context:go_default_library",
     ],
 )
@@ -55,9 +54,7 @@ go_test(
         "pattern_test.go",
         "query_test.go",
     ],
-    embed = [
-        ":go_default_library",
-    ],
+    embed = [":go_default_library"],
     deps = [
         "//examples/proto:go_default_library",
         "//httpoptions:go_default_library",

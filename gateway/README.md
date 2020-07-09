@@ -127,6 +127,8 @@ Link   [grpc-ecosystem/grpc-gateway/runtime](https://github.com/grpc-ecosystem/g
 - service.go
 - balancer_test.go
 - balancer.go
+- hook.go
+- hook_test.go
 
 删除文件:
 
@@ -136,8 +138,6 @@ Link   [grpc-ecosystem/grpc-gateway/runtime](https://github.com/grpc-ecosystem/g
 
 修改文件:
 
-- add hook_test.go
-- add hook.go
 - BUILD.bazel
 - context_test.go
 - error_test.go
