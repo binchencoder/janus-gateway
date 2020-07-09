@@ -9,7 +9,7 @@ go_library(
         "generator.go",
         "template.go",
     ],
-    importpath = "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/gengateway",
+    importpath = "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/internal/gengateway",
     deps = [
         "//httpoptions:go_default_library",
         "//gateway/runtime:go_default_library",

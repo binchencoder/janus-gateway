@@ -57,6 +57,15 @@ func WithForwardResponseOption(forwardResponseOption func(context.Context, http.
 	}
 }
 
+// SetQueryParameterParser sets the query parameter parser, used to populate message from query parameters.
+// Configuring this will mean the generated swagger output is no longer correct, and it should be
+// done with careful consideration.
+func SetQueryParameterParser(queryParameterParser QueryParameterParser) ServeMuxOption {
+	return func(serveMux *ServeMux) {
+		currentQueryParser = queryParameterParser
+	}
+}
+
 // HeaderMatcherFunc checks whether a header key should be forwarded to/from gRPC context.
 type HeaderMatcherFunc func(string) (string, bool)
 
@@ -104,11 +113,11 @@ func WithMetadata(annotator func(context.Context, *http.Request) metadata.MD) Se
 	}
 }
 
-// WithProtoErrorHandler returns a ServeMuxOption for passing metadata to a gRPC context.
+// WithProtoErrorHandler returns a ServeMuxOption for configuring a custom error handler.
 //
 // This can be used to handle an error as general proto message defined by gRPC.
-// The response including body and status is not backward compatible with the default error handler.
-// When this option is used, HTTPError and OtherErrorHandler are overwritten on initialization.
+// When this option is used, the mux uses the configured error handler instead of HTTPError and
+// OtherErrorHandler.
 func WithProtoErrorHandler(fn ProtoErrorHandlerFunc) ServeMuxOption {
 	return func(serveMux *ServeMux) {
 		serveMux.protoErrorHandler = fn

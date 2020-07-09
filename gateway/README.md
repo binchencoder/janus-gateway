@@ -14,16 +14,7 @@ grpc-gateway 是一款非常优秀的网关服务器，负责转化和代理转�
 
 以下详细说明了我基于grpc-gateway修改了哪些目录下的代码
 
-## codegenerator
-
-Link  [grpc-ecosystem/grpc-gateway/codegenerator](https://github.com/grpc-ecosystem/grpc-gateway/tree/master/codegenerator)
-
-这个目录下没有修改核心代码，只修改path
-
-- package default_visibility
-- import "github.com/binchencoder/ease-gateway/gateway/codegenerator" => "github.com/grpc-ecosystem/grpc-gateway/codegenerator"
-
-## options
+## httpoptions
 
 这个目录下的内容并不是grpc-gateway的源码，是基于[Google
 // APIs](https://github.com/googleapis/googleapis) 修改的，为了支持：
@@ -32,7 +23,7 @@ Link  [grpc-ecosystem/grpc-gateway/codegenerator](https://github.com/grpc-ecosys
 - loadbalancer
 - parameter validation(定义validation rules)
 
-> **NOTE :** 移到根目录下 => httpoptions 
+> **NOTE :** 这是新增加的目录
 
 ## protoc-gen-grpc-gateway
 
@@ -71,7 +62,7 @@ protoc -I/usr/local/include -I. \
 - BUILD.bazel
 - generator.go  (只修改import path)
 
-### gengateway
+### internal/gengateway
 
 **这个目录下改动比较大**, 修改文件:
 

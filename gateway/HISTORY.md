@@ -9,6 +9,22 @@ Hosted on https://github.com/grpc-ecosystem/grpc-gateway.
 
 ## Update History
 
+### 2020/05/25
+
+Based on commit ID [58a91c2b3020ee25e5d3cf49cf7d342544ab773d](https://github.com/grpc-ecosystem/grpc-gateway/commit/7988867d3206f7e90ca3e8d4ab67e060734a297a)
+
+Commit message
+
+```
+commit 7988867d3206f7e90ca3e8d4ab67e060734a297a (HEAD, tag: v2.0.0-beta.2, tag: v1.14.6)
+Author: Johan Brandhorst <johan.brandhorst@gmail.com>
+Date:   Mon May 25 11:42:27 2020 +0100
+
+    Generate changelog for 1.14.6
+    
+    Fixed the issue where it would include v2 merges
+```
+
 ### 2019/11/03
 
 Based on commit ID 58a91c2b3020ee25e5d3cf49cf7d342544ab773d
