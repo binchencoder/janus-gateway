@@ -8,8 +8,7 @@ import (
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	gogen "github.com/golang/protobuf/protoc-gen-go/generator"
 
-	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
+	"github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
 
 	options "github.com/binchencoder/ease-gateway/httpoptions"
 	"github.com/binchencoder/gateway-proto/data"
