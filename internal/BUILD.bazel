@@ -1,0 +1,48 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+package(default_visibility = ["//visibility:public"])
+
+go_library(
+    name = "go_default_library",
+    srcs = glob(
+        ["*.go"],
+        exclude = ["*_test.go"],
+    ),
+    importpath = "github.com/binchencoder/ease-gateway/internal",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//httpoptions:go_default_library",
+        "//gateway/runtime:go_default_library",
+        "@com_github_binchencoder_gateway_proto//data:go_default_library",
+        "@com_github_binchencoder_letsgo//grpc:go_default_library",
+        "@com_github_binchencoder_letsgo//hashring:go_default_library",
+        "@com_github_binchencoder_skylb_api//proto:go_default_library",
+        "@com_github_golang_protobuf//proto:go_default_library",
+        "@com_github_pborman_uuid//:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//grpclog:go_default_library",
+        "@org_golang_x_net//context:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    size = "small",
+    srcs = [
+        "balancer_test.go",
+        "hook_test.go",
+    ],
+    embed = [
+        ":go_default_library",
+    ],
+    deps = [
+        "//examples/proto:go_default_library",
+        "//httpoptions:go_default_library",
+        "//gateway/runtime:go_default_library",
+        "@com_github_binchencoder_letsgo//hashring:go_default_library",
+        "@com_github_binchencoder_skylb_api//proto:go_default_library",
+        "@com_github_golang_protobuf//proto:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_x_net//context:go_default_library",
+    ],
+)
