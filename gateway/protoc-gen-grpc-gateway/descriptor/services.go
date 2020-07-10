@@ -9,8 +9,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	descriptor "github.com/golang/protobuf/protoc-gen-go/descriptor"
 
-	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/httprule"
+	"github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/httprule"
 
 	// options "google.golang.org/genproto/googleapis/api/annotations"
 	options "github.com/binchencoder/ease-gateway/httpoptions"
