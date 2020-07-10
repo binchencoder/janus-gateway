@@ -17,39 +17,17 @@ Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-e
 
 ## Prepared
 
-**ease-gateway** 在编译时需要依赖其他的repo, 为了编译时方便, 在WORKSPACE中定义的是依赖本地的repository, 这样在`bazel build` 时就不会再次从远程仓库下载代码. 因此在编译ease-gateway 之前需要将依赖的repositories下载到本地, 并放在与ease-gateway的同级目录
+**ease-gateway** 使用GO MOD来管理Dependencies，clone代码之后直接在本地使用bazel构建
 
-目前依赖本地的repo有：
+### Build tools
 
-- gateway-proto [https://github.com/binchencoder/gateway-proto]
-- letsgo [https://github.com/binchencoder/letsgo.git]
-- skylb-api [https://github.com/binchencoder/skylb-api.git]
-
-```
-git clone https://github.com/binchencoder/gateway-proto.git
-git clone https://github.com/binchencoder/letsgo.git
-git clone https://github.com/binchencoder/skylb-api.git
-```
+- Bazel 3.1.0+
+- Go 1.13.12+
 
 ## Clone code
 
-```
+```shell
 git clone https://github.com/binchencoder/ease-gateway.git
-
-git clone https://github.com/binchencoder/gateway-proto.git
-git clone https://github.com/binchencoder/letsgo.git
-git clone https://github.com/binchencoder/skylb-api.git
-```
-> 也可以连同submodules一起clone到本地
-```
-git clone --recurse-submodules https://github.com/binchencoder/ease-gateway.git
-```
-
-## Sync submodule
-
-```
-git submodule init
-git submodule update
 ```
 
 ## Bazel build gateway
