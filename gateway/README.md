@@ -136,7 +136,7 @@ Link   [grpc-ecosystem/grpc-gateway/runtime](https://github.com/grpc-ecosystem/g
 
 ## Upgrade issues
 
-#### 输出error.code 为字符串
+### 输出error.code 为字符串
 
 ```
 {
@@ -150,7 +150,9 @@ Link   [grpc-ecosystem/grpc-gateway/runtime](https://github.com/grpc-ecosystem/g
     "message": "{\"code\":100006,\"params\":[\"Validation error\"]}"
 }
 ```
+
 > 升级之后response body中 error.code为字符串, 期望是Integer
+
 ```
 {
     "error": {
