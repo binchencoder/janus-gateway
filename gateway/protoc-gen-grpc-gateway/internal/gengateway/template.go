@@ -905,10 +905,11 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 			return
 		}
 
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec, "{{$svc.GetName}}", "{{$m.GetName}}", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
-			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
@@ -918,7 +919,6 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 			ctx, cancel := context.WithCancel(ctx)
 		{{- end }}
 		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
