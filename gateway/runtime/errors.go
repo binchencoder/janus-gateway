@@ -2,7 +2,6 @@ package runtime
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -148,8 +147,6 @@ func DefaultHTTPError(ctx context.Context, mux *ServeMux, marshaler Marshaler, w
 		Code:    int32(s.Code()),
 		Details: s.Proto().GetDetails(),
 	}
-
-	fmt.Printf("Marshal error %v\n", body)
 
 	buf, merr := marshaler.Marshal(body)
 	if merr != nil {

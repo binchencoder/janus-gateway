@@ -10,7 +10,7 @@ grpc-gateway 是一款非常优秀的网关服务器，负责转化和代理转�
 
 为了支持这些新feature，我不得不将grpc-gateway的源码拷贝到ease-gateway中并进行大量的修改，```//gateway``` 目录下就是从grpc-gateway中拷贝的部分源码
 
-# 修改内容
+# Changed History
 
 以下详细说明了我基于grpc-gateway修改了哪些目录下的代码
 
@@ -133,6 +133,48 @@ Link   [grpc-ecosystem/grpc-gateway/runtime](https://github.com/grpc-ecosystem/g
 - mux_test.go
 - mux.go
 - query_test.go
+
+## Upgrade issues
+
+#### 输出error.code 为字符串
+
+```
+{
+    "error": {
+        "code": "BAD_REQUEST",
+        "params": [
+            "Validation error"
+        ]
+    },
+    "code": 3,
+    "message": "{\"code\":100006,\"params\":[\"Validation error\"]}"
+}
+```
+> 升级之后response body中 error.code为字符串, 期望是Integer
+```
+{
+    "error": {
+        "code": 100006,
+        "params": [
+            "Validation error"
+        ]
+    },
+    "code": 3,
+    "message": "{\"code\":100006,\"params\":[\"Validation error\"]}"
+}
+```
+问题出在 //gateway/runtime/marshaler_registry.go 文件中, EnumsAsInts应该设置为true
+```
+var (
+	acceptHeader      = http.CanonicalHeaderKey("Accept")
+	contentTypeHeader = http.CanonicalHeaderKey("Content-Type")
+
+	defaultMarshaler = &JSONPb{
+		OrigName:    true,
+		EnumsAsInts: true,
+	}
+)
+```
 
 ## grpc-ecosystem/grpc-gateway
 
