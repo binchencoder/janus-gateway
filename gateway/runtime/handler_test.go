@@ -9,9 +9,10 @@ import (
 	"testing"
 
 	pb "github.com/binchencoder/ease-gateway/examples/proto"
+	// "github.com/grpc-ecosystem/grpc-gateway/internal"
+	"github.com/binchencoder/ease-gateway/gateway/internal"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/golang/protobuf/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/internal"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
