@@ -15,7 +15,9 @@ import (
 	protocdescriptor "github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
 	"github.com/golang/protobuf/ptypes/any"
-	"github.com/grpc-ecosystem/grpc-gateway/internal"
+
+	// "github.com/grpc-ecosystem/grpc-gateway/internal"
+	"github.com/binchencoder/ease-gateway/gateway/internal"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
@@ -57,9 +59,6 @@ func mergeTargetFile(targets []*wrapper, mergeFileName string) *wrapper {
 		} else {
 			for k, v := range f.swagger.Definitions {
 				mergedTarget.swagger.Definitions[k] = v
-			}
-			for k, v := range f.swagger.StreamDefinitions {
-				mergedTarget.swagger.StreamDefinitions[k] = v
 			}
 			for k, v := range f.swagger.Paths {
 				mergedTarget.swagger.Paths[k] = v
@@ -177,7 +176,7 @@ func (g *generator) Generate(targets []*descriptor.File) ([]*plugin.CodeGenerato
 		for _, f := range targets {
 			if mergedTarget == nil {
 				mergedTarget = f
-			} else {
+			} else if mergedTarget != f {
 				mergedTarget.Enums = append(mergedTarget.Enums, f.Enums...)
 				mergedTarget.Messages = append(mergedTarget.Messages, f.Messages...)
 				mergedTarget.Services = append(mergedTarget.Services, f.Services...)

@@ -176,6 +176,19 @@ var (
 )
 ```
 
+### panic: can't resolve swagger ref from typename '.frontend.Error'
+
+运行一下命令就会出现panic
+```
+bazel build proto/...
+```
+
+问题出在以下代码
+```
+runtimeError, swgRef, err := lookupMsgAndSwaggerName(".grpc.gateway.runtime", "Error", p.reg)
+```
+如果有package name定义为 grpc.gateway.runtime的就有可能会出现这种错误
+
 ## grpc-ecosystem/grpc-gateway
 
 grpc-ecosystem/grpc-gateway: grpc-gateway is a plugin of protoc. It reads
