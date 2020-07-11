@@ -8,8 +8,9 @@ import (
 	"net/http"
 	"net/textproto"
 
+	// "github.com/grpc-ecosystem/grpc-gateway/internal"
+	"github.com/binchencoder/ease-gateway/gateway/internal"
 	"github.com/golang/protobuf/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/internal"
 	"google.golang.org/grpc/grpclog"
 )
 

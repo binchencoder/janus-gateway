@@ -7,13 +7,12 @@ import (
 	"strings"
 
 	"github.com/golang/protobuf/jsonpb"
-	"github.com/golang/protobuf/proto"
-	"github.com/golang/protobuf/ptypes/any"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/status"
 
+	"github.com/binchencoder/ease-gateway/gateway/internal"
 	fpb "github.com/binchencoder/gateway-proto/frontend"
 )
 
@@ -79,7 +78,7 @@ var (
 	// option, set GlobalHTTPErrorHandler to a custom function.
 	//
 	// Setting this variable directly to customize error format is deprecated.
-	HTTPError = DefaultHTTPError
+	HTTPError = MuxOrGlobalHTTPError
 
 	// GlobalHTTPErrorHandler is the HTTPError handler for all ServeMux instances not using the
 	// WithProtoErrorHandler serve option.
@@ -108,21 +107,6 @@ func MuxOrGlobalHTTPError(ctx context.Context, mux *ServeMux, marshaler Marshale
 		GlobalHTTPErrorHandler(ctx, mux, marshaler, w, r, err)
 	}
 }
-
-type errorBody struct {
-	Error *fpb.Error `protobuf:"bytes,1,name=error" json:"error"`
-	// This is to make the error more compatible with users that expect errors to be Status objects:
-	// https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto
-	// It should be the exact same message as the Error field.
-	Code    int32      `protobuf:"varint,1,name=code" json:"code"`
-	Message string     `protobuf:"bytes,2,name=message" json:"message"`
-	Details []*any.Any `protobuf:"bytes,3,rep,name=details" json:"details,omitempty"`
-}
-
-// Make this also conform to proto.Message for builtin JSONPb Marshaler
-func (e *errorBody) Reset()         { *e = errorBody{} }
-func (e *errorBody) String() string { return proto.CompactTextString(e) }
-func (*errorBody) ProtoMessage()    {}
 
 // DefaultHTTPError is the default implementation of HTTPError.
 // If "err" is an error from gRPC system, the function replies with the status code mapped by HTTPStatusFromCode.
@@ -157,7 +141,7 @@ func DefaultHTTPError(ctx context.Context, mux *ServeMux, marshaler Marshaler, w
 		e.Code = fpb.ErrorCode_UNDEFINED
 		e.Params = []string{desc}
 	}
-	body := &errorBody{
+	body := &internal.Error{
 		Error:   &e,
 		Message: s.Message(),
 		Code:    int32(s.Code()),

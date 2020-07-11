@@ -13,6 +13,7 @@ go_library(
     ],
     importpath = "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor",
     deps = [
+        "//gateway/internal/casing:go_default_library",
         "//httpoptions:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_ghodss_yaml//:go_default_library",

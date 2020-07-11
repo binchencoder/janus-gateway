@@ -8,8 +8,8 @@ import (
 	"text/template"
 	"unicode"
 
+	"github.com/binchencoder/ease-gateway/gateway/internal/casing"
 	"github.com/golang/glog"
-	generator2 "github.com/golang/protobuf/protoc-gen-go/generator"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
@@ -41,7 +41,7 @@ func (b binding) GetBodyFieldPath() string {
 // GetBodyFieldPath returns the binding body's struct field name.
 func (b binding) GetBodyFieldStructName() (string, error) {
 	if b.Body != nil && len(b.Body.FieldPath) != 0 {
-		return generator2.CamelCase(b.Body.FieldPath.String()), nil
+		return casing.Camel(b.Body.FieldPath.String()), nil
 	}
 	return "", errors.New("No body field found")
 }
@@ -142,7 +142,7 @@ func (b binding) FieldMaskField() string {
 		}
 	}
 	if fieldMaskField != nil {
-		return generator2.CamelCase(fieldMaskField.GetName())
+		return casing.Camel(fieldMaskField.GetName())
 	}
 	return ""
 }
@@ -181,16 +181,16 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 	var targetServices []*descriptor.Service
 
 	for _, msg := range p.Messages {
-		msgName := generator2.CamelCase(*msg.Name)
+		msgName := casing.Camel(*msg.Name)
 		msg.Name = &msgName
 	}
 	for _, svc := range p.Services {
 		var methodWithBindingsSeen bool
-		svcName := generator2.CamelCase(*svc.Name)
+		svcName := casing.Camel(*svc.Name)
 		svc.Name = &svcName
 		for _, meth := range svc.Methods {
 			glog.V(2).Infof("Processing %s.%s", svc.GetName(), meth.GetName())
-			methName := generator2.CamelCase(*meth.Name)
+			methName := casing.Camel(*meth.Name)
 			meth.Name = &methName
 			for _, b := range meth.Bindings {
 				methodWithBindingsSeen = true
@@ -907,7 +907,7 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_{{$svc.GetName}}_{{$svc.ServiceId}}_spec, "{{$svc.GetName}}", "{{$m.GetName}}", w, req)
 		if err != nil {
-			// grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
