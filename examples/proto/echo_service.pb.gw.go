@@ -29,15 +29,19 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/naming"
 	"google.golang.org/grpc/status"
 )
 
+// Suppress "imported and not used" errors
 var _ codes.Code
 var _ io.Reader
 var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
+
+// var _ = descriptor.ForMessage
 var _ sync.RWMutex
 var _ proto.Message
 var _ context.Context
@@ -99,7 +103,44 @@ func request_EchoService_Echo_0(ctx context.Context, marshaler runtime.Marshaler
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
+	return msg, metadata, err
+
+}
+
+func local_request_EchoService_Echo_0(ctx context.Context, marshaler runtime.Marshaler, server EchoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SimpleMessage
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_EchoService_Echo_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Echo(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -156,7 +197,55 @@ func request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Marshaler
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
+	return msg, metadata, err
+
+}
+
+func local_request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Marshaler, server EchoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SimpleMessage
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+
+	val, ok = pathParams["num"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "num")
+	}
+
+	protoReq.Num, err = runtime.Int64(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "num", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_EchoService_Echo_1); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Echo(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -210,7 +299,7 @@ func request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler
 	if protoReq.Code == nil {
 		protoReq.Code = &SimpleMessage_Lang{}
 	} else if _, ok := protoReq.Code.(*SimpleMessage_Lang); !ok {
-		return nil, metadata, grpc.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_Lang, but: %t\n", protoReq.Code)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_Lang, but: %t\n", protoReq.Code)
 	}
 	protoReq.Code.(*SimpleMessage_Lang).Lang, err = runtime.String(val)
 
@@ -230,7 +319,71 @@ func request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
+	return msg, metadata, err
+
+}
+
+func local_request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler, server EchoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SimpleMessage
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+
+	val, ok = pathParams["num"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "num")
+	}
+
+	protoReq.Num, err = runtime.Int64(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "num", err)
+	}
+
+	val, ok = pathParams["lang"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "lang")
+	}
+
+	if protoReq.Code == nil {
+		protoReq.Code = &SimpleMessage_Lang{}
+	} else if _, ok := protoReq.Code.(*SimpleMessage_Lang); !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_Lang, but: %t\n", protoReq.Code)
+	}
+	protoReq.Code.(*SimpleMessage_Lang).Lang, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "lang", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_EchoService_Echo_2); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Echo(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -272,7 +425,7 @@ func request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler
 	if protoReq.Code == nil {
 		protoReq.Code = &SimpleMessage_LineNum{}
 	} else if _, ok := protoReq.Code.(*SimpleMessage_LineNum); !ok {
-		return nil, metadata, grpc.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_LineNum, but: %t\n", protoReq.Code)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_LineNum, but: %t\n", protoReq.Code)
 	}
 	protoReq.Code.(*SimpleMessage_LineNum).LineNum, err = runtime.Int64(val)
 
@@ -304,7 +457,71 @@ func request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
+	return msg, metadata, err
+
+}
+
+func local_request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler, server EchoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SimpleMessage
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
+	}
+
+	protoReq.Id, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
+	}
+
+	val, ok = pathParams["line_num"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "line_num")
+	}
+
+	if protoReq.Code == nil {
+		protoReq.Code = &SimpleMessage_LineNum{}
+	} else if _, ok := protoReq.Code.(*SimpleMessage_LineNum); !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_LineNum, but: %t\n", protoReq.Code)
+	}
+	protoReq.Code.(*SimpleMessage_LineNum).LineNum, err = runtime.Int64(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "line_num", err)
+	}
+
+	val, ok = pathParams["status.note"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "status.note")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "status.note", val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "status.note", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_EchoService_Echo_3); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Echo(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -349,7 +566,44 @@ func request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Marshaler
 	runtime.RequestParsed(ctx, spec, "EchoService", "Echo", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.Echo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "Echo", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "Echo", msg, &metadata, err)
+	return msg, metadata, err
+
+}
+
+func local_request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Marshaler, server EchoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SimpleMessage
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["no.note"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "no.note")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "no.note", val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "no.note", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_EchoService_Echo_4); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Echo(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -373,7 +627,27 @@ func request_EchoService_EchoBody_0(ctx context.Context, marshaler runtime.Marsh
 	runtime.RequestParsed(ctx, spec, "EchoService", "EchoBody", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.EchoBody(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "EchoBody", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "EchoBody", msg, &metadata, err)
+	return msg, metadata, err
+
+}
+
+func local_request_EchoService_EchoBody_0(ctx context.Context, marshaler runtime.Marshaler, server EchoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SimpleMessage
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.EchoBody(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -399,9 +673,177 @@ func request_EchoService_EchoDelete_0(ctx context.Context, marshaler runtime.Mar
 	runtime.RequestParsed(ctx, spec, "EchoService", "EchoDelete", &protoReq, &metadata)
 	ctx = runtime.PreLoadBalance(ctx, "ROUND_ROBIN", "", &protoReq)
 	msg, err := client.EchoDelete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	// if err != nil {
+	// 	grpclog.Errorf("client.%s returns error: %v", "EchoDelete", err)
+	// }
 	runtime.RequestHandled(ctx, spec, "EchoService", "EchoDelete", msg, &metadata, err)
 	return msg, metadata, err
 
+}
+
+func local_request_EchoService_EchoDelete_0(ctx context.Context, marshaler runtime.Marshaler, server EchoServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SimpleMessage
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_EchoService_EchoDelete_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.EchoDelete(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+// RegisterEchoServiceHandlerServer registers the http handlers for service EchoService to "mux".
+// UnaryRPC     :call EchoServiceServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterEchoServiceHandlerFromEndpoint instead.
+func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server EchoServiceServer) error {
+
+	mux.Handle("POST", pattern_EchoService_Echo_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_EchoService_Echo_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_EchoService_Echo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_EchoService_Echo_1, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_EchoService_Echo_1(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_EchoService_Echo_1(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_EchoService_Echo_2, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_EchoService_Echo_2(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_EchoService_Echo_2(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_EchoService_Echo_3, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_EchoService_Echo_3(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_EchoService_Echo_3(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_EchoService_Echo_4, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_EchoService_Echo_4(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_EchoService_Echo_4(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_EchoService_EchoBody_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_EchoService_EchoBody_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_EchoService_EchoBody_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_EchoService_EchoDelete_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_EchoService_EchoDelete_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_EchoService_EchoDelete_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
 }
 
 // Register itself to runtime.
@@ -470,36 +912,27 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
-		if cli == nil {
+		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		if client == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
-			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_0(rctx, inboundMarshaler, cli, req, pathParams)
+		resp, md, err := request_EchoService_Echo_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -515,36 +948,27 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
-		if cli == nil {
+		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		if client == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
-			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_1(rctx, inboundMarshaler, cli, req, pathParams)
+		resp, md, err := request_EchoService_Echo_1(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -560,36 +984,27 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
-		if cli == nil {
+		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		if client == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
-			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_2(rctx, inboundMarshaler, cli, req, pathParams)
+		resp, md, err := request_EchoService_Echo_2(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -605,36 +1020,27 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
-		if cli == nil {
+		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		if client == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
-			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_3(rctx, inboundMarshaler, cli, req, pathParams)
+		resp, md, err := request_EchoService_Echo_3(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -650,36 +1056,27 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
-		if cli == nil {
+		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		if client == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
-			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_Echo_4(rctx, inboundMarshaler, cli, req, pathParams)
+		resp, md, err := request_EchoService_Echo_4(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -695,36 +1092,27 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
-		if cli == nil {
+		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		if client == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoBody", w, req)
 		if err != nil {
-			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_EchoBody_0(rctx, inboundMarshaler, cli, req, pathParams)
+		resp, md, err := request_EchoService_EchoBody_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -740,36 +1128,27 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// TODO(mojz): review all locking/unlocking logic.
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		cli := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
-		if cli == nil {
+		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		if client == nil {
 			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
 			return
 		}
 
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoDelete", w, req)
 		if err != nil {
-			runtime.DefaultHTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
+			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
 			return
 		}
-
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_EchoService_EchoDelete_0(rctx, inboundMarshaler, cli, req, pathParams)
+		resp, md, err := request_EchoService_EchoDelete_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)

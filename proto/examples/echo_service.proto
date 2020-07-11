@@ -25,37 +25,37 @@ message Embedded {
 message SimpleMessage {
 	// Id represents the message identifier.
     string id = 1 
-//     [
-//     (ease.api.rules) = {
-// 			rules: {
-// 				type: STRING,
-// 				operator: NON_NIL,
-// 			},
-// 			rules: {
-// 				type: STRING,
-// 				function: TRIM,
-// 				operator: LEN_GT,
-// 				value: "2",
-// 			},
-// 			rules: {
-// 				type: STRING,
-// 				function: TRIM,
-// 				operator: LEN_LT,
-// 				value: "61",
-// 			}
-//     }
-//   ]
+    [
+    (ease.api.rules) = {
+			rules: {
+				type: STRING,
+				operator: NON_NIL,
+			},
+			rules: {
+				type: STRING,
+				function: TRIM,
+				operator: LEN_GT,
+				value: "2",
+			},
+			rules: {
+				type: STRING,
+				function: TRIM,
+				operator: LEN_LT,
+				value: "61",
+			}
+    }
+  ]
   ;
     int64 num = 2 
-//     [
-//     (ease.api.rules) = {
-// 			rules: {
-// 				type: NUMBER,
-// 				operator: GT,
-//                 value: "0",
-// 			}
-//     }
-//   ]
+    [
+    (ease.api.rules) = {
+			rules: {
+				type: NUMBER,
+				operator: GT,
+        value: "0",
+			}
+    }
+  ]
   ;
 	oneof code {
 		int64 line_num = 3;
