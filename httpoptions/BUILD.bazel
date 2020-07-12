@@ -27,6 +27,7 @@ proto_library(
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",
         "@com_github_binchencoder_gateway_proto//data:data_proto",
+        "@com_github_binchencoder_gateway_proto//frontend:error_proto",
     ],
 )
 
@@ -37,6 +38,7 @@ go_proto_library(
     proto = ":ease_api_proto",
     deps = [
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
+        "@com_github_binchencoder_gateway_proto//frontend:go_default_library",
     ],
 )
 
@@ -48,6 +50,7 @@ proto_library(
     ],
     deps = [
         "@com_github_binchencoder_gateway_proto//data:data_proto",
+        "@com_github_binchencoder_gateway_proto//frontend:error_proto",
         "@com_google_protobuf//:descriptor_proto",
     ],
 )

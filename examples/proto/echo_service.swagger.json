@@ -23,6 +23,12 @@
             "schema": {
               "$ref": "#/definitions/protoSimpleMessage"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/gatewayruntimeError"
+            }
           }
         },
         "parameters": [
@@ -49,6 +55,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/gatewayruntimeError"
             }
           }
         },
@@ -130,6 +142,12 @@
             "schema": {
               "$ref": "#/definitions/protoSimpleMessage"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/gatewayruntimeError"
+            }
           }
         },
         "parameters": [
@@ -210,6 +228,12 @@
             "schema": {
               "$ref": "#/definitions/protoSimpleMessage"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/gatewayruntimeError"
+            }
           }
         },
         "parameters": [
@@ -284,6 +308,12 @@
             "schema": {
               "$ref": "#/definitions/protoSimpleMessage"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/gatewayruntimeError"
+            }
           }
         },
         "parameters": [
@@ -357,6 +387,12 @@
             "schema": {
               "$ref": "#/definitions/protoSimpleMessage"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/gatewayruntimeError"
+            }
           }
         },
         "parameters": [
@@ -383,6 +419,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/protoSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/gatewayruntimeError"
             }
           }
         },
@@ -455,6 +497,101 @@
     }
   },
   "definitions": {
+    "frontendError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/frontendErrorCode",
+          "description": "The general error code."
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The general parameters with which to render a localized string."
+        },
+        "debug": {
+          "type": "string",
+          "description": "The debug information. Only populated in DEV, TEST, and QA environment.\nIn PROD environment it will be stripped off before returning to the\nclient."
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/frontendErrorMessage"
+          },
+          "description": "The detailed error messages."
+        }
+      },
+      "description": "message GetMyMemosResponse {\n        frontend.Error error = 1;\n\n        int32  current_page  = 2;\n        int32  page_total    = 3;\n        string continue_token = 4;\n\n        repeated MemoMsg memos = 5;\n    }",
+      "title": "The error wrapper message. All frontend messages should contain exactly\none field with this message as the first field. Example:"
+    },
+    "frontendErrorCode": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "SERVICE_DOWN",
+        "SERVICE_INTERNAL_ERROR",
+        "SERVICE_INTERNAL_ACCIDENTAL_ERROR",
+        "SERVICE_BAD_PARAM_ERROR",
+        "SERVICE_UNREACHABLE_CODE",
+        "UNDEFINED",
+        "BADPARAM_ERROR",
+        "RESOURCE_NOT_FOUND",
+        "BAD_REQUEST",
+        "AUTHEN_ERROR",
+        "SERVER_ERROR",
+        "NORIGHT_ERROR",
+        "NODATA_ERROR",
+        "USER_ERROR",
+        "INVALID_SIGNATURE",
+        "IGOAL_DUPLICATE_TAG",
+        "IGOAL_NO_ONLINE_TMPL_MANAGE_PERMISSION",
+        "IGOAL_IMPORT_TEMPLATE_FILE_SIZE_EXCEEDED",
+        "IGOAL_VERSION_CONFLICT_ERROR",
+        "IGOAL_DOC_UPLOAD_FILE_NUMBER_EXCEEDED"
+      ],
+      "default": "NONE",
+      "description": "/### Enum for all error codes.\n/### Localization Guide for error codes. Error code which requires Localization\n/### need to provide a //@Trans chinese comment on the above line.\n\n - SERVICE_DOWN: /### 100000 - 120000 Common error\n@Trans 当前服务正在维护，请稍后再试.\n - SERVICE_INTERNAL_ERROR: @Trans 当前服务内部错误，请稍后再试.\n - SERVICE_INTERNAL_ACCIDENTAL_ERROR: @Trans 找不到意中的“它”，请稍后重试!\n - SERVICE_BAD_PARAM_ERROR: @Trans 程序参数错误.\n - SERVICE_UNREACHABLE_CODE: @Trans 程序编码错误.\n - UNDEFINED: @Trans Undefined error.\n - BADPARAM_ERROR: @Trans 参数不合法\n - RESOURCE_NOT_FOUND: @Trans 无法找到\n - BAD_REQUEST: @Trans 无效请求\n - AUTHEN_ERROR: /### 500500-500999: Common error codes.\n@Trans 用户认证失败，需重新登录\n - SERVER_ERROR: @Trans 服务器端错误\n - NORIGHT_ERROR: @Trans 权限不足\n - NODATA_ERROR: @Trans 数据不存在或已删除\n - USER_ERROR: @Trans 用户不存在或已停用\n - INVALID_SIGNATURE: @Trans 无效验签\n - IGOAL_DUPLICATE_TAG: @Trans 主线分类名称重复！\n - IGOAL_NO_ONLINE_TMPL_MANAGE_PERMISSION: @Trans 您无权限进行此操作！\n - IGOAL_IMPORT_TEMPLATE_FILE_SIZE_EXCEEDED: @Trans 模板文件大小超限！\n - IGOAL_VERSION_CONFLICT_ERROR: @Trans 系统开小差了，请稍后尝试！\n - IGOAL_DOC_UPLOAD_FILE_NUMBER_EXCEEDED: @Trans 上传文件数量超过上限!"
+    },
+    "frontendErrorMessage": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/frontendErrorCode",
+          "description": "The error code."
+        },
+        "params": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The parameters used to render a localized string."
+        }
+      },
+      "description": "An error message including its error code and the parameters to render\na localized string."
+    },
+    "gatewayruntimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/frontendError"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
     "protoEmbedded": {
       "type": "object",
       "properties": {
@@ -498,6 +635,18 @@
         }
       },
       "description": "SimpleMessage represents a simple message sent to the Echo service."
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
     }
   }
 }

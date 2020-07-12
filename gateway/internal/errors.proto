@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ease.gateway.runtime;
+package grpc.gateway.runtime;
 option go_package = "internal";
 
 import "google/protobuf/any.proto";

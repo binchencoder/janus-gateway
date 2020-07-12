@@ -918,15 +918,15 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
-			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -954,15 +954,15 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
-			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -990,15 +990,15 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
-			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1026,15 +1026,15 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
-			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1062,15 +1062,15 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
-			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1098,15 +1098,15 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoBody", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
-			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1134,15 +1134,15 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoDelete", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
-			runtime.HTTPError(ctx, nil, &runtime.JSONBuiltin{}, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
