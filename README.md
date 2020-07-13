@@ -1,4 +1,4 @@
-# ease-gateway
+# Ease-gateway
 
 Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway).  This helps you provide your APIs in both gRPC and RESTful style at the same time.
 
@@ -14,6 +14,14 @@ Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-e
 - 既可以部署单机版模式, 也可注册到注册中心实现集群模式
 - 支持网关层的Parameter Validation Rules
 - 支持自定义的Annotaion
+
+## Design
+
+[design.md](https://github.com/binchencoder/ease-gateway/tree/master/docs/design.md)
+
+## Validation Rule
+
+[gateway-validation-rule.md](https://github.com/binchencoder/ease-gateway/tree/master/docs/gateway-validation-rule.md)
 
 ## Prepared
 

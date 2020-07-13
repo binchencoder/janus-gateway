@@ -5,9 +5,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # ----------从github下载扩展 io_bazel_rules_go ----------
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "87f0fb9747854cb76a0a82430adccb6269f7d394237104a4523b51061c469171",
+    sha256 = "7b9bbe3ea1fccb46dcfa6c3f3e29ba7ec740d8733370e21cdc8937467b4a4349",
     urls = [
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.23.1/rules_go-v0.23.1.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.22.4/rules_go-v0.22.4.tar.gz",
     ],
 )
 
@@ -53,8 +53,8 @@ go_repositories()
 go_repository(
     name = "com_google_protobuf",
     importpath = "github.com/protocolbuffers/protobuf",
-    sum = "h1:QbxPofk2041MRNYwie5F79xezBbVhMzoWy23+dKfgMY=",
-    version = "v3.9.0+incompatible",
+    sum = "h1:pNPOCD+Nm4NY0R6gdOpwOPpRGUjbPo9SO/UlD56lH+0=",
+    version = "v3.8.0+incompatible",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
