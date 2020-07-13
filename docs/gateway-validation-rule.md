@@ -66,7 +66,7 @@ message Payment {
         PaymentType type = 1;
         // 100 > paied_amount > 10
         int64 paied_amount = 2 [
-           (jingoal.api.rules) = {
+           (ease.api.rules) = {
                 rules: {
                     type:NUMBER,
                     operator: GT,
@@ -84,7 +84,7 @@ message Payment {
     PaymentType type = 1;
     // 长度=10
     string message_value_len_eq = 3 [
-        (jingoal.api.rules) = {
+        (ease.api.rules) = {
                rules: {
                type:STRING,
                 operator: LEN_EQ,
@@ -95,7 +95,7 @@ message Payment {
 
     // 长度Trim之后小于21
     string message_value_len_gt = 4 [
-        (jingoal.api.rules) = {
+        (ease.api.rules) = {
             rules: {
                 type:STRING,
                 operator: LEN_LT,
