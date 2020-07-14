@@ -15,6 +15,10 @@ Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-e
 - 支持网关层的Parameter Validation Rules
 - 支持自定义的Annotaion
 
+## Architecture
+
+![](./docs/images/Ease-Gateway.png)
+
 ## Design
 
 [design.md](https://github.com/binchencoder/ease-gateway/tree/master/docs/design.md)
