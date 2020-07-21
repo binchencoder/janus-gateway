@@ -15,6 +15,15 @@
 	</parent>
 
 	<dependencies>
+        <dependency>
+            <groupId>com.binchencoder.easegw</groupId>
+            <artifactId>easegw-options-protos</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.binchencoder.gateway</groupId>
+            <artifactId>data-proto</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-protobuf</artifactId>
@@ -32,11 +41,6 @@
 			<groupId>com.google.api.grpc</groupId>
 			<artifactId>googleapis-common-protos</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>com.binchencoder.gateway</groupId>
-			<artifactId>data-proto</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -49,12 +53,10 @@
 				<groupId>org.xolstice.maven.plugins</groupId>
 				<artifactId>protobuf-maven-plugin</artifactId>
 				<configuration>
-					<protoSourceRoot>../../../</protoSourceRoot>
+					<protoSourceRoot>../</protoSourceRoot>
 					<includes>
-						<param>ease-gateway/proto/examples/*.proto</param>
-						<param>ease-gateway/proto/examples/*/*.proto</param>
-						<param>ease-gateway/gateway/options/http.proto</param>
-						<param>ease-gateway/gateway/options/annotations.proto</param>
+						<param>proto/examples/*.proto</param>
+						<param>proto/examples/*/*.proto</param>
 					</includes>
 				</configuration>
 				<executions>
