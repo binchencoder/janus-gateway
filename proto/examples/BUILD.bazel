@@ -1,6 +1,6 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("//gateway/protoc-gen-swagger:defs.bzl", "protoc_gen_swagger")
+load("//gateway/protoc-gen-openapiv2:defs.bzl", "protoc_gen_openapiv2")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -25,7 +25,8 @@ proto_library(
 go_proto_library(
     name = "examplepb_go_proto",
     compilers = [
-        "@io_bazel_rules_go//proto:go_grpc",
+        "//:go_apiv2",
+        "//:go_grpc",
         "//gateway/protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
     ],
     importpath = "github.com/binchencoder/ease-gateway/proto/examples",
@@ -56,8 +57,8 @@ go_library(
     ],
 )
 
-protoc_gen_swagger(
-    name = "examplepb_protoc_gen_swagger",
+protoc_gen_openapiv2(
+    name = "examplepb_protoc_gen_openapiv2",
     proto = ":examplepb_proto",
     single_output = False,  # Outputs a single swagger.json file.
 )

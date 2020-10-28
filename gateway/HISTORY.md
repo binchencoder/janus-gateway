@@ -69,7 +69,7 @@ Pull message
 更新 fdf0635..b6e6efb
 Fast-forward
  docs/_docs/customizingyourgateway.md           | 22 ++++++++++++++++++++++
- protoc-gen-swagger/genswagger/BUILD.bazel      |  1 +
- protoc-gen-swagger/genswagger/template.go      | 34 +++++++++++++++++++++++++++++-----
- protoc-gen-swagger/genswagger/template_test.go | 61 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ protoc-gen-openapiv2/internal/genopenapi/BUILD.bazel      |  1 +
+ protoc-gen-openapiv2/internal/genopenapi/template.go      | 34 +++++++++++++++++++++++++++++-----
+ protoc-gen-openapiv2/internal/genopenapi/template_test.go | 61 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
 ```

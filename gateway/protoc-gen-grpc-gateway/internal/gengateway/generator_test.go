@@ -1,14 +1,15 @@
 package gengateway
 
 import (
+	"errors"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"github.com/golang/protobuf/proto"
-	protodescriptor "github.com/golang/protobuf/protoc-gen-go/descriptor"
-	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+	descriptorpb "github.com/golang/protobuf/protoc-gen-go/descriptor"
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
+	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
+	"google.golang.org/protobuf/proto"
 )
 
 func newExampleFileDescriptor() *descriptor.File {
@@ -21,7 +22,7 @@ func newExampleFileDescriptor() *descriptor.File {
 }
 
 func newExampleFileDescriptorWithGoPkg(gp *descriptor.GoPackage) *descriptor.File {
-	msgdesc := &protodescriptor.DescriptorProto{
+	msgdesc := &descriptorpb.DescriptorProto{
 		Name: proto.String("ExampleMessage"),
 	}
 	msg := &descriptor.Message{
@@ -32,31 +33,31 @@ func newExampleFileDescriptorWithGoPkg(gp *descriptor.GoPackage) *descriptor.Fil
 		File: &descriptor.File{
 			GoPkg: descriptor.GoPackage{
 				Path: "github.com/golang/protobuf/ptypes/empty",
-				Name: "empty",
+				Name: "emptypb",
 			},
 		},
 	}
-	meth := &protodescriptor.MethodDescriptorProto{
+	meth := &descriptorpb.MethodDescriptorProto{
 		Name:       proto.String("Example"),
 		InputType:  proto.String("ExampleMessage"),
 		OutputType: proto.String("ExampleMessage"),
 	}
-	meth1 := &protodescriptor.MethodDescriptorProto{
+	meth1 := &descriptorpb.MethodDescriptorProto{
 		Name:       proto.String("ExampleWithoutBindings"),
 		InputType:  proto.String("empty.Empty"),
 		OutputType: proto.String("empty.Empty"),
 	}
-	svc := &protodescriptor.ServiceDescriptorProto{
+	svc := &descriptorpb.ServiceDescriptorProto{
 		Name:   proto.String("ExampleService"),
-		Method: []*protodescriptor.MethodDescriptorProto{meth, meth1},
+		Method: []*descriptorpb.MethodDescriptorProto{meth, meth1},
 	}
 	return &descriptor.File{
-		FileDescriptorProto: &protodescriptor.FileDescriptorProto{
+		FileDescriptorProto: &descriptorpb.FileDescriptorProto{
 			Name:        proto.String("example.proto"),
 			Package:     proto.String("example"),
 			Dependency:  []string{"a.example/b/c.proto", "a.example/d/e.proto"},
-			MessageType: []*protodescriptor.DescriptorProto{msgdesc},
-			Service:     []*protodescriptor.ServiceDescriptorProto{svc},
+			MessageType: []*descriptorpb.DescriptorProto{msgdesc},
+			Service:     []*descriptorpb.ServiceDescriptorProto{svc},
 		},
 		GoPkg:    *gp,
 		Messages: []*descriptor.Message{msg},
@@ -101,9 +102,11 @@ func TestGenerateServiceWithoutBindings(t *testing.T) {
 
 func TestGenerateOutputPath(t *testing.T) {
 	cases := []struct {
-		file     *descriptor.File
-		pathType pathType
-		expected string
+		file          *descriptor.File
+		pathType      pathType
+		modulePath    string
+		expected      string
+		expectedError error
 	}{
 		{
 			file: newExampleFileDescriptorWithGoPkg(
@@ -143,13 +146,79 @@ func TestGenerateOutputPath(t *testing.T) {
 			pathType: pathTypeSourceRelative,
 			expected: ".",
 		},
+		{
+			file: newExampleFileDescriptorWithGoPkg(
+				&descriptor.GoPackage{
+					Path: "example.com/path/root",
+					Name: "example_pb",
+				},
+			),
+			modulePath: "example.com/path/root",
+			expected:   ".",
+		},
+		{
+			file: newExampleFileDescriptorWithGoPkg(
+				&descriptor.GoPackage{
+					Path: "example.com/path/to/example",
+					Name: "example_pb",
+				},
+			),
+			modulePath: "example.com/path/to",
+			expected:   "example",
+		},
+		{
+			file: newExampleFileDescriptorWithGoPkg(
+				&descriptor.GoPackage{
+					Path: "example.com/path/to/example/with/many/nested/paths",
+					Name: "example_pb",
+				},
+			),
+			modulePath: "example.com/path/to",
+			expected:   "example/with/many/nested/paths",
+		},
+
+		// Error cases
+		{
+			file: newExampleFileDescriptorWithGoPkg(
+				&descriptor.GoPackage{
+					Path: "example.com/path/root",
+					Name: "example_pb",
+				},
+			),
+			modulePath:    "example.com/path/root",
+			pathType:      pathTypeSourceRelative, // Not allowed
+			expectedError: errors.New("cannot use module= with paths="),
+		},
+		{
+			file: newExampleFileDescriptorWithGoPkg(
+				&descriptor.GoPackage{
+					Path: "example.com/path/rootextra",
+					Name: "example_pb",
+				},
+			),
+			modulePath:    "example.com/path/root",
+			expectedError: errors.New("example.com/path/rootextra: file go path does not match module prefix: example.com/path/root/"),
+		},
 	}
 
 	for _, c := range cases {
-		g := &generator{pathType: c.pathType}
+		g := &generator{
+			pathType:   c.pathType,
+			modulePath: c.modulePath,
+		}
 
 		file := c.file
 		gots, err := g.Generate([]*descriptor.File{crossLinkFixture(file)})
+
+		// If we expect an error response, check it matches what we want
+		if c.expectedError != nil {
+			if err == nil || err.Error() != c.expectedError.Error() {
+				t.Errorf("Generate(%#v) failed with %v; wants error of: %v", file, err, c.expectedError)
+			}
+			return
+		}
+
+		// Handle case where we don't expect an error
 		if err != nil {
 			t.Errorf("Generate(%#v) failed with %v; wants success", file, err)
 			return

@@ -5,9 +5,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # ----------从github下载扩展 io_bazel_rules_go ----------
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "7b9bbe3ea1fccb46dcfa6c3f3e29ba7ec740d8733370e21cdc8937467b4a4349",
+    sha256 = "a8d6b1b354d371a646d2f7927319974e0f9e52f73a2452d2b3877118169eb6bb",
     urls = [
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.22.4/rules_go-v0.22.4.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.23.3/rules_go-v0.23.3.tar.gz",
     ],
 )
 
@@ -15,9 +15,9 @@ http_archive(
 # 一般来说都会使用gazelle工具来自动生成 BUILD 文件, 而不是手写.
 http_archive(
     name = "bazel_gazelle",
-    sha256 = "d8c45ee70ec39a57e7a05e5027c32b1576cc7f16d9dd37135b0eddde45cf1b10",
+    sha256 = "cdb02a887a7187ea4d5a27452311a75ed8637379a1287d8eeb952138ea485f7d",
     urls = [
-        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.20.0/bazel-gazelle-v0.20.0.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.21.1/bazel-gazelle-v0.21.1.tar.gz",
     ],
 )
 
@@ -41,21 +41,21 @@ load("//:repositories.bzl", "go_repositories")
 
 go_repositories()
 
-# load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
-# git_repository(
-#     name = "com_google_protobuf",
-#     commit = "09745575a923640154bcf307fba8aedff47f240a",
-#     remote = "https://github.com/protocolbuffers/protobuf",
-#     shallow_since = "1558721209 -0700",
-# )
-
-go_repository(
+git_repository(
     name = "com_google_protobuf",
-    importpath = "github.com/protocolbuffers/protobuf",
-    sum = "h1:pNPOCD+Nm4NY0R6gdOpwOPpRGUjbPo9SO/UlD56lH+0=",
-    version = "v3.8.0+incompatible",
+    commit = "09745575a923640154bcf307fba8aedff47f240a",
+    remote = "https://github.com/protocolbuffers/protobuf",
+    shallow_since = "1558721209 -0700",
 )
+
+# go_repository(
+#     name = "com_google_protobuf",
+#     importpath = "github.com/protocolbuffers/protobuf",
+#     sum = "h1:pNPOCD+Nm4NY0R6gdOpwOPpRGUjbPo9SO/UlD56lH+0=",
+#     version = "v3.8.0+incompatible",
+# )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
@@ -64,9 +64,9 @@ protobuf_deps()
 # ---------- com_github_bazelbuild_buildtools ----------
 http_archive(
     name = "com_github_bazelbuild_buildtools",
-    sha256 = "86592d703ecbe0c5cbb5139333a63268cf58d7efd2c459c8be8e69e77d135e29",
-    strip_prefix = "buildtools-0.26.0",
-    urls = ["https://github.com/bazelbuild/buildtools/archive/0.26.0.tar.gz"],
+    sha256 = "f11fc80da0681a6d64632a850346ed2d4e5cbb0908306d9a2a2915f707048a10",
+    strip_prefix = "buildtools-3.3.0",
+    urls = ["https://github.com/bazelbuild/buildtools/archive/3.3.0.tar.gz"],
 )
 
 load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")

@@ -9,14 +9,14 @@ import (
 	"strings"
 
 	"github.com/golang/glog"
-	"github.com/golang/protobuf/proto"
-	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
+	pluginpb "github.com/golang/protobuf/protoc-gen-go/plugin"
 
-	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
+	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
 
-	// gen "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/generator"
-	gen "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/generator"
+	// gen "github.com/grpc-ecosystem/grpc-gateway/v2/internal/generator"
+	gen "github.com/binchencoder/ease-gateway/gateway/internal/generator"
+	"google.golang.org/protobuf/proto"
 
 	options "github.com/binchencoder/ease-gateway/httpoptions"
 )
@@ -40,10 +40,12 @@ type generator struct {
 	pathType           pathType
 	modulePath         string
 	allowPatchFeature  bool
+	standalone         bool
 }
 
 // New returns a new generator which generates grpc gateway files.
-func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, pathTypeString, modulePathString string, allowPatchFeature bool) gen.Generator {
+func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, pathTypeString, modulePathString string,
+	allowPatchFeature, standalone bool) gen.Generator {
 	var imports []descriptor.GoPackage
 	for pkgpath, alias := range map[string]string{
 		"context":      "",
@@ -53,9 +55,10 @@ func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, p
 		"strings":      "",
 		"sync":         "",
 		"unicode/utf8": "",
+		// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime",
 		"github.com/binchencoder/ease-gateway/gateway/runtime": "",
-		"github.com/grpc-ecosystem/grpc-gateway/utilities":     "",
-		"github.com/golang/protobuf/proto":                     "",
+		"github.com/grpc-ecosystem/grpc-gateway/v2/utilities":     "",
+		"google.golang.org/protobuf/proto":                     "",
 		"github.com/binchencoder/gateway-proto/data":           "vexpb",
 		"github.com/binchencoder/gateway-proto/frontend":       "fpb",
 		"github.com/binchencoder/letsgo/grpc":                  "lgr",
@@ -107,11 +110,12 @@ func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix, p
 		pathType:           pathType,
 		modulePath:         modulePathString,
 		allowPatchFeature:  allowPatchFeature,
+		standalone:         standalone,
 	}
 }
 
-func (g *generator) Generate(targets []*descriptor.File) ([]*plugin.CodeGeneratorResponse_File, error) {
-	var files []*plugin.CodeGeneratorResponse_File
+func (g *generator) Generate(targets []*descriptor.File) ([]*pluginpb.CodeGeneratorResponse_File, error) {
+	var files []*pluginpb.CodeGeneratorResponse_File
 	for _, file := range targets {
 		glog.V(1).Infof("Processing %s", file.GetName())
 		code, err := g.generate(file)
@@ -135,7 +139,7 @@ func (g *generator) Generate(targets []*descriptor.File) ([]*plugin.CodeGenerato
 		ext := filepath.Ext(name)
 		base := strings.TrimSuffix(name, ext)
 		output := fmt.Sprintf("%s.pb.gw.go", base)
-		files = append(files, &plugin.CodeGeneratorResponse_File{
+		files = append(files, &pluginpb.CodeGeneratorResponse_File{
 			Name:    proto.String(output),
 			Content: proto.String(string(formatted)),
 		})
@@ -172,6 +176,11 @@ func (g *generator) generate(file *descriptor.File) (string, error) {
 		pkgSeen[pkg.Path] = true
 		imports = append(imports, pkg)
 	}
+
+	if g.standalone {
+		imports = append(imports, file.GoPkg)
+	}
+
 	for _, svc := range file.Services {
 		for _, m := range svc.Methods {
 			imports = append(imports, g.addEnumPathParamImports(file, m, pkgSeen)...)

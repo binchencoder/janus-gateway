@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/golang/protobuf/proto"
 	"golang.org/x/net/context"
 	gr "google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	options "github.com/binchencoder/ease-gateway/httpoptions"

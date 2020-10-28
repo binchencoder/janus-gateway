@@ -15,16 +15,15 @@ import (
 	"strings"
 
 	"github.com/golang/glog"
-	"github.com/golang/protobuf/proto"
-	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
+	pluginpb "github.com/golang/protobuf/protoc-gen-go/plugin"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/codegenerator"
 
-	"github.com/grpc-ecosystem/grpc-gateway/codegenerator"
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
+	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
 
-	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/descriptor"
-
-	// "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/internal/gengateway"
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway/internal/gengateway"
 	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/internal/gengateway"
+	"google.golang.org/protobuf/proto"
 )
 
 var (
@@ -39,7 +38,7 @@ var (
 	allowRepeatedFieldsInBody  = flag.Bool("allow_repeated_fields_in_body", false, "allows to use repeated field in `body` and `response_body` field of `google.api.http` annotation option")
 	repeatedPathParamSeparator = flag.String("repeated_path_param_separator", "csv", "configures how repeated fields should be split. Allowed values are `csv`, `pipes`, `ssv` and `tsv`.")
 	allowPatchFeature          = flag.Bool("allow_patch_feature", true, "determines whether to use PATCH feature involving update masks (using google.protobuf.FieldMask).")
-	allowColonFinalSegments    = flag.Bool("allow_colon_final_segments", false, "determines whether colons are permitted in the final segment of a path")
+	standalone                 = flag.Bool("standalone", false, "generates a standalone gateway package, which imports the target service package")
 	versionFlag                = flag.Bool("version", false, "print the current version")
 )
 
@@ -88,7 +87,7 @@ func main() {
 		}
 	}
 
-	g := gengateway.New(reg, *useRequestContext, *registerFuncSuffix, *pathType, *modulePath, *allowPatchFeature)
+	g := gengateway.New(reg, *useRequestContext, *registerFuncSuffix, *pathType, *modulePath, *allowPatchFeature, *standalone)
 
 	if *grpcAPIConfiguration != "" {
 		if err := reg.LoadGrpcAPIServiceFromYAML(*grpcAPIConfiguration); err != nil {
@@ -97,11 +96,11 @@ func main() {
 		}
 	}
 
+	reg.SetStandalone(*standalone)
 	reg.SetPrefix(*importPrefix)
 	reg.SetImportPath(*importPath)
 	reg.SetAllowDeleteBody(*allowDeleteBody)
 	reg.SetAllowRepeatedFieldsInBody(*allowRepeatedFieldsInBody)
-	reg.SetAllowColonFinalSegments(*allowColonFinalSegments)
 	if err := reg.SetRepeatedPathParamSeparator(*repeatedPathParamSeparator); err != nil {
 		emitError(err)
 		return
@@ -110,6 +109,7 @@ func main() {
 		emitError(err)
 		return
 	}
+
 	unboundHTTPRules := reg.UnboundExternalHTTPRules()
 	if len(unboundHTTPRules) != 0 {
 		emitError(fmt.Errorf("HTTP rules without a matching selector: %s", strings.Join(unboundHTTPRules, ", ")))
@@ -134,15 +134,15 @@ func main() {
 	emitFiles(out)
 }
 
-func emitFiles(out []*plugin.CodeGeneratorResponse_File) {
-	emitResp(&plugin.CodeGeneratorResponse{File: out})
+func emitFiles(out []*pluginpb.CodeGeneratorResponse_File) {
+	emitResp(&pluginpb.CodeGeneratorResponse{File: out})
 }
 
 func emitError(err error) {
-	emitResp(&plugin.CodeGeneratorResponse{Error: proto.String(err.Error())})
+	emitResp(&pluginpb.CodeGeneratorResponse{Error: proto.String(err.Error())})
 }
 
-func emitResp(resp *plugin.CodeGeneratorResponse) {
+func emitResp(resp *pluginpb.CodeGeneratorResponse) {
 	buf, err := proto.Marshal(resp)
 	if err != nil {
 		glog.Fatal(err)

@@ -1,14 +1,11 @@
 syntax = "proto3";
-option go_package = "proto";
+
+option go_package = "github.com/binchencoder/ease-gateway/gateway/proto/examples";
+
+package grpc.gateway.proto.examples;
 
 option java_package = "com.binchencoder.easegw.examples";
 option java_outer_classname = "ExamplesProto";
-
-// Echo Service
-//
-// Echo Service API consists of a single service which returns
-// a message.
-package examples;
 
 // import "google/api/annotations.proto";
 import "httpoptions/annotations.proto";
@@ -52,7 +49,7 @@ message SimpleMessage {
 			rules: {
 				type: NUMBER,
 				operator: GT,
-        value: "0",
+                value: "0",
 			}
     }
   ]

@@ -72,11 +72,11 @@ protoc -I/usr/local/include -I. \
 - template_test.go
 - template.go
 
-## protoc-gen-swagger
+## protoc-gen-openapiv2
 
-Link   [grpc-ecosystem/grpc-gateway/protoc-gen-swagger](https://github.com/grpc-ecosystem/grpc-gateway/tree/master/protoc-gen-swagger)
+Link   [grpc-ecosystem/grpc-gateway/protoc-gen-openapiv2](https://github.com/grpc-ecosystem/grpc-gateway/tree/master/protoc-gen-openapiv2)
 
-```protoc-gen-swagger``` 是生成swagger API定义的工具
+```protoc-gen-openapiv2``` 是生成swagger API定义的工具
 
 修改文件:
 

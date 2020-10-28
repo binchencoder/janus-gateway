@@ -3,8 +3,8 @@ package runtime
 import (
 	"net/http"
 
-	"github.com/golang/protobuf/proto"
 	"golang.org/x/net/context"
+	"google.golang.org/protobuf/proto"
 
 	pb "github.com/binchencoder/skylb-api/proto"
 )
