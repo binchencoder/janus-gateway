@@ -6,11 +6,11 @@ import (
 	"strings"
 
 	"github.com/golang/glog"
-	descriptorpb "github.com/golang/protobuf/protoc-gen-go/descriptor"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule"
 	// options "google.golang.org/genproto/googleapis/api/annotations"
 	options "github.com/binchencoder/ease-gateway/httpoptions"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/descriptorpb"
 )
 
 var (
@@ -62,7 +62,20 @@ func (r *Registry) loadServices(file *File) error {
 				optsList = append(optsList, opts)
 			}
 			if len(optsList) == 0 {
-				glog.Warningf("No HttpRule found for method: %s.%s", svc.GetName(), md.GetName())
+				if r.generateUnboundMethods {
+					defaultOpts, err := defaultAPIOptions(svc, md)
+					if err != nil {
+						glog.Errorf("Failed to generate default HttpRule from %s.%s: %v", svc.GetName(), md.GetName(), err)
+						return err
+					}
+					optsList = append(optsList, defaultOpts)
+				} else {
+					logFn := glog.V(1).Infof
+					if r.warnOnUnboundMethods {
+						logFn = glog.Warningf
+					}
+					logFn("No HttpRule found for method: %s.%s", svc.GetName(), md.GetName())
+				}
 			}
 			meth, err := r.newMethod(svc, md, optsList, mopts)
 			if err != nil {
@@ -277,6 +290,25 @@ func extractAPIOptions(meth *descriptorpb.MethodDescriptorProto) (*options.HttpR
 		return nil, nil, fmt.Errorf("extension is %T; want an ApiMethod", ext)
 	}
 	return opts, mopts, nil
+}
+
+func defaultAPIOptions(svc *Service, md *descriptorpb.MethodDescriptorProto) (*options.HttpRule, error) {
+	// FQSN prefixes the service's full name with a '.', e.g.: '.example.ExampleService'
+	fqsn := strings.TrimPrefix(svc.FQSN(), ".")
+
+	// This generates an HttpRule that matches the gRPC mapping to HTTP/2 described in
+	// https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md#requests
+	// i.e.:
+	//   * method is POST
+	//   * path is "/<service name>/<method name>"
+	//   * body should contain the serialized request message
+	rule := &options.HttpRule{
+		Pattern: &options.HttpRule_Post{
+			Post: fmt.Sprintf("/%s/%s", fqsn, md.GetName()),
+		},
+		Body: "*",
+	}
+	return rule, nil
 }
 
 func (r *Registry) newParam(meth *Method, path string) (Parameter, error) {

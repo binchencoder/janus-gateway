@@ -2,13 +2,12 @@
 package generator
 
 import (
-	pluginpb "github.com/golang/protobuf/protoc-gen-go/plugin"
-	// descriptorpb "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	descriptorpb "github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
+	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
 )
 
 // Generator is an abstraction of code generators.
 type Generator interface {
 	// Generate generates output files from input .proto files.
-	Generate(targets []*descriptorpb.File) ([]*pluginpb.CodeGeneratorResponse_File, error)
+	Generate(targets []*descriptor.File) ([]*descriptor.ResponseFile, error)
 }

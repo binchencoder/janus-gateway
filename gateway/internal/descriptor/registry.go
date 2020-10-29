@@ -2,16 +2,18 @@ package descriptor
 
 import (
 	"fmt"
-	"path"
-	"path/filepath"
 	"strings"
 
 	"github.com/golang/glog"
-	descriptorpb "github.com/golang/protobuf/protoc-gen-go/descriptor"
-	pluginpb "github.com/golang/protobuf/protoc-gen-go/plugin"
-
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor/openapiconfig"
+	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor/openapiconfig"
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-openapiv2/options"
 	// "google.golang.org/genproto/googleapis/api/annotations"
 	annotations "github.com/binchencoder/ease-gateway/httpoptions"
+	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/types/descriptorpb"
+	"google.golang.org/protobuf/types/pluginpb"
 )
 
 // Registry is a registry of information extracted from pluginpb.CodeGeneratorRequest.
@@ -27,9 +29,6 @@ type Registry struct {
 
 	// prefix is a prefix to be inserted to golang package paths generated from proto package names.
 	prefix string
-
-	// importPath is used as the package if no input files declare go_package. If it contains slashes, everything up to the rightmost slash is ignored.
-	importPath string
 
 	// pkgMap is a user-specified mapping from file path to proto package.
 	pkgMap map[string]string
@@ -86,6 +85,32 @@ type Registry struct {
 	simpleOperationIDs bool
 
 	standalone bool
+	// warnOnUnboundMethods causes the registry to emit warning logs if an RPC method
+	// has no HttpRule annotation.
+	warnOnUnboundMethods bool
+
+	// fileOptions is a mapping of file name to additional OpenAPI file options
+	fileOptions map[string]*options.Swagger
+
+	// methodOptions is a mapping of fully-qualified method name to additional OpenAPI method options
+	methodOptions map[string]*options.Operation
+
+	// messageOptions is a mapping of fully-qualified message name to additional OpenAPI message options
+	messageOptions map[string]*options.Schema
+
+	//serviceOptions is a mapping of fully-qualified service name to additional OpenAPI service options
+	serviceOptions map[string]*options.Tag
+
+	// fieldOptions is a mapping of the fully-qualified name of the parent message concat
+	// field name and a period to additional OpenAPI field options
+	fieldOptions map[string]*options.JSONSchema
+
+	// generateUnboundMethods causes the registry to generate proxy methods even for
+	// RPC methods that have no HttpRule annotation.
+	generateUnboundMethods bool
+
+	// omitPackageDoc, if false, causes a package comment to be included in the generated code.
+	omitPackageDoc bool
 }
 
 type repeatedFieldSeparator struct {
@@ -111,44 +136,52 @@ func NewRegistry() *Registry {
 			name: "csv",
 			sep:  ',',
 		},
+		fileOptions:    make(map[string]*options.Swagger),
+		methodOptions:  make(map[string]*options.Operation),
+		messageOptions: make(map[string]*options.Schema),
+		serviceOptions: make(map[string]*options.Tag),
+		fieldOptions:   make(map[string]*options.JSONSchema),
 	}
 }
 
 // Load loads definitions of services, methods, messages, enumerations and fields from "req".
 func (r *Registry) Load(req *pluginpb.CodeGeneratorRequest) error {
-	for _, file := range req.GetProtoFile() {
-		r.loadFile(file)
+	gen, err := protogen.Options{}.New(req)
+	if err != nil {
+		return err
+	}
+	return r.load(gen)
+}
+
+func (r *Registry) LoadFromPlugin(gen *protogen.Plugin) error {
+	return r.load(gen)
+}
+
+func (r *Registry) load(gen *protogen.Plugin) error {
+	for filePath, f := range gen.FilesByPath {
+		r.loadFile(filePath, f)
 	}
 
-	var targetPkg string
-	for _, name := range req.FileToGenerate {
-		target := r.files[name]
-		if target == nil {
-			return fmt.Errorf("no such file: %s", name)
+	for filePath, f := range gen.FilesByPath {
+		if !f.Generate {
+			continue
 		}
-		name := r.packageIdentityName(target.FileDescriptorProto)
-		if targetPkg == "" {
-			targetPkg = name
-		} else {
-			if targetPkg != name {
-				return fmt.Errorf("inconsistent package names: %s %s", targetPkg, name)
-			}
-		}
-
-		if err := r.loadServices(target); err != nil {
+		file := r.files[filePath]
+		if err := r.loadServices(file); err != nil {
 			return err
 		}
 	}
+
 	return nil
 }
 
 // loadFile loads messages, enumerations and fields from "file".
 // It does not loads services and methods in "file".  You need to call
 // loadServices after loadFiles is called for all files to load services and methods.
-func (r *Registry) loadFile(file *descriptorpb.FileDescriptorProto) {
+func (r *Registry) loadFile(filePath string, file *protogen.File) {
 	pkg := GoPackage{
-		Path: r.goPackagePath(file),
-		Name: r.defaultGoPackageName(file),
+		Path: string(file.GoImportPath),
+		Name: string(file.GoPackageName),
 	}
 	if r.standalone {
 		pkg.Alias = "ext" + strings.Title(pkg.Name)
@@ -164,13 +197,14 @@ func (r *Registry) loadFile(file *descriptorpb.FileDescriptorProto) {
 		}
 	}
 	f := &File{
-		FileDescriptorProto: file,
-		GoPkg:               pkg,
+		FileDescriptorProto:     file.Proto,
+		GoPkg:                   pkg,
+		GeneratedFilenamePrefix: file.GeneratedFilenamePrefix,
 	}
 
-	r.files[file.GetName()] = f
-	r.registerMsg(f, nil, file.GetMessageType())
-	r.registerEnum(f, nil, file.GetEnumType())
+	r.files[filePath] = f
+	r.registerMsg(f, nil, file.Proto.MessageType)
+	r.registerEnum(f, nil, file.Proto.EnumType)
 }
 
 func (r *Registry) registerMsg(file *File, outerPath []string, msgs []*descriptorpb.DescriptorProto) {
@@ -333,13 +367,6 @@ func (r *Registry) SetStandalone(standalone bool) {
 	r.standalone = standalone
 }
 
-// SetImportPath registers the importPath which is used as the package if no
-// input files declare go_package. If it contains slashes, everything up to the
-// rightmost slash is ignored.
-func (r *Registry) SetImportPath(importPath string) {
-	r.importPath = importPath
-}
-
 // ReserveGoPackageAlias reserves the unique alias of go package.
 // If succeeded, the alias will be never used for other packages in generated go files.
 // If failed, the alias is already taken by another package, so you need to use another
@@ -353,27 +380,6 @@ func (r *Registry) ReserveGoPackageAlias(alias, pkgpath string) error {
 	}
 	r.pkgAliases[alias] = pkgpath
 	return nil
-}
-
-// goPackagePath returns the go package path which go files generated from "f" should have.
-// It respects the mapping registered by AddPkgMap if exists. Or use go_package as import path
-// if it includes a slash,  Otherwide, it generates a path from the file name of "f".
-func (r *Registry) goPackagePath(f *descriptorpb.FileDescriptorProto) string {
-	name := f.GetName()
-	if pkg, ok := r.pkgMap[name]; ok {
-		return path.Join(r.prefix, pkg)
-	}
-
-	gopkg := f.Options.GetGoPackage()
-	idx := strings.LastIndex(gopkg, "/")
-	if idx >= 0 {
-		if sc := strings.LastIndex(gopkg, ";"); sc > 0 {
-			gopkg = gopkg[:sc+1-1]
-		}
-		return gopkg
-	}
-
-	return path.Join(r.prefix, path.Dir(name))
 }
 
 // GetAllFQMNs returns a list of all FQMNs
@@ -539,53 +545,118 @@ func (r *Registry) GetSimpleOperationIDs() bool {
 	return r.simpleOperationIDs
 }
 
-// sanitizePackageName replaces unallowed character in package name
-// with allowed character.
-func sanitizePackageName(pkgName string) string {
-	pkgName = strings.Replace(pkgName, ".", "_", -1)
-	pkgName = strings.Replace(pkgName, "-", "_", -1)
-	return pkgName
+// SetWarnOnUnboundMethods sets warnOnUnboundMethods
+func (r *Registry) SetWarnOnUnboundMethods(warn bool) {
+	r.warnOnUnboundMethods = warn
 }
 
-// defaultGoPackageName returns the default go package name to be used for go files generated from "f".
-// You might need to use an unique alias for the package when you import it.  Use ReserveGoPackageAlias to get a unique alias.
-func (r *Registry) defaultGoPackageName(f *descriptorpb.FileDescriptorProto) string {
-	name := r.packageIdentityName(f)
-	return sanitizePackageName(name)
+// SetGenerateUnboundMethods sets generateUnboundMethods
+func (r *Registry) SetGenerateUnboundMethods(generate bool) {
+	r.generateUnboundMethods = generate
 }
 
-// packageIdentityName returns the identity of packages.
-// protoc-gen-grpc-gateway rejects CodeGenerationRequests which contains more than one packages
-// as protoc-gen-go does.
-func (r *Registry) packageIdentityName(f *descriptorpb.FileDescriptorProto) string {
-	if f.Options != nil && f.Options.GoPackage != nil {
-		gopkg := f.Options.GetGoPackage()
-		idx := strings.LastIndex(gopkg, "/")
-		if idx < 0 {
-			gopkg = gopkg[idx+1:]
-		}
+// SetOmitPackageDoc controls whether the generated code contains a package comment (if set to false, it will contain one)
+func (r *Registry) SetOmitPackageDoc(omit bool) {
+	r.omitPackageDoc = omit
+}
 
-		gopkg = gopkg[idx+1:]
-		// package name is overrided with the string after the
-		// ';' character
-		sc := strings.IndexByte(gopkg, ';')
-		if sc < 0 {
-			return sanitizePackageName(gopkg)
+// GetOmitPackageDoc returns whether a package comment will be omitted from the generated code
+func (r *Registry) GetOmitPackageDoc() bool {
+	return r.omitPackageDoc
+}
 
-		}
-		return sanitizePackageName(gopkg[sc+1:])
-	}
-	if p := r.importPath; len(p) != 0 {
-		if i := strings.LastIndex(p, "/"); i >= 0 {
-			p = p[i+1:]
-		}
-		return p
+// RegisterOpenAPIOptions registers OpenAPI options
+func (r *Registry) RegisterOpenAPIOptions(opts *openapiconfig.OpenAPIOptions) error {
+	if opts == nil {
+		return nil
 	}
 
-	if f.Package == nil {
-		base := filepath.Base(f.GetName())
-		ext := filepath.Ext(base)
-		return strings.TrimSuffix(base, ext)
+	for _, opt := range opts.File {
+		if _, ok := r.files[opt.File]; !ok {
+			return fmt.Errorf("no file %s found", opt.File)
+		}
+		r.fileOptions[opt.File] = opt.Option
 	}
-	return f.GetPackage()
+
+	// build map of all registered methods
+	methods := make(map[string]struct{})
+	services := make(map[string]struct{})
+	for _, f := range r.files {
+		for _, s := range f.Services {
+			services[s.FQSN()] = struct{}{}
+			for _, m := range s.Methods {
+				methods[m.FQMN()] = struct{}{}
+			}
+		}
+	}
+
+	for _, opt := range opts.Method {
+		qualifiedMethod := "." + opt.Method
+		if _, ok := methods[qualifiedMethod]; !ok {
+			return fmt.Errorf("no method %s found", opt.Method)
+		}
+		r.methodOptions[qualifiedMethod] = opt.Option
+	}
+
+	for _, opt := range opts.Message {
+		qualifiedMessage := "." + opt.Message
+		if _, ok := r.msgs[qualifiedMessage]; !ok {
+			return fmt.Errorf("no message %s found", opt.Message)
+		}
+		r.messageOptions[qualifiedMessage] = opt.Option
+	}
+
+	for _, opt := range opts.Service {
+		qualifiedService := "." + opt.Service
+		if _, ok := services[qualifiedService]; !ok {
+			return fmt.Errorf("no service %s found", opt.Service)
+		}
+		r.serviceOptions[qualifiedService] = opt.Option
+	}
+
+	// build map of all registered fields
+	fields := make(map[string]struct{})
+	for _, m := range r.msgs {
+		for _, f := range m.Fields {
+			fields[f.FQFN()] = struct{}{}
+		}
+	}
+	for _, opt := range opts.Field {
+		qualifiedField := "." + opt.Field
+		if _, ok := fields[qualifiedField]; !ok {
+			return fmt.Errorf("no field %s found", opt.Field)
+		}
+		r.fieldOptions[qualifiedField] = opt.Option
+	}
+	return nil
+}
+
+// GetOpenAPIFileOption returns a registered OpenAPI option for a file
+func (r *Registry) GetOpenAPIFileOption(file string) (*options.Swagger, bool) {
+	opt, ok := r.fileOptions[file]
+	return opt, ok
+}
+
+// GetOpenAPIMethodOption returns a registered OpenAPI option for a method
+func (r *Registry) GetOpenAPIMethodOption(qualifiedMethod string) (*options.Operation, bool) {
+	opt, ok := r.methodOptions[qualifiedMethod]
+	return opt, ok
+}
+
+// GetOpenAPIMessageOption returns a registered OpenAPI option for a message
+func (r *Registry) GetOpenAPIMessageOption(qualifiedMessage string) (*options.Schema, bool) {
+	opt, ok := r.messageOptions[qualifiedMessage]
+	return opt, ok
+}
+
+// GetOpenAPIServiceOption returns a registered OpenAPI option for a service
+func (r *Registry) GetOpenAPIServiceOption(qualifiedService string) (*options.Tag, bool) {
+	opt, ok := r.serviceOptions[qualifiedService]
+	return opt, ok
+}
+
+// GetOpenAPIFieldOption returns a registered OpenAPI option for a field
+func (r *Registry) GetOpenAPIFieldOption(qualifiedField string) (*options.JSONSchema, bool) {
+	opt, ok := r.fieldOptions[qualifiedField]
+	return opt, ok
 }

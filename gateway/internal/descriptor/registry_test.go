@@ -3,26 +3,42 @@ package descriptor
 import (
 	"testing"
 
-	descriptorpb "github.com/golang/protobuf/protoc-gen-go/descriptor"
-	pluginpb "github.com/golang/protobuf/protoc-gen-go/plugin"
+	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor/openapiconfig"
+	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor/openapiconfig"
+	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/descriptorpb"
+	"google.golang.org/protobuf/types/pluginpb"
 )
 
-func loadFile(t *testing.T, reg *Registry, src string) *descriptorpb.FileDescriptorProto {
-	var file descriptorpb.FileDescriptorProto
-	if err := prototext.Unmarshal([]byte(src), &file); err != nil {
-		t.Fatalf("proto.UnmarshalText(%s, &file) failed with %v; want success", src, err)
+func newGeneratorFromSources(req *pluginpb.CodeGeneratorRequest, sources ...string) (*protogen.Plugin, error) {
+	for _, src := range sources {
+		var fd descriptorpb.FileDescriptorProto
+		if err := prototext.Unmarshal([]byte(src), &fd); err != nil {
+			return nil, err
+		}
+		req.FileToGenerate = append(req.FileToGenerate, fd.GetName())
+		req.ProtoFile = append(req.ProtoFile, &fd)
 	}
-	reg.loadFile(&file)
-	return &file
+	return protogen.Options{}.New(req)
 }
 
-func load(t *testing.T, reg *Registry, src string) error {
-	var req pluginpb.CodeGeneratorRequest
-	if err := prototext.Unmarshal([]byte(src), &req); err != nil {
-		t.Fatalf("proto.UnmarshalText(%s, &file) failed with %v; want success", src, err)
+func loadFileWithCodeGeneratorRequest(t *testing.T, reg *Registry, req *pluginpb.CodeGeneratorRequest, sources ...string) []*descriptorpb.FileDescriptorProto {
+	plugin, err := newGeneratorFromSources(req, sources...)
+	if err != nil {
+		t.Fatalf("failed to create a generator: %v", err)
 	}
-	return reg.Load(&req)
+	err = reg.LoadFromPlugin(plugin)
+	if err != nil {
+		t.Fatalf("failed to Registry.LoadFromPlugin(): %v", err)
+	}
+	return plugin.Request.ProtoFile
+}
+
+func loadFile(t *testing.T, reg *Registry, src string) *descriptorpb.FileDescriptorProto {
+	fds := loadFileWithCodeGeneratorRequest(t, reg, &pluginpb.CodeGeneratorRequest{}, src)
+	return fds[0]
 }
 
 func TestLoadFile(t *testing.T) {
@@ -136,8 +152,9 @@ func TestLoadFileWithoutPackage(t *testing.T) {
 
 func TestLoadFileWithMapping(t *testing.T) {
 	reg := NewRegistry()
-	reg.AddPkgMap("path/to/example.proto", "example.com/proj/example/proto")
-	loadFile(t, reg, `
+	loadFileWithCodeGeneratorRequest(t, reg, &pluginpb.CodeGeneratorRequest{
+		Parameter: proto.String("Mpath/to/example.proto=example.com/proj/example/proto"),
+	}, `
 		name: 'path/to/example.proto'
 		package: 'example'
 	`)
@@ -204,13 +221,12 @@ func TestLoadFileWithPackageNameCollision(t *testing.T) {
 
 func TestLoadFileWithIdenticalGoPkg(t *testing.T) {
 	reg := NewRegistry()
-	reg.AddPkgMap("path/to/another.proto", "example.com/example")
-	reg.AddPkgMap("path/to/example.proto", "example.com/example")
-	loadFile(t, reg, `
+	loadFileWithCodeGeneratorRequest(t, reg, &pluginpb.CodeGeneratorRequest{
+		Parameter: proto.String("Mpath/to/another.proto=example.com/example,Mpath/to/example.proto=example.com/example"),
+	}, `
 		name: 'path/to/another.proto'
 		package: 'example'
-	`)
-	loadFile(t, reg, `
+	`, `
 		name: 'path/to/example.proto'
 		package: 'example'
 	`)
@@ -236,25 +252,9 @@ func TestLoadFileWithIdenticalGoPkg(t *testing.T) {
 	}
 }
 
-func TestLoadFileWithPrefix(t *testing.T) {
-	reg := NewRegistry()
-	reg.SetPrefix("third_party")
-	loadFile(t, reg, `
-		name: 'path/to/example.proto'
-		package: 'example'
-	`)
-
-	file := reg.files["path/to/example.proto"]
-	if file == nil {
-		t.Errorf("reg.files[%q] = nil; want non-nil", "example.proto")
-		return
-	}
-	wantPkg := GoPackage{Path: "third_party/path/to", Name: "example"}
-	if got, want := file.GoPkg, wantPkg; got != want {
-		t.Errorf("file.GoPkg = %#v; want %#v", got, want)
-	}
-}
-
+// TestLookupMsgWithoutPackage tests a case when there is no "package" directive.
+// In Go, it is required to have a generated package so we rely on
+// google.golang.org/protobuf/compiler/protogen to provide it.
 func TestLookupMsgWithoutPackage(t *testing.T) {
 	reg := NewRegistry()
 	fd := loadFile(t, reg, `
@@ -520,8 +520,11 @@ func TestLoadWithInconsistentTargetPackage(t *testing.T) {
 			consistent: true,
 		},
 	} {
-		reg := NewRegistry()
-		err := load(t, reg, spec.req)
+		var req pluginpb.CodeGeneratorRequest
+		if err := prototext.Unmarshal([]byte(spec.req), &req); err != nil {
+			t.Fatalf("proto.UnmarshalText(%s, &file) failed with %v; want success", spec.req, err)
+		}
+		_, err := newGeneratorFromSources(&req)
 		if got, want := err == nil, spec.consistent; got != want {
 			if want {
 				t.Errorf("reg.Load(%s) failed with %v; want success", spec.req, err)
@@ -532,7 +535,7 @@ func TestLoadWithInconsistentTargetPackage(t *testing.T) {
 	}
 }
 
-func TestLoadOverridedPackageName(t *testing.T) {
+func TestLoadOverriddenPackageName(t *testing.T) {
 	reg := NewRegistry()
 	loadFile(t, reg, `
 		name: 'example.proto'
@@ -569,43 +572,6 @@ func TestLoadWithStandalone(t *testing.T) {
 	}
 }
 
-func TestLoadSetInputPath(t *testing.T) {
-	reg := NewRegistry()
-	reg.SetImportPath("foo/examplepb")
-	loadFile(t, reg, `
-		name: 'example.proto'
-		package: 'example'
-	`)
-	file := reg.files["example.proto"]
-	if file == nil {
-		t.Errorf("reg.files[%q] = nil; want non-nil", "example.proto")
-		return
-	}
-	wantPkg := GoPackage{Path: ".", Name: "examplepb"}
-	if got, want := file.GoPkg, wantPkg; got != want {
-		t.Errorf("file.GoPkg = %#v; want %#v", got, want)
-	}
-}
-
-func TestLoadGoPackageInputPath(t *testing.T) {
-	reg := NewRegistry()
-	reg.SetImportPath("examplepb")
-	loadFile(t, reg, `
-		name: 'example.proto'
-		package: 'example'
-		options < go_package: 'example.com/xyz;pb' >
-	`)
-	file := reg.files["example.proto"]
-	if file == nil {
-		t.Errorf("reg.files[%q] = nil; want non-nil", "example.proto")
-		return
-	}
-	wantPkg := GoPackage{Path: "example.com/xyz", Name: "pb"}
-	if got, want := file.GoPkg, wantPkg; got != want {
-		t.Errorf("file.GoPkg = %#v; want %#v", got, want)
-	}
-}
-
 func TestUnboundExternalHTTPRules(t *testing.T) {
 	reg := NewRegistry()
 	methodName := ".example.ExampleService.Echo"
@@ -633,6 +599,175 @@ func TestUnboundExternalHTTPRules(t *testing.T) {
 		>
 	`)
 	assertStringSlice(t, "unbound external HTTP rules", reg.UnboundExternalHTTPRules(), []string{})
+}
+
+func TestRegisterOpenAPIOptions(t *testing.T) {
+	codeReqText := `file_to_generate: 'a.proto'
+	proto_file <
+		name: 'a.proto'
+		package: 'example.foo'
+		options < go_package: 'foo' >
+		message_type <
+			name: 'ExampleMessage'
+			field <
+				name: 'str'
+				label: LABEL_OPTIONAL
+				type: TYPE_STRING
+				number: 1
+			>
+		>
+		service <
+			name: "AService"
+			method <
+				name: "Meth"
+				input_type: "ExampleMessage"
+				output_type: "ExampleMessage"
+				options <
+					[google.api.http] < post: "/v1/a" body: "*" >
+				>
+			>
+		>
+	>
+	`
+	var codeReq pluginpb.CodeGeneratorRequest
+	if err := prototext.Unmarshal([]byte(codeReqText), &codeReq); err != nil {
+		t.Fatalf("proto.UnmarshalText(%s, &file) failed with %v; want success", codeReqText, err)
+	}
+
+	for _, tcase := range []struct {
+		options   *openapiconfig.OpenAPIOptions
+		shouldErr bool
+		desc      string
+	}{
+		{
+			desc: "handle nil options",
+		},
+		{
+			desc: "successfully add options if referenced entity exists",
+			options: &openapiconfig.OpenAPIOptions{
+				File: []*openapiconfig.OpenAPIFileOption{
+					{
+						File: "a.proto",
+					},
+				},
+				Method: []*openapiconfig.OpenAPIMethodOption{
+					{
+						Method: "example.foo.AService.Meth",
+					},
+				},
+				Message: []*openapiconfig.OpenAPIMessageOption{
+					{
+						Message: "example.foo.ExampleMessage",
+					},
+				},
+				Service: []*openapiconfig.OpenAPIServiceOption{
+					{
+						Service: "example.foo.AService",
+					},
+				},
+				Field: []*openapiconfig.OpenAPIFieldOption{
+					{
+						Field: "example.foo.ExampleMessage.str",
+					},
+				},
+			},
+		},
+		{
+			desc: "reject fully qualified names with leading \".\"",
+			options: &openapiconfig.OpenAPIOptions{
+				File: []*openapiconfig.OpenAPIFileOption{
+					{
+						File: "a.proto",
+					},
+				},
+				Method: []*openapiconfig.OpenAPIMethodOption{
+					{
+						Method: ".example.foo.AService.Meth",
+					},
+				},
+				Message: []*openapiconfig.OpenAPIMessageOption{
+					{
+						Message: ".example.foo.ExampleMessage",
+					},
+				},
+				Service: []*openapiconfig.OpenAPIServiceOption{
+					{
+						Service: ".example.foo.AService",
+					},
+				},
+				Field: []*openapiconfig.OpenAPIFieldOption{
+					{
+						Field: ".example.foo.ExampleMessage.str",
+					},
+				},
+			},
+			shouldErr: true,
+		},
+		{
+			desc: "error if file does not exist",
+			options: &openapiconfig.OpenAPIOptions{
+				File: []*openapiconfig.OpenAPIFileOption{
+					{
+						File: "b.proto",
+					},
+				},
+			},
+			shouldErr: true,
+		},
+		{
+			desc: "error if method does not exist",
+			options: &openapiconfig.OpenAPIOptions{
+				Method: []*openapiconfig.OpenAPIMethodOption{
+					{
+						Method: "example.foo.AService.Meth2",
+					},
+				},
+			},
+			shouldErr: true,
+		},
+		{
+			desc: "error if message does not exist",
+			options: &openapiconfig.OpenAPIOptions{
+				Message: []*openapiconfig.OpenAPIMessageOption{
+					{
+						Message: "example.foo.NonexistentMessage",
+					},
+				},
+			},
+			shouldErr: true,
+		},
+		{
+			desc: "error if service does not exist",
+			options: &openapiconfig.OpenAPIOptions{
+				Service: []*openapiconfig.OpenAPIServiceOption{
+					{
+						Service: "example.foo.AService1",
+					},
+				},
+			},
+			shouldErr: true,
+		},
+		{
+			desc: "error if field does not exist",
+			options: &openapiconfig.OpenAPIOptions{
+				Field: []*openapiconfig.OpenAPIFieldOption{
+					{
+						Field: "example.foo.ExampleMessage.str1",
+					},
+				},
+			},
+			shouldErr: true,
+		},
+	} {
+		t.Run(tcase.desc, func(t *testing.T) {
+			reg := NewRegistry()
+			loadFileWithCodeGeneratorRequest(t, reg, &codeReq)
+			err := reg.RegisterOpenAPIOptions(tcase.options)
+			if (err != nil) != tcase.shouldErr {
+				t.Fatalf("got unexpected error: %s", err)
+			}
+		})
+	}
 }
 
 func assertStringSlice(t *testing.T, message string, got, want []string) {

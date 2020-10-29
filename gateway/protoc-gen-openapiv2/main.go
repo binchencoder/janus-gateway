@@ -7,13 +7,14 @@ import (
 	"strings"
 
 	"github.com/golang/glog"
-	pluginpb "github.com/golang/protobuf/protoc-gen-go/plugin"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/codegenerator"
+
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
 	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
 	// genopenapi "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/internal/genopenapi"
 	genopenapi "github.com/binchencoder/ease-gateway/gateway/protoc-gen-openapiv2/internal/genopenapi"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/pluginpb"
 )
 
 var (
@@ -33,6 +34,8 @@ var (
 	disableDefaultErrors       = flag.Bool("disable_default_errors", false, "if set, disables generation of default errors. This is useful if you have defined custom error handling")
 	enumsAsInts                = flag.Bool("enums_as_ints", false, "whether to render enum values as integers, as opposed to string values")
 	simpleOperationIDs         = flag.Bool("simple_operation_ids", false, "whether to remove the service prefix in the operationID generation. Can introduce duplicate operationIDs, use with caution.")
+	openAPIConfiguration       = flag.String("openapi_configuration", "", "path to OpenAPI Configuration in YAML format")
+	generateUnboundMethods     = flag.Bool("generate_unbound_methods", false, "generate swagger metadata even for RPC methods that have no HttpRule annotation")
 )
 
 // Variables set by goreleaser at build time
@@ -88,6 +91,7 @@ func main() {
 	reg.SetEnumsAsInts(*enumsAsInts)
 	reg.SetDisableDefaultErrors(*disableDefaultErrors)
 	reg.SetSimpleOperationIDs(*simpleOperationIDs)
+	reg.SetGenerateUnboundMethods(*generateUnboundMethods)
 	if err := reg.SetRepeatedPathParamSeparator(*repeatedPathParamSeparator); err != nil {
 		emitError(err)
 		return
@@ -115,6 +119,13 @@ func main() {
 		return
 	}
 
+	if *openAPIConfiguration != "" {
+		if err := reg.LoadOpenAPIConfigFromYAML(*openAPIConfiguration); err != nil {
+			emitError(err)
+			return
+		}
+	}
+
 	var targets []*descriptor.File
 	for _, target := range req.FileToGenerate {
 		f, err := reg.LookupFile(target)
@@ -133,8 +144,12 @@ func main() {
 	emitFiles(out)
 }
 
-func emitFiles(out []*pluginpb.CodeGeneratorResponse_File) {
-	emitResp(&pluginpb.CodeGeneratorResponse{File: out})
+func emitFiles(out []*descriptor.ResponseFile) {
+	files := make([]*pluginpb.CodeGeneratorResponse_File, len(out))
+	for idx, item := range out {
+		files[idx] = item.CodeGeneratorResponse_File
+	}
+	emitResp(&pluginpb.CodeGeneratorResponse{File: files})
 }
 
 func emitError(err error) {

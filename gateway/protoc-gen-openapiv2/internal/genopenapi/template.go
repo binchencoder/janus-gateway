@@ -15,23 +15,31 @@ import (
 	"text/template"
 
 	"github.com/golang/glog"
-	descriptorpb "github.com/golang/protobuf/protoc-gen-go/descriptor"
 	structpb "github.com/golang/protobuf/ptypes/struct"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/casing"
 	"github.com/binchencoder/ease-gateway/gateway/internal/casing"
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
 	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
-
-	options "github.com/binchencoder/ease-gateway/httpoptions"
-
 	// openapi_options "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	openapi_options "github.com/binchencoder/ease-gateway/gateway/protoc-gen-openapiv2/options"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/descriptorpb"
+
+	options "github.com/binchencoder/ease-gateway/httpoptions"
 )
 
+// wktSchemas are the schemas of well-known-types.
+// The schemas must match with the behavior of the JSON unmarshaler in
+// https://github.com/protocolbuffers/protobuf-go/blob/v1.25.0/encoding/protojson/well_known_types.go
 var wktSchemas = map[string]schemaCore{
+	".google.protobuf.FieldMask": {
+		Type: "array",
+		Items: (*openapiItemsObject)(&schemaCore{
+			Type: "string",
+		}),
+	},
 	".google.protobuf.Timestamp": {
 		Type:   "string",
 		Format: "date-time",
@@ -115,9 +123,9 @@ func getEnumDefault(enum *descriptor.Enum) string {
 }
 
 // messageToQueryParameters converts a message to a list of OpenAPI query parameters.
-func messageToQueryParameters(message *descriptor.Message, reg *descriptor.Registry, pathParams []descriptor.Parameter) (params []openapiParameterObject, err error) {
+func messageToQueryParameters(message *descriptor.Message, reg *descriptor.Registry, pathParams []descriptor.Parameter, body *descriptor.Body) (params []openapiParameterObject, err error) {
 	for _, field := range message.Fields {
-		p, err := queryParams(message, field, "", reg, pathParams)
+		p, err := queryParams(message, field, "", reg, pathParams, body)
 		if err != nil {
 			return nil, err
 		}
@@ -127,8 +135,8 @@ func messageToQueryParameters(message *descriptor.Message, reg *descriptor.Regis
 }
 
 // queryParams converts a field to a list of OpenAPI query parameters recursively through the use of nestedQueryParams.
-func queryParams(message *descriptor.Message, field *descriptor.Field, prefix string, reg *descriptor.Registry, pathParams []descriptor.Parameter) (params []openapiParameterObject, err error) {
-	return nestedQueryParams(message, field, prefix, reg, pathParams, map[string]bool{})
+func queryParams(message *descriptor.Message, field *descriptor.Field, prefix string, reg *descriptor.Registry, pathParams []descriptor.Parameter, body *descriptor.Body) (params []openapiParameterObject, err error) {
+	return nestedQueryParams(message, field, prefix, reg, pathParams, body, map[string]bool{})
 }
 
 // nestedQueryParams converts a field to a list of OpenAPI query parameters recursively.
@@ -137,11 +145,22 @@ func queryParams(message *descriptor.Message, field *descriptor.Field, prefix st
 //      touched map[string]bool
 // If a cycle is discovered, an error is returned, as cyclical data structures aren't allowed
 //  in query parameters.
-func nestedQueryParams(message *descriptor.Message, field *descriptor.Field, prefix string, reg *descriptor.Registry, pathParams []descriptor.Parameter, touchedIn map[string]bool) (params []openapiParameterObject, err error) {
+func nestedQueryParams(message *descriptor.Message, field *descriptor.Field, prefix string, reg *descriptor.Registry, pathParams []descriptor.Parameter, body *descriptor.Body, touchedIn map[string]bool) (params []openapiParameterObject, err error) {
 	// make sure the parameter is not already listed as a path parameter
 	for _, pathParam := range pathParams {
 		if pathParam.Target == field {
 			return nil, nil
+		}
+	}
+	// make sure the parameter is not already listed as a body parameter
+	if body != nil {
+		if body.FieldPath == nil {
+			return nil, nil
+		}
+		for _, fieldPath := range body.FieldPath {
+			if fieldPath.Target == field {
+				return nil, nil
+			}
 		}
 	}
 	schema := schemaOfField(field, reg, nil)
@@ -236,7 +255,7 @@ func nestedQueryParams(message *descriptor.Message, field *descriptor.Field, pre
 	// Check for cyclical message reference:
 	isCycle := touchedIn[*msg.Name]
 	if isCycle {
-		return nil, fmt.Errorf("Recursive types are not allowed for query parameters, cycle found on %q", fieldType)
+		return nil, fmt.Errorf("recursive types are not allowed for query parameters, cycle found on %q", fieldType)
 	}
 
 	// Construct a new map with the message name so a cycle further down the recursive path can be detected.
@@ -255,7 +274,7 @@ func nestedQueryParams(message *descriptor.Message, field *descriptor.Field, pre
 		} else {
 			fieldName = field.GetName()
 		}
-		p, err := nestedQueryParams(msg, nestedField, prefix+fieldName+".", reg, pathParams, touchedOut)
+		p, err := nestedQueryParams(msg, nestedField, prefix+fieldName+".", reg, pathParams, body, touchedOut)
 		if err != nil {
 			return nil, err
 		}
@@ -349,7 +368,7 @@ func renderMessagesAsDefinition(messages messageMap, d openapiDefinitionsObject,
 		if err := updateOpenAPIDataFromComments(reg, &schema, msg, msgComments, false); err != nil {
 			panic(err)
 		}
-		opts, err := extractSchemaOptionFromMessageDescriptor(msg.DescriptorProto)
+		opts, err := getMessageOpenAPIOption(reg, msg)
 		if err != nil {
 			panic(err)
 		}
@@ -492,7 +511,7 @@ func schemaOfField(f *descriptor.Field, reg *descriptor.Registry, refs refMap) o
 		}
 	}
 
-	if j, err := extractJSONSchemaFromFieldDescriptor(fd); err == nil {
+	if j, err := getFieldOpenAPIOption(reg, f); err == nil {
 		updateswaggerObjectFromJSONSchema(&ret, j, reg, f)
 	}
 
@@ -526,9 +545,10 @@ func primitiveSchema(t descriptorpb.FieldDescriptorProto_Type) (ftype, format st
 		// Ditto.
 		return "integer", "int64", true
 	case descriptorpb.FieldDescriptorProto_TYPE_BOOL:
-		return "boolean", "boolean", true
+		// NOTE: in OpenAPI specification, format should be empty on boolean type
+		return "boolean", "", true
 	case descriptorpb.FieldDescriptorProto_TYPE_STRING:
-		// NOTE: in OpenAPI specifition, format should be empty on string type
+		// NOTE: in OpenAPI specification, format should be empty on string type
 		return "string", "", true
 	case descriptorpb.FieldDescriptorProto_TYPE_BYTES:
 		return "string", "byte", true
@@ -904,9 +924,15 @@ func renderServices(services []*descriptor.Service, paths openapiPathsObject, re
 						Required:    true,
 						Schema:      &schema,
 					})
+					// add the parameters to the query string
+					queryParams, err := messageToQueryParameters(meth.RequestType, reg, b.PathParams, b.Body)
+					if err != nil {
+						return err
+					}
+					parameters = append(parameters, queryParams...)
 				} else if b.HTTPMethod == "GET" || b.HTTPMethod == "DELETE" {
 					// add the parameters to the query string
-					queryParams, err := messageToQueryParameters(meth.RequestType, reg, b.PathParams)
+					queryParams, err := messageToQueryParameters(meth.RequestType, reg, b.PathParams, b.Body)
 					if err != nil {
 						return err
 					}
@@ -971,13 +997,13 @@ func renderServices(services []*descriptor.Service, paths openapiPathsObject, re
 							},
 						},
 					}
-					streamErrDef, hasStreamError := fullyQualifiedNameToOpenAPIName(".grpc.gateway.runtime.StreamError", reg)
-					if hasStreamError {
+					statusDef, hasStatus := fullyQualifiedNameToOpenAPIName(".google.rpc.Status", reg)
+					if hasStatus {
 						props = append(props, keyVal{
 							Key: "error",
 							Value: openapiSchemaObject{
 								schemaCore: schemaCore{
-									Ref: fmt.Sprintf("#/definitions/%s", streamErrDef)},
+									Ref: fmt.Sprintf("#/definitions/%s", statusDef)},
 							},
 						})
 					}
@@ -1001,11 +1027,11 @@ func renderServices(services []*descriptor.Service, paths openapiPathsObject, re
 					},
 				}
 				if !reg.GetDisableDefaultErrors() {
-					errDef, hasErrDef := fullyQualifiedNameToOpenAPIName(".grpc.gateway.runtime.Error", reg)
+					errDef, hasErrDef := fullyQualifiedNameToOpenAPIName(".google.rpc.Status", reg)
 					if hasErrDef {
 						// https://github.com/OAI/OpenAPI-Specification/blob/3.0.0/versions/2.0.md#responses-object
 						operationObject.Responses["default"] = openapiResponseObject{
-							Description: "An unexpected error response",
+							Description: "An unexpected error response.",
 							Schema: openapiSchemaObject{
 								schemaCore: schemaCore{
 									Ref: fmt.Sprintf("#/definitions/%s", errDef),
@@ -1035,7 +1061,7 @@ func renderServices(services []*descriptor.Service, paths openapiPathsObject, re
 					panic(err)
 				}
 
-				opts, err := extractOperationOptionFromMethodDescriptor(meth.MethodDescriptorProto)
+				opts, err := getMethodOpenAPIOption(reg, meth)
 				if opts != nil {
 					if err != nil {
 						panic(err)
@@ -1172,7 +1198,7 @@ func applyTemplate(p param) (*openapiSwaggerObject, error) {
 
 	if !p.reg.GetDisableDefaultErrors() {
 		// Add the error type to the message map
-		runtimeError, swgRef, err := lookupMsgAndOpenAPIName(".grpc.gateway.runtime", "Error", p.reg)
+		runtimeError, swgRef, err := lookupMsgAndOpenAPIName("google.rpc", "Status", p.reg)
 		if err == nil {
 			messages[swgRef] = runtimeError
 		} else {
@@ -1195,7 +1221,7 @@ func applyTemplate(p param) (*openapiSwaggerObject, error) {
 	}
 
 	// There may be additional options in the OpenAPI option in the proto.
-	spb, err := extractOpenAPIOptionFromFileDescriptor(p.FileDescriptorProto)
+	spb, err := getFileOpenAPIOption(p.reg, p.File)
 	if err != nil {
 		panic(err)
 	}
@@ -1784,6 +1810,66 @@ func extractJSONSchemaFromFieldDescriptor(fd *descriptorpb.FieldDescriptorProto)
 	return opts, nil
 }
 
+func getMethodOpenAPIOption(reg *descriptor.Registry, meth *descriptor.Method) (*openapi_options.Operation, error) {
+	opts, err := extractOperationOptionFromMethodDescriptor(meth.MethodDescriptorProto)
+	if err != nil {
+		return nil, err
+	}
+	if opts != nil {
+		return opts, nil
+	}
+	opts, ok := reg.GetOpenAPIMethodOption(meth.FQMN())
+	if !ok {
+		return nil, nil
+	}
+	return opts, nil
+}
+
+func getMessageOpenAPIOption(reg *descriptor.Registry, msg *descriptor.Message) (*openapi_options.Schema, error) {
+	opts, err := extractSchemaOptionFromMessageDescriptor(msg.DescriptorProto)
+	if err != nil {
+		return nil, err
+	}
+	if opts != nil {
+		return opts, nil
+	}
+	opts, ok := reg.GetOpenAPIMessageOption(msg.FQMN())
+	if !ok {
+		return nil, nil
+	}
+	return opts, nil
+}
+
+func getFileOpenAPIOption(reg *descriptor.Registry, file *descriptor.File) (*openapi_options.Swagger, error) {
+	opts, err := extractOpenAPIOptionFromFileDescriptor(file.FileDescriptorProto)
+	if err != nil {
+		return nil, err
+	}
+	if opts != nil {
+		return opts, nil
+	}
+	opts, ok := reg.GetOpenAPIFileOption(*file.Name)
+	if !ok {
+		return nil, nil
+	}
+	return opts, nil
+}
+
+func getFieldOpenAPIOption(reg *descriptor.Registry, fd *descriptor.Field) (*openapi_options.JSONSchema, error) {
+	opts, err := extractJSONSchemaFromFieldDescriptor(fd.FieldDescriptorProto)
+	if err != nil {
+		return nil, err
+	}
+	if opts != nil {
+		return opts, nil
+	}
+	opts, ok := reg.GetOpenAPIFieldOption(fd.FQFN())
+	if !ok {
+		return nil, nil
+	}
+	return opts, nil
+}
+
 func protoJSONSchemaToOpenAPISchemaCore(j *openapi_options.JSONSchema, reg *descriptor.Registry, refs refMap) schemaCore {
 	ret := schemaCore{}
 
@@ -1843,8 +1929,8 @@ func openapiSchemaFromProtoSchema(s *openapi_options.Schema, reg *descriptor.Reg
 	ret.schemaCore = protoJSONSchemaToOpenAPISchemaCore(s.GetJsonSchema(), reg, refs)
 	updateswaggerObjectFromJSONSchema(&ret, s.GetJsonSchema(), reg, data)
 
-	if s != nil && s.Example != nil {
-		ret.Example = json.RawMessage(s.Example.Value)
+	if s != nil && s.Example != "" {
+		ret.Example = json.RawMessage(s.Example)
 	}
 
 	return ret
@@ -1889,13 +1975,14 @@ func protoJSONSchemaTypeToFormat(in []openapi_options.JSONSchema_JSONSchemaSimpl
 	case openapi_options.JSONSchema_ARRAY:
 		return "array", ""
 	case openapi_options.JSONSchema_BOOLEAN:
-		return "boolean", "boolean"
+		// NOTE: in OpenAPI specification, format should be empty on boolean type
+		return "boolean", ""
 	case openapi_options.JSONSchema_INTEGER:
 		return "integer", "int32"
 	case openapi_options.JSONSchema_NUMBER:
 		return "number", "double"
 	case openapi_options.JSONSchema_STRING:
-		// NOTE: in OpenAPI specifition, format should be empty on string type
+		// NOTE: in OpenAPI specification, format should be empty on string type
 		return "string", ""
 	default:
 		// Maybe panic?
