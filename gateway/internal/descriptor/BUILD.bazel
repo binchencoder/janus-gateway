@@ -14,9 +14,9 @@ go_library(
     importpath = "github.com/binchencoder/ease-gateway/gateway/internal/descriptor",
     deps = [
         "//gateway/internal/casing:go_default_library",
-	"//gateway/internal/descriptor/apiconfig:go_default_library",
-	"//gateway/internal/descriptor/openapiconfig:go_default_library",
-	"//gateway/protoc-gen-openapiv2/options:go_default_library",
+        "//gateway/internal/descriptor/apiconfig:go_default_library",
+        "//gateway/internal/descriptor/openapiconfig:go_default_library",
+        "//gateway/protoc-gen-openapiv2/options:go_default_library",
         "//httpoptions:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_ghodss_yaml//:go_default_library",

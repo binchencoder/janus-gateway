@@ -31,7 +31,7 @@ go_test(
     ],
     embed = [":go_default_library"],
     deps = [
-    	"//gateway/internal/descriptor:go_default_library",
+        "//gateway/internal/descriptor:go_default_library",
         "@com_github_grpc_ecosystem_grpc_gateway//internal/httprule:go_default_library",
         "@org_golang_google_protobuf//proto:go_default_library",
         "@org_golang_google_protobuf//types/descriptorpb:go_default_library",

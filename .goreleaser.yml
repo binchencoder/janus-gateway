@@ -21,9 +21,9 @@ builds:
       - windows
     goarch:
       - amd64
-archive:
-  name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
-  format: binary
-  replacements:
-    amd64: x86_64
+archives:
+  - name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+    format: binary
+    replacements:
+      amd64: x86_64
 dist: _output
