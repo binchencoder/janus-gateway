@@ -11,7 +11,7 @@ import (
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	// pb "github.com/grpc-ecosystem/grpc-gateway/v2/runtime/internal/examplepb"
-	pb "github.com/binchencoder/ease-gateway/examples/proto"
+	pb "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"

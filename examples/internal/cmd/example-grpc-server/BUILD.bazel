@@ -5,10 +5,10 @@ package(default_visibility = ["//visibility:private"])
 go_library(
     name = "go_default_library",
     srcs = ["main.go"],
-    importpath = "github.com/binchencoder/ease-gateway/examples/cmd/example-grpc-server",
+    importpath = "github.com/binchencoder/ease-gateway/examples/internal/cmd/example-grpc-server",
     deps = [
-        "//examples/proto:go_default_library",
-        "//examples/server:go_default_library",
+        "//examples/internal/proto/examplepb:go_default_library",
+        "//examples/internal/server:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_binchencoder_skylb_api//server:go_default_library",
         "@com_github_golang_glog//:go_default_library",

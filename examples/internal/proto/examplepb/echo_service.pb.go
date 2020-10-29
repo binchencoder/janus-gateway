@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.22.0
 // 	protoc        v3.8.0
-// source: examples/proto/echo_service.proto
+// source: examples/internal/proto/examplepb/echo_service.proto
 
 package proto
 

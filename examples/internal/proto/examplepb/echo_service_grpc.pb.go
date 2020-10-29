@@ -154,5 +154,5 @@ var _EchoService_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "examples/proto/echo_service.proto",
+	Metadata: "examples/internal/proto/examplepb/echo_service.proto",
 }

@@ -204,6 +204,13 @@ def go_repositories():
         version = "v0.1.3",
     )
     go_repository(
+        name = "com_github_rogpeppe_fastuuid",
+        importpath = "github.com/rogpeppe/fastuuid",
+        sum = "h1:Ppwyp6VYCF1nvBTXL3trRso7mXMlRrw9ooo375wvi2s=",
+        version = "v1.2.0",
+    )
+
+    go_repository(
         name = "in_gopkg_yaml_v2",
         importpath = "gopkg.in/yaml.v2",
         sum = "h1:uUkhRGrsEyx/laRdeS6YIQKIys8pg+lRSRdVMTYjivs=",

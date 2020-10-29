@@ -29,3 +29,6 @@ bin/
 # Java files
 *.exe
 target/
+
+# vscode
+.vscode/

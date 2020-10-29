@@ -55,8 +55,8 @@
 				<configuration>
 					<protoSourceRoot>../</protoSourceRoot>
 					<includes>
-						<param>proto/examples/*.proto</param>
-						<param>proto/examples/*/*.proto</param>
+						<param>proto/examples/internal/*.proto</param>
+						<param>proto/examples/internal/*/*.proto</param>
 					</includes>
 				</configuration>
 				<executions>

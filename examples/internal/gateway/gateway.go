@@ -5,17 +5,16 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"time"
 
-	"github.com/binchencoder/ease-gateway/examples/proto"
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
+	gwruntime "github.com/binchencoder/ease-gateway/gateway/runtime"
 	"google.golang.org/grpc"
 )
 
 // newGateway returns a new gateway server which translates HTTP into gRPC.
-func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []runtime.ServeMuxOption) (http.Handler, error) {
-	sgs := runtime.GetServicGroups()
-	fmt.Printf("runtime.GetServicGroups: %v", sgs)
+func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []gwruntime.ServeMuxOption) (http.Handler, error) {
+	sgs := gwruntime.GetServicGroups()
+	fmt.Printf("gwruntime.GetServicGroups: %v", sgs)
 	for _, sg := range sgs {
 		go sg.Enable()
 		spec := sg.Spec
@@ -23,11 +22,11 @@ func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []runtime.Serve
 			spec.ServiceName, spec.Namespace, spec.PortName)
 	}
 
-	mux := runtime.NewServeMux(opts...)
+	mux := gwruntime.NewServeMux(opts...)
 
-	// proto.Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup()
-	for _, f := range []func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error{
-		proto.RegisterEchoServiceHandler,
+	// examplepb.Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup()
+	for _, f := range []func(context.Context, *gwruntime.ServeMux, *grpc.ClientConn) error{
+		examplepb.RegisterEchoServiceHandler,
 	} {
 		if err := f(ctx, mux, conn); err != nil {
 			return nil, err
@@ -56,8 +55,8 @@ func dialTCP(ctx context.Context, addr string) (*grpc.ClientConn, error) {
 // dialUnix creates a client connection via a unix domain socket.
 // "addr" must be a valid path to the socket.
 func dialUnix(ctx context.Context, addr string) (*grpc.ClientConn, error) {
-	d := func(addr string, timeout time.Duration) (net.Conn, error) {
-		return net.DialTimeout("unix", addr, timeout)
+	d := func(ctx context.Context, addr string) (net.Conn, error) {
+		return (&net.Dialer{}).DialContext(ctx, "unix", addr)
 	}
-	return grpc.DialContext(ctx, addr, grpc.WithInsecure(), grpc.WithDialer(d))
+	return grpc.DialContext(ctx, addr, grpc.WithInsecure(), grpc.WithContextDialer(d))
 }
