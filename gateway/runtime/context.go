@@ -9,10 +9,10 @@ import (
 	"net/textproto"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
@@ -41,6 +41,8 @@ var (
 	DefaultContextTimeout = 0 * time.Second
 )
 
+type rpcMethodKey struct{}
+
 func decodeBinHeader(v string) ([]byte, error) {
 	if len(v)%4 == 0 {
 		// Input was padded, or padding was not necessary.
@@ -56,8 +58,8 @@ At a minimum, the RemoteAddr is included in the fashion of "X-Forwarded-For",
 except that the forwarded destination is not another HTTP service but rather
 a gRPC service.
 */
-func AnnotateContext(ctx context.Context, mux *ServeMux, req *http.Request) (context.Context, error) {
-	ctx, md, err := annotateContext(ctx, mux, req)
+func AnnotateContext(ctx context.Context, mux *ServeMux, req *http.Request, rpcMethodName string) (context.Context, error) {
+	ctx, md, err := annotateContext(ctx, mux, req, rpcMethodName)
 	if err != nil {
 		return nil, err
 	}
@@ -70,8 +72,8 @@ func AnnotateContext(ctx context.Context, mux *ServeMux, req *http.Request) (con
 
 // AnnotateIncomingContext adds context information such as metadata from the request.
 // Attach metadata as incoming context.
-func AnnotateIncomingContext(ctx context.Context, mux *ServeMux, req *http.Request) (context.Context, error) {
-	ctx, md, err := annotateContext(ctx, mux, req)
+func AnnotateIncomingContext(ctx context.Context, mux *ServeMux, req *http.Request, rpcMethodName string) (context.Context, error) {
+	ctx, md, err := annotateContext(ctx, mux, req, rpcMethodName)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +84,8 @@ func AnnotateIncomingContext(ctx context.Context, mux *ServeMux, req *http.Reque
 	return metadata.NewIncomingContext(ctx, md), nil
 }
 
-func annotateContext(ctx context.Context, mux *ServeMux, req *http.Request) (context.Context, metadata.MD, error) {
+func annotateContext(ctx context.Context, mux *ServeMux, req *http.Request, rpcMethodName string) (context.Context, metadata.MD, error) {
+	ctx = withRPCMethod(ctx, rpcMethodName)
 	var pairs []string
 	timeout := DefaultContextTimeout
 	if tm := req.Header.Get(metadataGrpcTimeout); tm != "" {
@@ -94,8 +97,8 @@ func annotateContext(ctx context.Context, mux *ServeMux, req *http.Request) (con
 	}
 
 	for key, vals := range req.Header {
+		key = textproto.CanonicalMIMEHeaderKey(key)
 		for _, val := range vals {
-			key = textproto.CanonicalMIMEHeaderKey(key)
 			// For backwards-compatibility, pass through 'authorization' header with no prefix.
 			if key == "Authorization" {
 				pairs = append(pairs, "authorization", val)
@@ -128,8 +131,6 @@ func annotateContext(ctx context.Context, mux *ServeMux, req *http.Request) (con
 			} else {
 				pairs = append(pairs, strings.ToLower(xForwardedFor), fmt.Sprintf("%s, %s", fwd, remoteIP))
 			}
-		} else {
-			grpclog.Infof("invalid remote addr: %s", addr)
 		}
 	}
 
@@ -163,6 +164,63 @@ func NewServerMetadataContext(ctx context.Context, md ServerMetadata) context.Co
 func ServerMetadataFromContext(ctx context.Context) (md ServerMetadata, ok bool) {
 	md, ok = ctx.Value(serverMetadataKey{}).(ServerMetadata)
 	return
+}
+
+// ServerTransportStream implements grpc.ServerTransportStream.
+// It should only be used by the generated files to support grpc.SendHeader
+// outside of gRPC server use.
+type ServerTransportStream struct {
+	mu      sync.Mutex
+	header  metadata.MD
+	trailer metadata.MD
+}
+
+// Method returns the method for the stream.
+func (s *ServerTransportStream) Method() string {
+	return ""
+}
+
+// Header returns the header metadata of the stream.
+func (s *ServerTransportStream) Header() metadata.MD {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.header.Copy()
+}
+
+// SetHeader sets the header metadata.
+func (s *ServerTransportStream) SetHeader(md metadata.MD) error {
+	if md.Len() == 0 {
+		return nil
+	}
+
+	s.mu.Lock()
+	s.header = metadata.Join(s.header, md)
+	s.mu.Unlock()
+	return nil
+}
+
+// SendHeader sets the header metadata.
+func (s *ServerTransportStream) SendHeader(md metadata.MD) error {
+	return s.SetHeader(md)
+}
+
+// Trailer returns the cached trailer metadata.
+func (s *ServerTransportStream) Trailer() metadata.MD {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.trailer.Copy()
+}
+
+// SetTrailer sets the trailer metadata.
+func (s *ServerTransportStream) SetTrailer(md metadata.MD) error {
+	if md.Len() == 0 {
+		return nil
+	}
+
+	s.mu.Lock()
+	s.trailer = metadata.Join(s.trailer, md)
+	s.mu.Unlock()
+	return nil
 }
 
 func timeoutDecode(s string) (time.Duration, error) {
@@ -233,4 +291,22 @@ func isPermanentHTTPHeader(hdr string) bool {
 		return true
 	}
 	return false
+}
+
+// RPCMethod returns the method string for the server context. The returned
+// string is in the format of "/package.service/method".
+func RPCMethod(ctx context.Context) (string, bool) {
+	m := ctx.Value(rpcMethodKey{})
+	if m == nil {
+		return "", false
+	}
+	ms, ok := m.(string)
+	if !ok {
+		return "", false
+	}
+	return ms, true
+}
+
+func withRPCMethod(ctx context.Context, rpcMethodName string) context.Context {
+	return context.WithValue(ctx, rpcMethodKey{}, rpcMethodName)
 }

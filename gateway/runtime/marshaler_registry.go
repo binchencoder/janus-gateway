@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc/grpclog"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 // MIMEWildcard is the fallback MIME type used for requests which do not match
@@ -16,9 +17,15 @@ var (
 	acceptHeader      = http.CanonicalHeaderKey("Accept")
 	contentTypeHeader = http.CanonicalHeaderKey("Content-Type")
 
-	defaultMarshaler = &JSONPb{
-		OrigName:    true,
-		EnumsAsInts: true,
+	defaultMarshaler = &HTTPBodyMarshaler{
+		Marshaler: &JSONPb{
+			MarshalOptions: protojson.MarshalOptions{
+				EmitUnpopulated: true,
+			},
+			UnmarshalOptions: protojson.UnmarshalOptions{
+				DiscardUnknown: true,
+			},
+		},
 	}
 )
 

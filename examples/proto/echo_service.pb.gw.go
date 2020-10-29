@@ -25,13 +25,13 @@ import (
 	"github.com/binchencoder/skylb-api/client"
 	"github.com/binchencoder/skylb-api/client/option"
 	skypb "github.com/binchencoder/skylb-api/proto"
-	"github.com/golang/protobuf/proto"
-	"github.com/grpc-ecosystem/grpc-gateway/utilities"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/naming"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 )
 
 // Suppress "imported and not used" errors
@@ -86,7 +86,6 @@ func request_EchoService_Echo_0(ctx context.Context, marshaler runtime.Marshaler
 	}
 
 	protoReq.Id, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -128,7 +127,6 @@ func local_request_EchoService_Echo_0(ctx context.Context, marshaler runtime.Mar
 	}
 
 	protoReq.Id, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -168,7 +166,6 @@ func request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Marshaler
 	}
 
 	protoReq.Id, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -180,7 +177,6 @@ func request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Marshaler
 	}
 
 	protoReq.Num, err = runtime.Int64(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "num", err)
 	}
@@ -222,7 +218,6 @@ func local_request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Mar
 	}
 
 	protoReq.Id, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -233,7 +228,6 @@ func local_request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Mar
 	}
 
 	protoReq.Num, err = runtime.Int64(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "num", err)
 	}
@@ -273,7 +267,6 @@ func request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler
 	}
 
 	protoReq.Id, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -285,7 +278,6 @@ func request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler
 	}
 
 	protoReq.Num, err = runtime.Int64(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "num", err)
 	}
@@ -302,7 +294,6 @@ func request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_Lang, but: %t\n", protoReq.Code)
 	}
 	protoReq.Code.(*SimpleMessage_Lang).Lang, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "lang", err)
 	}
@@ -344,7 +335,6 @@ func local_request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Mar
 	}
 
 	protoReq.Id, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -355,7 +345,6 @@ func local_request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Mar
 	}
 
 	protoReq.Num, err = runtime.Int64(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "num", err)
 	}
@@ -371,7 +360,6 @@ func local_request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_Lang, but: %t\n", protoReq.Code)
 	}
 	protoReq.Code.(*SimpleMessage_Lang).Lang, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "lang", err)
 	}
@@ -411,7 +399,6 @@ func request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler
 	}
 
 	protoReq.Id, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -428,7 +415,6 @@ func request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_LineNum, but: %t\n", protoReq.Code)
 	}
 	protoReq.Code.(*SimpleMessage_LineNum).LineNum, err = runtime.Int64(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "line_num", err)
 	}
@@ -440,7 +426,6 @@ func request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler
 	}
 
 	err = runtime.PopulateFieldFromPath(&protoReq, "status.note", val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "status.note", err)
 	}
@@ -482,7 +467,6 @@ func local_request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Mar
 	}
 
 	protoReq.Id, err = runtime.String(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
@@ -498,7 +482,6 @@ func local_request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Mar
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "expect type: *SimpleMessage_LineNum, but: %t\n", protoReq.Code)
 	}
 	protoReq.Code.(*SimpleMessage_LineNum).LineNum, err = runtime.Int64(val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "line_num", err)
 	}
@@ -509,7 +492,6 @@ func local_request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Mar
 	}
 
 	err = runtime.PopulateFieldFromPath(&protoReq, "status.note", val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "status.note", err)
 	}
@@ -549,7 +531,6 @@ func request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Marshaler
 	}
 
 	err = runtime.PopulateFieldFromPath(&protoReq, "no.note", val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "no.note", err)
 	}
@@ -591,7 +572,6 @@ func local_request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Mar
 	}
 
 	err = runtime.PopulateFieldFromPath(&protoReq, "no.note", val)
-
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "no.note", err)
 	}
@@ -707,7 +687,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -727,7 +707,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -747,7 +727,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -767,7 +747,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -787,7 +767,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -807,7 +787,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/EchoBody")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -827,7 +807,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/EchoDelete")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -913,12 +893,13 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
 		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
-			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
+			err := status.Error(codes.Internal, "service disabled")
+			runtime.HTTPError(inctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
@@ -927,7 +908,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -949,12 +930,13 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
 		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
-			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
+			err := status.Error(codes.Internal, "service disabled")
+			runtime.HTTPError(inctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
@@ -963,7 +945,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -985,12 +967,13 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
 		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
-			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
+			err := status.Error(codes.Internal, "service disabled")
+			runtime.HTTPError(inctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
@@ -999,7 +982,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1021,12 +1004,13 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
 		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
-			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
+			err := status.Error(codes.Internal, "service disabled")
+			runtime.HTTPError(inctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
@@ -1035,7 +1019,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1057,12 +1041,13 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
 		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
-			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
+			err := status.Error(codes.Internal, "service disabled")
+			runtime.HTTPError(inctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
@@ -1071,7 +1056,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/Echo")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1093,12 +1078,13 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
 		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
-			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
+			err := status.Error(codes.Internal, "service disabled")
+			runtime.HTTPError(inctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoBody", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
@@ -1107,7 +1093,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/EchoBody")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1129,12 +1115,13 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
 		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
 		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
-			runtime.DefaultOtherErrorHandler(w, req, "service disabled", http.StatusInternalServerError)
+			err := status.Error(codes.Internal, "service disabled")
+			runtime.HTTPError(inctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoDelete", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
@@ -1143,7 +1130,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/grpc.gateway.examples.proto.EchoService/EchoDelete")
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1207,19 +1194,19 @@ func DisableEchoService_Service() {
 }
 
 var (
-	pattern_EchoService_Echo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "echo", "id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_EchoService_Echo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "echo", "id"}, ""))
 
-	pattern_EchoService_Echo_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "example", "echo", "id", "num"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_EchoService_Echo_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "example", "echo", "id", "num"}, ""))
 
-	pattern_EchoService_Echo_2 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"v1", "example", "echo", "id", "num", "lang"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_EchoService_Echo_2 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"v1", "example", "echo", "id", "num", "lang"}, ""))
 
-	pattern_EchoService_Echo_3 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"v1", "example", "echo1", "id", "line_num", "status.note"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_EchoService_Echo_3 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"v1", "example", "echo1", "id", "line_num", "status.note"}, ""))
 
-	pattern_EchoService_Echo_4 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "echo2", "no.note"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_EchoService_Echo_4 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "example", "echo2", "no.note"}, ""))
 
-	pattern_EchoService_EchoBody_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "example", "echo_body"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_EchoService_EchoBody_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "example", "echo_body"}, ""))
 
-	pattern_EchoService_EchoDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "example", "echo_delete"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_EchoService_EchoDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "example", "echo_delete"}, ""))
 )
 
 var (

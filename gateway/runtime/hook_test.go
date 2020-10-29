@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/golang/protobuf/proto"
 	"golang.org/x/net/context"
+	"google.golang.org/protobuf/proto"
 )
 
 type GatewayServiceHookFake struct {

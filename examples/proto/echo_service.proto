@@ -1,11 +1,8 @@
 syntax = "proto3";
-option go_package = "proto";
 
-// Echo Service
-//
-// Echo Service API consists of a single service which returns
-// a message.
-package ease.gateway.examples.proto;
+option go_package = "github.com/binchencoder/ease-gateway/examples/proto";
+
+package grpc.gateway.examples.proto;
 
 // import "google/api/annotations.proto";
 import "httpoptions/annotations.proto";
