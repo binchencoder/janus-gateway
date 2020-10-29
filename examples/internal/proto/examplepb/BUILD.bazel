@@ -32,13 +32,6 @@ package(default_visibility = ["//visibility:public"])
 # gazelle:exclude openapi_merge_b.proto
 # gazelle:go_grpc_compilers //:go_apiv2, //:go_grpc, //protoc-gen-grpc-gateway:go_gen_grpc_gateway
 
-genrule(
-    name = "generated_proto",
-    srcs = ["generated_input.proto"],
-    outs = ["generated_output.proto"],
-    cmd = "cp $< $@",  # A simple copy simulates a generated proto file.
-)
-
 proto_library(
     name = "examplepb_proto",
     srcs = [
