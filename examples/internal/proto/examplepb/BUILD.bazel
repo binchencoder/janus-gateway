@@ -65,17 +65,17 @@ go_proto_library(
     deps = [
     	"//httpoptions:go_default_library",
         "@com_github_binchencoder_letsgo//grpc:go_default_library",
-	"@com_github_binchencoder_skylb_api//balancer:go_default_library",
-	"@com_github_binchencoder_skylb_api//client:go_default_library",
-	"@com_github_binchencoder_skylb_api//client/option:go_default_library",
-	"@com_github_binchencoder_skylb_api//proto:go_default_library",
+        "@com_github_binchencoder_skylb_api//balancer:go_default_library",
+        "@com_github_binchencoder_skylb_api//client:go_default_library",
+        "@com_github_binchencoder_skylb_api//client/option:go_default_library",
+        "@com_github_binchencoder_skylb_api//proto:go_default_library",
         "//gateway/protoc-gen-openapiv2/options:go_default_library",
         "@com_github_golang_protobuf//descriptor:go_default_library_gen",  # keep
         "@go_googleapis//google/api:annotations_go_proto",
         "@go_googleapis//google/api:httpbody_go_proto",
         "@go_googleapis//google/rpc:status_go_proto",
         "@org_golang_google_protobuf//proto:go_default_library",  # keep
-	"@org_golang_google_grpc//naming:go_default_library",
+	    "@org_golang_google_grpc//naming:go_default_library",
     ],
 )
 
