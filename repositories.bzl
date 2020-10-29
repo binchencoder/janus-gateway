@@ -30,9 +30,9 @@ def go_repositories():
         name = "com_github_grpc_ecosystem_grpc_gateway",
         importpath = "github.com/grpc-ecosystem/grpc-gateway",
         urls = [
-            "https://codeload.github.com/grpc-ecosystem/grpc-gateway/tar.gz/5c1639cccb7d6abc747643ed07321b0052b809d5",
+            "https://codeload.github.com/grpc-ecosystem/grpc-gateway/tar.gz/4c0eb48d8af04ffff04a53a6824ac625f0f62945",
         ],
-        strip_prefix = "grpc-gateway-5c1639cccb7d6abc747643ed07321b0052b809d5",
+        strip_prefix = "grpc-gateway-4c0eb48d8af04ffff04a53a6824ac625f0f62945",
         type = "tar.gz",
     )
     go_repository(
