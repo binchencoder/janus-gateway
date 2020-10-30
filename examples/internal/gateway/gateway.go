@@ -14,7 +14,7 @@ import (
 // newGateway returns a new gateway server which translates HTTP into gRPC.
 func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []gwruntime.ServeMuxOption) (http.Handler, error) {
 	sgs := gwruntime.GetServicGroups()
-	fmt.Printf("gwruntime.GetServicGroups: %v", sgs)
+	fmt.Printf("gwruntime.GetServicGroups: %v \n", sgs)
 	for _, sg := range sgs {
 		go sg.Enable()
 		spec := sg.Spec

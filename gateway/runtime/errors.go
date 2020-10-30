@@ -8,7 +8,6 @@ import (
 
 	"github.com/golang/protobuf/jsonpb"
 
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/status"
@@ -95,7 +94,7 @@ func DefaultHTTPErrorHandler(ctx context.Context, mux *ServeMux, marshaler Marsh
 	w.Header().Set("Content-Type", contentType)
 
 	e := fpb.Error{}
-	desc := grpc.ErrorDesc(err)
+	desc := s.Message()
 	if erru := jsonpb.UnmarshalString(desc, &e); erru != nil {
 		e.Code = fpb.ErrorCode_UNDEFINED
 		e.Params = []string{desc}

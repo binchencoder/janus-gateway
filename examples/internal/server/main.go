@@ -5,9 +5,9 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/golang/glog"
 	examples "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/golang/glog"
 	"google.golang.org/grpc"
 )
 

@@ -16,24 +16,15 @@ def go_repositories():
     go_repository(
         name = "com_github_binchencoder_gateway_proto",
         importpath = "github.com/binchencoder/gateway-proto",
-        sum = "h1:2oh9Y8/qlMX1K3m73XDMU9U3mA06WMkLmJrMi4nFlCc=",
-        version = "v0.0.5",
+        sum = "h1:ZvjzhU0CR93EdhqGtQj0Wkwd76D+KsvMuNEMAS1XVos=",
+        version = "v0.0.8",
     )
 
-    # go_repository(
-    #     name = "com_github_grpc_ecosystem_grpc_gateway",
-    #     importpath = "github.com/grpc-ecosystem/grpc-gateway",
-    #     sum = "h1:8ERzHx8aj1Sc47mu9n/AksaKCSWrMchFtkdrS4BIj5o=",
-    #     version = "v1.14.6",
-    # )
     go_repository(
         name = "com_github_grpc_ecosystem_grpc_gateway",
-        importpath = "github.com/grpc-ecosystem/grpc-gateway",
-        urls = [
-            "https://codeload.github.com/grpc-ecosystem/grpc-gateway/tar.gz/4c0eb48d8af04ffff04a53a6824ac625f0f62945",
-        ],
-        strip_prefix = "grpc-gateway-4c0eb48d8af04ffff04a53a6824ac625f0f62945",
-        type = "tar.gz",
+        importpath = "github.com/grpc-ecosystem/grpc-gateway/v2",
+        sum = "h1:X2vfSnm1WC8HEo0MBHZg2TcuDUHJj6kd1TmEAQncnSA=",
+        version = "v2.0.1",
     )
     go_repository(
         name = "com_github_grpc_ecosystem_grpc_opentracing",
