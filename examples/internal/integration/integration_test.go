@@ -46,7 +46,7 @@ func testEcho(t *testing.T, port int, apiPrefix string, contentType string) {
 		return
 	}
 
-	if apiPrefix == "v2" {
+	if apiPrefix != "v1" {
 		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
 			t.Errorf("resp.StatusCode = %d; want %d", got, want)
 			t.Logf("%s", buf)
@@ -86,7 +86,7 @@ func testEchoOneof(t *testing.T, port int, apiPrefix string, contentType string)
 		return
 	}
 
-	if apiPrefix == "v2" {
+	if apiPrefix != "v1" {
 		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
 			t.Errorf("resp.StatusCode = %d; want %d", got, want)
 			t.Logf("%s", buf)
@@ -126,7 +126,7 @@ func testEchoOneof1(t *testing.T, port int, apiPrefix string, contentType string
 		return
 	}
 
-	if apiPrefix == "v2" {
+	if apiPrefix != "v1" {
 		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
 			t.Errorf("resp.StatusCode = %d; want %d", got, want)
 			t.Logf("%s", buf)
@@ -166,7 +166,7 @@ func testEchoOneof2(t *testing.T, port int, apiPrefix string, contentType string
 		return
 	}
 
-	if apiPrefix == "v2" {
+	if apiPrefix != "v1" {
 		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
 			t.Errorf("resp.StatusCode = %d; want %d", got, want)
 			t.Logf("%s", buf)
@@ -212,7 +212,7 @@ func testEchoOneof2(t *testing.T, port int, apiPrefix string, contentType string
 // 		return
 // 	}
 
-// 	if apiPrefix == "v2" {
+// 	if apiPrefix != "v1" {
 // 		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
 // 			t.Errorf("resp.StatusCode = %d; want %d", got, want)
 // 			t.Logf("%s", buf)
