@@ -23,7 +23,7 @@ import "data/data.proto";
 import "frontend/error.proto";
 
 option java_multiple_files = true;
-// option go_package = "github.com/binchencoder/ease-gateway/httpoptions;annotations";
+option go_package = "github.com/binchencoder/ease-gateway/httpoptions;annotations";
 option java_outer_classname = "AnnotationsProto";
 option java_package = "com.ease.api";
 option objc_class_prefix = "EAPI";
