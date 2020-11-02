@@ -1,7 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "examples/internal/proto/examplepb/echo_service.proto",
+    "title": "Echo Service",
+    "description": "Echo Service API consists of a single service which returns\na message.",
     "version": "version not set"
   },
   "consumes": [
@@ -20,7 +21,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoSimpleMessage"
+              "$ref": "#/definitions/examplepbSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -47,7 +54,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoSimpleMessage"
+              "$ref": "#/definitions/examplepbSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -127,7 +140,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoSimpleMessage"
+              "$ref": "#/definitions/examplepbSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -207,7 +226,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoSimpleMessage"
+              "$ref": "#/definitions/examplepbSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -281,7 +306,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoSimpleMessage"
+              "$ref": "#/definitions/examplepbSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -346,15 +377,21 @@
         ]
       }
     },
-    "/v1/example/echo_body": {
+    "/v1/example/echo:validationRules": {
       "post": {
-        "summary": "EchoBody method receives a simple message and returns it.",
-        "operationId": "EchoService_EchoBody",
+        "summary": "EchoValidationRule method for validation http rules integration test.",
+        "operationId": "EchoService_EchoValidationRule",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoSimpleMessage"
+              "$ref": "#/definitions/examplepbValidationRuleTestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -364,7 +401,40 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoSimpleMessage"
+              "$ref": "#/definitions/examplepbValidationRuleTestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "EchoService"
+        ]
+      }
+    },
+    "/v1/example/echo_body": {
+      "post": {
+        "summary": "EchoBody method receives a simple message and returns it.",
+        "operationId": "EchoService_EchoBody",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/examplepbSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/examplepbSimpleMessage"
             }
           }
         ],
@@ -381,7 +451,13 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoSimpleMessage"
+              "$ref": "#/definitions/examplepbSimpleMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -451,10 +527,79 @@
           "EchoService"
         ]
       }
+    },
+    "/v1/example/echo_patch": {
+      "patch": {
+        "summary": "EchoPatch method receives a NonStandardUpdateRequest and returns it.",
+        "operationId": "EchoService_EchoPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/examplepbDynamicMessageUpdate"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/examplepbDynamicMessage"
+            }
+          },
+          {
+            "name": "updateMask",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "EchoService"
+        ]
+      }
     }
   },
   "definitions": {
-    "protoEmbedded": {
+    "examplepbDynamicMessage": {
+      "type": "object",
+      "properties": {
+        "structField": {
+          "type": "object"
+        },
+        "valueField": {
+          "type": "object"
+        }
+      },
+      "description": "DynamicMessage represents a message which can have its structure\nbuilt dynamically using Struct and Values."
+    },
+    "examplepbDynamicMessageUpdate": {
+      "type": "object",
+      "properties": {
+        "body": {
+          "$ref": "#/definitions/examplepbDynamicMessage"
+        },
+        "updateMask": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "examplepbEmbedded": {
       "type": "object",
       "properties": {
         "progress": {
@@ -467,7 +612,7 @@
       },
       "description": "Embedded represents a message embedded in SimpleMessage."
     },
-    "protoSimpleMessage": {
+    "examplepbSimpleMessage": {
       "type": "object",
       "properties": {
         "id": {
@@ -486,17 +631,98 @@
           "type": "string"
         },
         "status": {
-          "$ref": "#/definitions/protoEmbedded"
+          "$ref": "#/definitions/examplepbEmbedded"
         },
         "en": {
           "type": "string",
           "format": "int64"
         },
         "no": {
-          "$ref": "#/definitions/protoEmbedded"
+          "$ref": "#/definitions/examplepbEmbedded"
         }
       },
       "description": "SimpleMessage represents a simple message sent to the Echo service."
+    },
+    "examplepbValidationRuleTestRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "rules": [
+            {
+              "operator": 5,
+              "type": 2
+            },
+            {
+              "operator": 6,
+              "type": 2,
+              "value": "2",
+              "function": 1
+            },
+            {
+              "operator": 7,
+              "type": 2,
+              "value": "61",
+              "function": 1
+            }
+          ],
+          "description": "Id represents the message identifier."
+        },
+        "num": {
+          "type": "string",
+          "format": "int64",
+          "rules": [
+            {
+              "operator": 1,
+              "type": 1,
+              "value": "0"
+            }
+          ]
+        }
+      },
+      "description": "ValidationRuleTestRequest represents a message for validation http rules integration test."
+    },
+    "examplepbValidationRuleTestResponse": {
+      "type": "object",
+      "description": "ValidationRuleTestResponse represents a validation http rules integration test response."
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "protobufNullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
     }
   }
 }

@@ -57,5 +57,4 @@ func RunInProcessGateway(ctx context.Context, addr string, opts ...runtime.Serve
 		return err
 	}
 	return nil
-
 }

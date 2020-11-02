@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 
-	"github.com/golang/glog"
 	examples "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
+	"github.com/golang/glog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
@@ -19,6 +19,14 @@ func newEchoServer() examples.EchoServiceServer {
 
 func (s *echoServer) Echo(ctx context.Context, msg *examples.SimpleMessage) (*examples.SimpleMessage, error) {
 	glog.Info(msg)
+	grpc.SendHeader(ctx, metadata.New(map[string]string{
+		"foo": "foo1",
+		"bar": "bar1",
+	}))
+	grpc.SetTrailer(ctx, metadata.New(map[string]string{
+		"foo": "foo2",
+		"bar": "bar2",
+	}))
 	return msg, nil
 }
 
@@ -43,4 +51,9 @@ func (s *echoServer) EchoDelete(ctx context.Context, msg *examples.SimpleMessage
 func (s *echoServer) EchoPatch(ctx context.Context, msg *examples.DynamicMessageUpdate) (*examples.DynamicMessageUpdate, error) {
 	glog.Info(msg)
 	return msg, nil
+}
+
+func (s *echoServer) EchoValidationRule(ctx context.Context, msg *examples.ValidationRuleTestRequest) (*examples.ValidationRuleTestResponse, error) {
+	glog.Info(msg)
+	return &examples.ValidationRuleTestResponse{}, nil
 }

@@ -38,6 +38,9 @@ func TestEcho(t *testing.T) {
 			testEchoBody(t, 8089, apiPrefix)
 		})
 	}
+	t.Run("testEchoValidationRules", func(t *testing.T) {
+		testEchoValidationRules(t, 8088, "application/json")
+	})
 }
 
 func TestEchoPatch(t *testing.T) {
@@ -164,6 +167,20 @@ func testEcho(t *testing.T, port int, apiPrefix string, contentType string) {
 		}
 		if got, want := msg.Id, "myid"; got != want {
 			t.Errorf("msg.Id = %q; want %q", got, want)
+		}
+
+		if got, want := resp.Header.Get("Grpc-Metadata-Foo"), "foo1"; got != want {
+			t.Errorf("Grpc-Metadata-Foo was %q, wanted %q", got, want)
+		}
+		if got, want := resp.Header.Get("Grpc-Metadata-Bar"), "bar1"; got != want {
+			t.Errorf("Grpc-Metadata-Bar was %q, wanted %q", got, want)
+		}
+
+		if got, want := resp.Trailer.Get("Grpc-Trailer-Foo"), "foo2"; got != want {
+			t.Errorf("Grpc-Trailer-Foo was %q, wanted %q", got, want)
+		}
+		if got, want := resp.Trailer.Get("Grpc-Trailer-Bar"), "bar2"; got != want {
+			t.Errorf("Grpc-Trailer-Bar was %q, wanted %q", got, want)
 		}
 	}
 
@@ -332,7 +349,12 @@ func testEchoBody(t *testing.T, port int, apiPrefix string) {
 			t.Errorf(diff)
 		}
 
+		if value := resp.Header.Get("Content-Type"); value != "application/json" {
+			t.Errorf("Content-Type was %s, wanted %s", value, "application/json")
+		}
+
 		// fmt.Printf("headers: %v \n", resp.Header)
+		// fmt.Printf("apiURL: %s \n", apiURL)
 		// if got, want := resp.Header.Get("Grpc-Metadata-Foo"), "foo1"; got != want {
 		// 	t.Errorf("Grpc-Metadata-Foo was %q, wanted %q", got, want)
 		// }
@@ -346,5 +368,66 @@ func testEchoBody(t *testing.T, port int, apiPrefix string) {
 		// if got, want := resp.Trailer.Get("Grpc-Trailer-Bar"), "bar2"; got != want {
 		// 	t.Errorf("Grpc-Trailer-Bar was %q, wanted %q", got, want)
 		// }
+	}
+}
+
+func testEchoValidationRules(t *testing.T, port int, contentType string) {
+	sent := examplepb.ValidationRuleTestRequest{
+		Id:  "example", // rules: NON_NIL, LEN_GT:2, LEN_LT: 61
+		Num: 11,        // rules: GT:0
+	}
+	payload, err := marshaler.Marshal(&sent)
+	if err != nil {
+		t.Fatalf("marshaler.Marshal(%#v) failed with %v; want success", payload, err)
+	}
+
+	apiURL := fmt.Sprintf("http://localhost:%d/v1/example/echo:validationRules", port)
+	resp, err := http.Post(apiURL, "", bytes.NewReader(payload))
+	if err != nil {
+		t.Errorf("http.Post(%q) failed with %v; want success", apiURL, err)
+		return
+	}
+	defer resp.Body.Close()
+	buf, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Errorf("ioutil.ReadAll(resp.Body) failed with %v; want success", err)
+		return
+	}
+
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("resp.StatusCode = %d; want %d", got, want)
+		t.Logf("%s", buf)
+	}
+
+	//  Test validation error
+	sent = examplepb.ValidationRuleTestRequest{
+		Id:  "a", // rules: NON_NIL, LEN_GT:2, LEN_LT: 61
+		Num: 0,   // rules: GT:0
+	}
+	payload, err = marshaler.Marshal(&sent)
+	if err != nil {
+		t.Fatalf("marshaler.Marshal(%#v) failed with %v; want success", payload, err)
+	}
+
+	apiURL = fmt.Sprintf("http://localhost:%d/v1/example/echo:validationRules", port)
+	resp, err = http.Post(apiURL, "", bytes.NewReader(payload))
+	if err != nil {
+		t.Errorf("http.Post(%q) failed with %v; want success", apiURL, err)
+		return
+	}
+	defer resp.Body.Close()
+	buf, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Errorf("ioutil.ReadAll(resp.Body) failed with %v; want success", err)
+		return
+	}
+
+	if got, want := resp.StatusCode, http.StatusBadRequest; got != want {
+		t.Errorf("resp.StatusCode = %d; want %d", got, want)
+		t.Logf("%s", buf)
+	}
+
+	if value := resp.Header.Get("Content-Type"); value != contentType {
+		t.Errorf("Content-Type was %s, wanted %s", value, contentType)
 	}
 }

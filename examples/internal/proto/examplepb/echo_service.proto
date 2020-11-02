@@ -36,6 +36,46 @@ message SimpleMessage {
 	}
 }
 
+// ValidationRuleTestRequest represents a message for validation http rules integration test.
+message ValidationRuleTestRequest {
+    // Id represents the message identifier.
+    string id = 1 
+    [
+        (ease.api.rules) = {
+            rules: {
+                type: STRING,
+                operator: NON_NIL,
+            },
+            rules: {
+                type: STRING,
+                function: TRIM,
+                operator: LEN_GT,
+                value: "2",
+            },
+            rules: {
+                type: STRING,
+                function: TRIM,
+                operator: LEN_LT,
+                value: "61",
+            }
+        }
+    ];
+    int64 num = 2 
+    [
+        (ease.api.rules) = {
+            rules: {
+                type: NUMBER,
+                operator: GT,
+                value: "0",
+            }
+        }
+    ];
+}
+
+// ValidationRuleTestResponse represents a validation http rules integration test response.
+message ValidationRuleTestResponse {
+}
+
 // DynamicMessage represents a message which can have its structure
 // built dynamically using Struct and Values.
 message DynamicMessage {
@@ -97,5 +137,13 @@ service EchoService {
 			patch: "/v1/example/echo_patch"
 			body: "body"
 		};
-	}
+    }
+    
+    // EchoValidationRule method for validation http rules integration test.
+    rpc EchoValidationRule(ValidationRuleTestRequest) returns (ValidationRuleTestResponse) {
+        option (ease.api.http) = {
+			post: "/v1/example/echo:validationRules"
+			body: "*"
+		};
+    };
 }
