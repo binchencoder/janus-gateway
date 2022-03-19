@@ -12,7 +12,7 @@ go_test(
         # "//examples/internal/proto/examplepb:unannotated_go_default_library",
         "//examples/internal/server:go_default_library",
         "//gateway/runtime:go_default_library",
-        "//httpoptions:go_default_library",
+        "//httpoptions",
         "@com_github_golang_glog//:go_default_library",
         "@com_github_google_go_cmp//cmp:go_default_library",
         "@go_googleapis//google/rpc:status_go_proto",

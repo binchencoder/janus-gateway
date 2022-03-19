@@ -1,29 +1,37 @@
 module github.com/binchencoder/ease-gateway
 
-go 1.13
+go 1.17
 
 require (
 	github.com/binchencoder/gateway-proto v0.0.7
 	github.com/binchencoder/letsgo v0.0.3
 	github.com/binchencoder/skylb-api v0.0.5
-	github.com/fatih/color v1.9.0
-	github.com/ghodss/yaml v1.0.0
-	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-	github.com/golang/protobuf v1.4.3
-	github.com/google/go-cmp v0.5.2
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
-	github.com/klauspost/compress v1.10.10
-	github.com/pborman/uuid v1.2.0
-	github.com/prometheus/client_golang v1.7.1
-	golang.org/x/net v0.0.0-20200822124328-c89045814202
-	google.golang.org/genproto v0.0.0-20201019141844-1ed22bb0c154
-	google.golang.org/grpc v1.33.1
-	google.golang.org/protobuf v1.25.0
+	github.com/antihax/optional v1.0.0
+	github.com/golang/glog v1.0.0
+	github.com/golang/protobuf v1.5.2
+	github.com/google/go-cmp v0.5.7
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0
+	github.com/rogpeppe/fastuuid v1.2.0
+	golang.org/x/oauth2 v0.0.0-20220309155454-6242fa91716a
+	google.golang.org/genproto v0.0.0-20220314164441-57ef72a4c106
+	google.golang.org/grpc v1.45.0
+	google.golang.org/protobuf v1.27.1
+	gopkg.in/yaml.v2 v2.4.0
+	sigs.k8s.io/yaml v1.3.0
+)
+
+require (
+	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
+	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
+	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	google.golang.org/appengine v1.6.6 // indirect
 )
 
 replace (
 	github.com/coreos/bbolt v1.3.4 => go.etcd.io/bbolt v1.3.4
 	github.com/coreos/bbolt v1.3.5 => go.etcd.io/bbolt v1.3.5
-	google.golang.org/grpc v1.30.0 => google.golang.org/grpc v1.29.1
-	google.golang.org/grpc v1.33.1 => google.golang.org/grpc v1.29.1
+	// google.golang.org/grpc v1.30.0 => google.golang.org/grpc v1.29.1
+	// google.golang.org/grpc v1.33.1 => google.golang.org/grpc v1.29.1
+    // google.golang.org/grpc => google.golang.org/grpc v1.29.1
 )

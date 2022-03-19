@@ -2,9 +2,9 @@ package runtime
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
-	"strings"
 
 	"github.com/golang/protobuf/jsonpb"
 
@@ -24,6 +24,17 @@ type StreamErrorHandlerFunc func(context.Context, error) *status.Status
 
 // RoutingErrorHandlerFunc is the signature used to configure error handling for routing errors.
 type RoutingErrorHandlerFunc func(context.Context, *ServeMux, Marshaler, http.ResponseWriter, *http.Request, int)
+
+// HTTPStatusError is the error to use when needing to provide a different HTTP status code for an error
+// passed to the DefaultRoutingErrorHandler.
+type HTTPStatusError struct {
+	HTTPStatus int
+	Err        error
+}
+
+func (e *HTTPStatusError) Error() string {
+	return e.Err.Error()
+}
 
 // HTTPStatusFromCode converts a gRPC error code into the corresponding HTTP response status.
 // See: https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
@@ -77,12 +88,21 @@ func HTTPError(ctx context.Context, mux *ServeMux, marshaler Marshaler, w http.R
 
 // DefaultHTTPErrorHandler is the default error handler.
 // If "err" is a gRPC Status, the function replies with the status code mapped by HTTPStatusFromCode.
+// If "err" is a HTTPStatusError, the function replies with the status code provide by that struct. This is
+// intended to allow passing through of specific statuses via the function set via WithRoutingErrorHandler
+// for the ServeMux constructor to handle edge cases which the standard mappings in HTTPStatusFromCode
+// are insufficient for.
 // If otherwise, it replies with http.StatusInternalServerError.
 //
 // The response body written by this function is a Status message marshaled by the Marshaler.
 func DefaultHTTPErrorHandler(ctx context.Context, mux *ServeMux, marshaler Marshaler, w http.ResponseWriter, r *http.Request, err error) {
 	// return Internal when Marshal failed
 	const fallback = `{"code": 13, "message": "failed to marshal error message"}`
+
+	var customStatus *HTTPStatusError
+	if errors.As(err, &customStatus) {
+		err = customStatus.Err
+	}
 
 	s := status.Convert(err)
 	pb := s.Proto()
@@ -93,6 +113,9 @@ func DefaultHTTPErrorHandler(ctx context.Context, mux *ServeMux, marshaler Marsh
 	contentType := marshaler.ContentType(pb)
 	w.Header().Set("Content-Type", contentType)
 
+	if s.Code() == codes.Unauthenticated {
+		w.Header().Set("WWW-Authenticate", s.Message())
+	}
 	e := fpb.Error{}
 	desc := s.Message()
 	if erru := jsonpb.UnmarshalString(desc, &e); erru != nil {
@@ -103,7 +126,7 @@ func DefaultHTTPErrorHandler(ctx context.Context, mux *ServeMux, marshaler Marsh
 		Error:   &e,
 		Message: s.Message(),
 		Code:    int32(s.Code()),
-		Details: s.Proto().GetDetails(),
+		Details: pb.GetDetails(),
 	}
 
 	buf, merr := marshaler.Marshal(body)
@@ -128,21 +151,24 @@ func DefaultHTTPErrorHandler(ctx context.Context, mux *ServeMux, marshaler Marsh
 	// is acceptable, as described in Section 4.3, a server SHOULD NOT
 	// generate trailer fields that it believes are necessary for the user
 	// agent to receive.
-	var wantsTrailers bool
+	doForwardTrailers := requestAcceptsTrailers(r)
 
-	if te := r.Header.Get("TE"); strings.Contains(strings.ToLower(te), "trailers") {
-		wantsTrailers = true
+	if doForwardTrailers {
 		handleForwardResponseTrailerHeader(w, md)
 		w.Header().Set("Transfer-Encoding", "chunked")
 	}
 
 	st := HTTPStatusFromCode(s.Code())
+	if customStatus != nil {
+		st = customStatus.HTTPStatus
+	}
+
 	w.WriteHeader(st)
 	if _, err := w.Write(buf); err != nil {
 		grpclog.Infof("Failed to write response: %v", err)
 	}
 
-	if wantsTrailers {
+	if doForwardTrailers {
 		handleForwardResponseTrailer(w, md)
 	}
 }

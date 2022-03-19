@@ -6,12 +6,18 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"strconv"
+	"strings"
 	"testing"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/health/grpc_health_v1"
+	"google.golang.org/grpc/status"
 )
 
 func TestMuxServeHTTP(t *testing.T) {
@@ -32,6 +38,7 @@ func TestMuxServeHTTP(t *testing.T) {
 		respContent string
 
 		disablePathLengthFallback bool
+		unescapingMode            runtime.UnescapingMode
 	}{
 		{
 			patterns:   nil,
@@ -310,11 +317,163 @@ func TestMuxServeHTTP(t *testing.T) {
 			},
 			respStatus: http.StatusBadRequest,
 		},
+		{
+			patterns: []stubPattern{
+				{
+					method: "POST",
+					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
+					pool:   []string{"foo", "id"},
+				},
+				{
+					method: "POST",
+					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 0, int(utilities.OpConcatN), 1, int(utilities.OpCapture), 1},
+					pool:   []string{"foo", "id"},
+					verb:   "verb:subverb",
+				},
+			},
+			reqMethod: "POST",
+			reqPath:   "/foo/bar:verb:subverb",
+			headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			respStatus:  http.StatusOK,
+			respContent: "POST /foo/{id=*}:verb:subverb",
+		},
+		{
+			patterns: []stubPattern{
+				{
+					method: "GET",
+					ops:    []int{int(utilities.OpLitPush), 0, int(utilities.OpPush), 1, int(utilities.OpCapture), 1, int(utilities.OpLitPush), 2},
+					pool:   []string{"foo", "id", "bar"},
+				},
+			},
+			reqMethod: "POST",
+			reqPath:   "/foo/404%2fwith%2Fspace/bar",
+			headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			respStatus:     http.StatusNotFound,
+			unescapingMode: runtime.UnescapingModeLegacy,
+		},
+		{
+			patterns: []stubPattern{
+				{
+					method: "GET",
+					ops: []int{
+						int(utilities.OpLitPush), 0,
+						int(utilities.OpPush), 0,
+						int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+						int(utilities.OpLitPush), 2},
+					pool: []string{"foo", "id", "bar"},
+				},
+			},
+			reqMethod: "GET",
+			reqPath:   "/foo/success%2fwith%2Fspace/bar",
+			headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			respStatus:     http.StatusOK,
+			unescapingMode: runtime.UnescapingModeAllExceptReserved,
+			respContent:    "GET /foo/{id=*}/bar",
+		},
+		{
+			patterns: []stubPattern{
+				{
+					method: "GET",
+					ops: []int{
+						int(utilities.OpLitPush), 0,
+						int(utilities.OpPush), 0,
+						int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+						int(utilities.OpLitPush), 2},
+					pool: []string{"foo", "id", "bar"},
+				},
+			},
+			reqMethod: "GET",
+			reqPath:   "/foo/success%2fwith%2Fspace/bar",
+			headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			respStatus:     http.StatusNotFound,
+			unescapingMode: runtime.UnescapingModeAllCharacters,
+		},
+		{
+			patterns: []stubPattern{
+				{
+					method: "GET",
+					ops: []int{
+						int(utilities.OpLitPush), 0,
+						int(utilities.OpPush), 0,
+						int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+						int(utilities.OpLitPush), 2},
+					pool: []string{"foo", "id", "bar"},
+				},
+			},
+			reqMethod: "GET",
+			reqPath:   "/foo/success%2fwith%2Fspace/bar",
+			headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			respStatus:     http.StatusNotFound,
+			unescapingMode: runtime.UnescapingModeLegacy,
+		},
+		{
+			patterns: []stubPattern{
+				{
+					method: "GET",
+					ops: []int{
+						int(utilities.OpLitPush), 0,
+						int(utilities.OpPushM), 0,
+						int(utilities.OpConcatN), 1,
+						int(utilities.OpCapture), 1,
+					},
+					pool: []string{"foo", "id", "bar"},
+				},
+			},
+			reqMethod: "GET",
+			reqPath:   "/foo/success%2fwith%2Fspace",
+			headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			respStatus:     http.StatusOK,
+			unescapingMode: runtime.UnescapingModeAllExceptReserved,
+			respContent:    "GET /foo/{id=**}",
+		},
+		{
+			patterns: []stubPattern{
+				{
+					method: "POST",
+					ops: []int{
+						int(utilities.OpLitPush), 0,
+						int(utilities.OpLitPush), 1,
+						int(utilities.OpLitPush), 2,
+						int(utilities.OpPush), 0,
+						int(utilities.OpConcatN), 2,
+						int(utilities.OpCapture), 3,
+					},
+					pool: []string{"api", "v1", "organizations", "name"},
+					verb: "action",
+				},
+			},
+			reqMethod: "POST",
+			reqPath:   "/api/v1/" + url.QueryEscape("organizations/foo") + ":action",
+			headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			respStatus:     http.StatusOK,
+			unescapingMode: runtime.UnescapingModeAllCharacters,
+			respContent:    "POST /api/v1/{name=organizations/*}:action",
+		},
 	} {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			var opts []runtime.ServeMuxOption
+			opts = append(opts, runtime.WithUnescapingMode(spec.unescapingMode))
 			if spec.disablePathLengthFallback {
-				opts = append(opts, runtime.WithDisablePathLengthFallback())
+				opts = append(opts,
+					runtime.WithDisablePathLengthFallback(),
+				)
 			}
 			mux := runtime.NewServeMux(opts...)
 			for _, p := range spec.patterns {
@@ -329,10 +488,10 @@ func TestMuxServeHTTP(t *testing.T) {
 				}(p)
 			}
 
-			url := fmt.Sprintf("http://host.example%s", spec.reqPath)
-			r, err := http.NewRequest(spec.reqMethod, url, bytes.NewReader(nil))
+			reqUrl := fmt.Sprintf("https://host.example%s", spec.reqPath)
+			r, err := http.NewRequest(spec.reqMethod, reqUrl, bytes.NewReader(nil))
 			if err != nil {
-				t.Fatalf("http.NewRequest(%q, %q, nil) failed with %v; want success", spec.reqMethod, url, err)
+				t.Fatalf("http.NewRequest(%q, %q, nil) failed with %v; want success", spec.reqMethod, reqUrl, err)
 			}
 			for name, value := range spec.headers {
 				r.Header.Set(name, value)
@@ -399,6 +558,12 @@ var defaultRouteMatcherTests = []struct {
 	valid  bool
 }{
 	{
+		"Test route /",
+		"GET",
+		"/",
+		true,
+	},
+	{
 		"Simple Endpoint",
 		"GET",
 		"/v1/{bucket}/do:action",
@@ -439,5 +604,137 @@ func TestServeMux_HandlePath(t *testing.T) {
 			}
 		})
 	}
+}
 
+var healthCheckTests = []struct {
+	name           string
+	code           codes.Code
+	status         grpc_health_v1.HealthCheckResponse_ServingStatus
+	httpStatusCode int
+}{
+	{
+		"Test grpc error code",
+		codes.NotFound,
+		grpc_health_v1.HealthCheckResponse_UNKNOWN,
+		http.StatusNotFound,
+	},
+	{
+		"Test HealthCheckResponse_SERVING",
+		codes.OK,
+		grpc_health_v1.HealthCheckResponse_SERVING,
+		http.StatusOK,
+	},
+	{
+		"Test HealthCheckResponse_NOT_SERVING",
+		codes.OK,
+		grpc_health_v1.HealthCheckResponse_NOT_SERVING,
+		http.StatusServiceUnavailable,
+	},
+	{
+		"Test HealthCheckResponse_UNKNOWN",
+		codes.OK,
+		grpc_health_v1.HealthCheckResponse_UNKNOWN,
+		http.StatusServiceUnavailable,
+	},
+	{
+		"Test HealthCheckResponse_SERVICE_UNKNOWN",
+		codes.OK,
+		grpc_health_v1.HealthCheckResponse_SERVICE_UNKNOWN,
+		http.StatusNotFound,
+	},
+}
+
+func TestWithHealthzEndpoint_codes(t *testing.T) {
+	for _, tt := range healthCheckTests {
+		t.Run(tt.name, func(t *testing.T) {
+			mux := runtime.NewServeMux(runtime.WithHealthzEndpoint(&dummyHealthCheckClient{status: tt.status, code: tt.code}, 1 /* sid */))
+
+			r := httptest.NewRequest(http.MethodGet, "/healthz", nil)
+			rr := httptest.NewRecorder()
+
+			mux.ServeHTTP(rr, r)
+
+			if rr.Code != tt.httpStatusCode {
+				t.Errorf(
+					"result http status code for grpc code %q and status %q should be %d, got %d",
+					tt.code, tt.status, tt.httpStatusCode, rr.Code,
+				)
+			}
+		})
+	}
+}
+
+func TestWithHealthEndpointAt_consistentWithHealthz(t *testing.T) {
+	const endpointPath = "/healthz"
+
+	r := httptest.NewRequest(http.MethodGet, endpointPath, nil)
+
+	for _, tt := range healthCheckTests {
+		tt := tt
+
+		t.Run(tt.name, func(t *testing.T) {
+			client := &dummyHealthCheckClient{
+				status: tt.status,
+				code:   tt.code,
+			}
+
+			w := httptest.NewRecorder()
+
+			runtime.NewServeMux(
+				runtime.WithHealthEndpointAt(client, endpointPath),
+			).ServeHTTP(w, r)
+
+			refW := httptest.NewRecorder()
+
+			runtime.NewServeMux(
+				runtime.WithHealthzEndpoint(client, 1 /* sid */),
+			).ServeHTTP(refW, r)
+
+			if w.Code != refW.Code {
+				t.Errorf(
+					"result http status code for grpc code %q and status %q should be equal to %d, but got %d",
+					tt.code, tt.status, refW.Code, w.Code,
+				)
+			}
+		})
+	}
+}
+
+func TestWithHealthzEndpoint_serviceParam(t *testing.T) {
+	service := "test"
+
+	// trigger error to output service in body
+	dummyClient := dummyHealthCheckClient{status: grpc_health_v1.HealthCheckResponse_UNKNOWN, code: codes.Unknown}
+	mux := runtime.NewServeMux(runtime.WithHealthzEndpoint(&dummyClient, 1 /* sid */))
+
+	r := httptest.NewRequest(http.MethodGet, "/healthz?service="+service, nil)
+	rr := httptest.NewRecorder()
+
+	mux.ServeHTTP(rr, r)
+
+	if !strings.Contains(rr.Body.String(), service) {
+		t.Errorf(
+			"service query parameter should be translated to HealthCheckRequest: expected %s to contain %s",
+			rr.Body.String(), service,
+		)
+	}
+}
+
+var _ grpc_health_v1.HealthClient = (*dummyHealthCheckClient)(nil)
+
+type dummyHealthCheckClient struct {
+	status grpc_health_v1.HealthCheckResponse_ServingStatus
+	code   codes.Code
+}
+
+func (g *dummyHealthCheckClient) Check(ctx context.Context, r *grpc_health_v1.HealthCheckRequest, opts ...grpc.CallOption) (*grpc_health_v1.HealthCheckResponse, error) {
+	if g.code != codes.OK {
+		return nil, status.Error(g.code, r.GetService())
+	}
+
+	return &grpc_health_v1.HealthCheckResponse{Status: g.status}, nil
+}
+
+func (g *dummyHealthCheckClient) Watch(ctx context.Context, r *grpc_health_v1.HealthCheckRequest, opts ...grpc.CallOption) (grpc_health_v1.Health_WatchClient, error) {
+	return nil, status.Error(codes.Unimplemented, "unimplemented")
 }

@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 package(default_visibility = ["//visibility:public"])
 
 go_library(
-    name = "go_default_library",
+    name = "gengateway",
     srcs = [
         "doc.go",
         "generator.go",
@@ -11,29 +11,35 @@ go_library(
     ],
     importpath = "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway/internal/gengateway",
     deps = [
-        "//httpoptions:go_default_library",
-        "//gateway/internal/casing:go_default_library",
-        "//gateway/internal/descriptor:go_default_library",
-        "//gateway/internal/generator:go_default_library",
-        "@com_github_grpc_ecosystem_grpc_gateway//utilities:go_default_library",
-        "@com_github_golang_glog//:go_default_library",
-        "@org_golang_google_protobuf//proto:go_default_library",
-        "@org_golang_google_protobuf//types/pluginpb:go_default_library",
+        "//httpoptions",
+        "//gateway/internal/casing",
+        "//gateway/internal/descriptor",
+        "//gateway/internal/generator",
+        "@com_github_grpc_ecosystem_grpc_gateway//utilities",
+        "@com_github_golang_glog//:glog",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//types/pluginpb",
     ],
 )
 
 go_test(
-    name = "go_default_test",
+    name = "gengateway_test",
     size = "small",
     srcs = [
         "generator_test.go",
         "template_test.go",
     ],
-    embed = [":go_default_library"],
+    embed = [":gengateway"],
     deps = [
-        "//gateway/internal/descriptor:go_default_library",
-        "@com_github_grpc_ecosystem_grpc_gateway//internal/httprule:go_default_library",
-        "@org_golang_google_protobuf//proto:go_default_library",
-        "@org_golang_google_protobuf//types/descriptorpb:go_default_library",
+        "//gateway/internal/descriptor",
+        "@com_github_grpc_ecosystem_grpc_gateway//internal/httprule",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//types/descriptorpb",
     ],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":gengateway",
+    visibility = ["//protoc-gen-grpc-gateway:__subpackages__"],
 )

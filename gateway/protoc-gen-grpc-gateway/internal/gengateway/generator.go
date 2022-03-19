@@ -3,15 +3,16 @@ package gengateway
 import (
 	"errors"
 	"fmt"
+	"go/format"
+	"path"
+
 	"github.com/golang/glog"
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
 	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
 	// gen "github.com/grpc-ecosystem/grpc-gateway/v2/internal/generator"
 	gen "github.com/binchencoder/ease-gateway/gateway/internal/generator"
-	"go/format"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/pluginpb"
-	"path"
 )
 
 var (
@@ -41,7 +42,7 @@ func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix st
 		"unicode/utf8": "",
 		// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime",
 		"github.com/binchencoder/ease-gateway/gateway/runtime": "",
-		"github.com/grpc-ecosystem/grpc-gateway/v2/utilities":     "",
+		"github.com/grpc-ecosystem/grpc-gateway/v2/utilities":  "",
 		"google.golang.org/protobuf/proto":                     "",
 		"github.com/binchencoder/gateway-proto/data":           "vexpb",
 		"github.com/binchencoder/gateway-proto/frontend":       "fpb",
@@ -52,10 +53,10 @@ func New(reg *descriptor.Registry, useRequestContext bool, registerFuncSuffix st
 		"github.com/binchencoder/skylb-api/proto":              "skypb",
 		"google.golang.org/grpc":                               "",
 		"google.golang.org/grpc/codes":                         "",
-		"google.golang.org/grpc/naming":                        "",
-		"google.golang.org/grpc/grpclog":                       "",
-		"google.golang.org/grpc/metadata":                      "",
-		"google.golang.org/grpc/status":                        "",
+		// "google.golang.org/grpc/naming":                        "",
+		"google.golang.org/grpc/grpclog":  "",
+		"google.golang.org/grpc/metadata": "",
+		"google.golang.org/grpc/status":   "",
 	} {
 		pkg := descriptor.GoPackage{
 			Path:  pkgpath,

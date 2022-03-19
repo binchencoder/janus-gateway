@@ -3,11 +3,14 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 package(default_visibility = ["//visibility:public"])
 
 go_library(
-    name = "go_default_library",
+    name = "generator",
     srcs = ["generator.go"],
     importpath = "github.com/binchencoder/ease-gateway/gateway/internal/generator",
-    deps = [
-        "//gateway/internal/descriptor:go_default_library",
-        "@io_bazel_rules_go//proto/wkt:compiler_plugin_go_proto",
-    ],
+    deps = ["//gateway/internal/descriptor:go_default_library"],
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":generator",
+    visibility = ["//:__subpackages__"],
 )

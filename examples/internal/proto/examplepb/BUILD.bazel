@@ -28,6 +28,8 @@ package(default_visibility = ["//visibility:public"])
 # gazelle:exclude wrappers_grpc.pb.go
 # gazelle:exclude unannotated_echo_service.pb.gw.go
 # gazelle:exclude unannotated_echo_service_grpc.pb.go
+# gazelle:exclude visibility_rule_echo_service.pb.gw.go
+# gazelle:exclude visibility_rule_echo_service_grpc.pb.go
 # gazelle:exclude openapi_merge_a.proto
 # gazelle:exclude openapi_merge_b.proto
 # gazelle:go_grpc_compilers //:go_apiv2, //:go_grpc, //protoc-gen-grpc-gateway:go_gen_grpc_gateway
@@ -36,9 +38,10 @@ proto_library(
     name = "examplepb_proto",
     srcs = [
         "echo_service.proto",
-        "unannotated_echo_service.proto",
+        # "unannotated_echo_service.proto",
     ],
     deps = [
+	    "//gateway/protoc-gen-openapiv2/options:options_proto",
         "//httpoptions:options_proto",
         "@com_github_binchencoder_gateway_proto//data:data_proto",
         "@com_github_binchencoder_gateway_proto//frontend:error_proto",
@@ -50,17 +53,21 @@ proto_library(
         "@com_google_protobuf//:wrappers_proto",
         "@go_googleapis//google/api:annotations_proto",
         "@go_googleapis//google/api:httpbody_proto",
+        "@go_googleapis//google/api:visibility_proto",
         "@go_googleapis//google/rpc:status_proto",
     ],
 )
 
+#keep
 # proto_library(
-#     name = "examplepb_unannotated_proto",
+#     name = "openapi_merge_proto",
 #     srcs = [
-#         "unannotated_echo_service.proto",
+#         "openapi_merge_a.proto",
+#         "openapi_merge_b.proto",
 #     ],
 #     deps = [
-#         "@com_google_protobuf//:duration_proto",
+#         "@go_googleapis//google/api:annotations_proto",
+#         "@go_googleapis//google/api:httpbody_proto",
 #     ],
 # )
 
@@ -69,65 +76,49 @@ go_proto_library(
     compilers = [
         "//:go_apiv2",
         "//:go_grpc",
-        "//gateway/protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
+        "//gateway/protoc-gen-grpc-gateway:go_gen_grpc_gateway",
     ],
     importpath = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb",
     proto = ":examplepb_proto",
     deps = [
-    	"//httpoptions:go_default_library",
+    	"//httpoptions",
         "@com_github_binchencoder_letsgo//grpc:go_default_library",
         "@com_github_binchencoder_skylb_api//balancer:go_default_library",
         "@com_github_binchencoder_skylb_api//client:go_default_library",
         "@com_github_binchencoder_skylb_api//client/option:go_default_library",
         "@com_github_binchencoder_skylb_api//proto:go_default_library",
-        "//gateway/protoc-gen-openapiv2/options:go_default_library",
+        "//gateway/protoc-gen-openapiv2/options",
         "@com_github_golang_protobuf//descriptor:go_default_library_gen",  # keep
         "@go_googleapis//google/api:annotations_go_proto",
         "@go_googleapis//google/api:httpbody_go_proto",
+        "@go_googleapis//google/api:visibility_go_proto",
         "@go_googleapis//google/rpc:status_go_proto",
         "@org_golang_google_protobuf//proto:go_default_library",  # keep
-	    "@org_golang_google_grpc//naming:go_default_library",
+        # "@org_golang_google_grpc//naming:go_default_library",
     ],
 )
 
-# go_proto_library(
-#     name = "examplepb_unannotated_go_proto",
-#     compilers = [
-#         "//:go_apiv2",
-#         "//:go_grpc",
-#         "@com_github_grpc_ecosystem_grpc_gateway//protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
-#     ],
-#     importpath = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb",
-#     proto = ":examplepb_unannotated_proto",
-#     deps = [
-#         "//gateway/protoc-gen-openapiv2/options:go_default_library",
-#         "@com_github_golang_protobuf//descriptor:go_default_library_gen",  # keep
-#         "@go_googleapis//google/api:annotations_go_proto",
-#         "@go_googleapis//google/api:httpbody_go_proto",
-#         "@go_googleapis//google/rpc:status_go_proto",
-#         "@org_golang_google_protobuf//proto:go_default_library",  # keep
-#     ],
-# )
-
 go_library(
-    name = "go_default_library",
+    name = "examplepb",
     embed = [":examplepb_go_proto"],
     importpath = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb",
     deps = [
-        "//httpoptions:go_default_library",
-        "//gateway/runtime:go_default_library",
-        "@com_github_binchencoder_gateway_proto//data:go_default_library",
+        "//httpoptions",
+        "//gateway/runtime",
+        "@com_github_grpc_ecosystem_grpc_gateway//utilities",
         "@com_github_binchencoder_gateway_proto//frontend:go_default_library",
         "@com_github_binchencoder_skylb_api//balancer:go_default_library",
         "@com_github_binchencoder_skylb_api//client:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//grpclog",
+        "@org_golang_google_grpc//metadata",
+        "@org_golang_google_grpc//status",
+        "@org_golang_google_protobuf//proto",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
     ],
 )
-
-# go_library(
-#     name = "unannotated_go_default_library",
-#     embed = [":examplepb_unannotated_go_proto"],
-#     importpath = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb",
-# )
 
 protoc_gen_openapiv2(
     name = "examplepb_protoc_gen_openapiv2",
@@ -138,4 +129,16 @@ protoc_gen_openapiv2(
     name = "examplepb_protoc_gen_openapiv2_merged",
     proto = ":examplepb_proto",
     single_output = True,  # Outputs a single swagger.json file.
+)
+
+# protoc_gen_openapiv2(
+#     name = "examplepb_openapi_merge",
+#     proto = ":openapi_merge_proto",
+#     single_output = True,  # Outputs a single swagger.json file.
+# )
+
+alias(
+    name = "go_default_library",
+    actual = ":examplepb",
+    visibility = ["//examples:__subpackages__"],
 )

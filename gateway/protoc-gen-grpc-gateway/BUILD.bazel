@@ -4,20 +4,21 @@ load("@io_bazel_rules_go//proto:compiler.bzl", "go_proto_compiler")
 package(default_visibility = ["//visibility:private"])
 
 go_library(
-    name = "go_default_library",
+    name = "protoc-gen-grpc-gateway_lib",
     srcs = ["main.go"],
     importpath = "github.com/binchencoder/ease-gateway/gateway/protoc-gen-grpc-gateway",
     deps = [
+	    "@com_github_grpc_ecosystem_grpc_gateway//internal/codegenerator",
         "//gateway/internal/descriptor:go_default_library",
-        "//gateway/protoc-gen-grpc-gateway/internal/gengateway:go_default_library",
-        "@com_github_golang_glog//:go_default_library",
-        "@org_golang_google_protobuf//compiler/protogen:go_default_library",
+        "//gateway/protoc-gen-grpc-gateway/internal/gengateway",
+        "@com_github_golang_glog//:glog",
+        "@org_golang_google_protobuf//compiler/protogen",
     ],
 )
 
 go_binary(
     name = "protoc-gen-grpc-gateway",
-    embed = [":go_default_library"],
+    embed = [":protoc-gen-grpc-gateway_lib"],
     visibility = ["//visibility:public"],
 )
 
@@ -34,7 +35,7 @@ go_proto_compiler(
         "//gateway/runtime:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_binchencoder_gateway_proto//frontend:go_default_library",
-        "@com_github_grpc_ecosystem_grpc_gateway//utilities:go_default_library",
+        "@com_github_grpc_ecosystem_grpc_gateway//utilities",
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes:go_default_library",
         "@org_golang_google_grpc//grpclog:go_default_library",
@@ -45,8 +46,8 @@ go_proto_compiler(
 )
 
 go_test(
-    name = "go_default_test",
+    name = "protoc-gen-grpc-gateway_test",
     srcs = ["main_test.go"],
-    embed = [":go_default_library"],
-    deps = ["//gateway/internal/descriptor:go_default_library"],
+    embed = [":protoc-gen-grpc-gateway_lib"],
+    deps = ["//gateway/internal/descriptor"],
 )
