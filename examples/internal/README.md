@@ -1,43 +1,43 @@
 # Overrview
 
-ease-gateway/examples 是使用ease-gateway的一个完整示例，包含gateway-server 和 gRPC-server. 还有Java实现gRPC Server的例子 [https://github.com/binchencoder/spring-boot-grpc/tree/master/spring-boot-grpc-examples]
+ease-gateway/examples/internal 是使用ease-gateway的一个完整示例，包含gateway-server 和 gRPC-server. 还有Java实现gRPC Server的例子 [https://github.com/binchencoder/spring-boot-grpc/tree/master/spring-boot-grpc-examples]
 
 # Build the example
 
 build gateway server
 ```
-bazel build ease-gateway/examples/cmd/example-gateway-server/... 
+bazel build examples/internal/cmd/example-gateway-server/... 
 ```
 
 build gRPC server
 ```
-bazel build ease-gateway/examples/cmd/example-grpc-server/...
+bazel build examples/internal/cmd/example-grpc-server/...
 ```
 
 # Run the example
 
 start gateway server
-```
-ease-gateway/bazel-bin/examples/cmd/example-gateway-server/example-gateway-server_/example-gateway-server -skylb-endpoints="127.0.0.1:1900" -debug-svc-endpoint=custom-ease-gateway-test=localhost:9090
+```shell
+ease-gateway/bazel-bin/examples/internal/cmd/example-gateway-server/example-gateway-server_/example-gateway-server -skylb-endpoints="127.0.0.1:1900" -debug-svc-endpoint=custom-ease-gateway-test=localhost:9090
 ```
 
 start custom-gateway server
-```
+```shell
 ease-gateway/bazel-bin/cmd/custom-gateway/custom-ease-gateway_/custom-ease-gateway -skylb-endpoints="127.0.0.1:1900" -debug-service=custom-ease-gateway-test -debug-svc-endpoint=custom-ease-gateway-test=localhost:9090
 ```
 
-start examples gRPC server for test //examples/cmd/example-gateway-server
-```
-ease-gateway/bazel-bin/examples/cmd/example-grpc-server/example-grpc-server_/example-grpc-server
+start examples gRPC server for test //examples/internal/cmd/example-grpc-server
+```shell
+ease-gateway/bazel-bin/examples/internal/cmd/example-grpc-server/example-grpc-server_/example-grpc-server -skylb-endpoints="127.0.0.1:1900,127.0.0.1:1901"
 ```
 
 start gRPC server for test //cmd/gateway
-```
-ease-gateway/bazel-bin/examples/cmd/grpc-server/grpc-server_/grpc-server -skylb-endpoints="127.0.0.1:1900"
+```shell
+ease-gateway/bazel-bin/examples/grpc-server/grpc-server_/grpc-server -skylb-endpoints="127.0.0.1:1900"
 ```
 
 start //cmd/gateway
-```
+```shell
 ease-gateway/bazel-bin/cmd/gateway/gateway_/gateway -skylb-endpoints="127.0.0.1:1900" -v=2 -log_dir=.
 ```
 

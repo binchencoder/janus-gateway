@@ -1,3 +1,4 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 load("//gateway/protoc-gen-openapiv2:defs.bzl", "protoc_gen_openapiv2")
@@ -29,30 +30,28 @@ go_proto_library(
         "//:go_grpc",
         "//gateway/protoc-gen-grpc-gateway:go_gen_grpc_gateway",  # keep
     ],
-    importpath = "github.com/binchencoder/ease-gateway/proto/examples",
+    importpath = "github.com/binchencoder/ease-gateway/proto/examplepb",
     proto = ":examplepb_proto",
     deps = [
-        "//httpoptions:go_default_library",
-        "//gateway/runtime:go_default_library",
+        "//httpoptions",
+        "//gateway/runtime",
+        "//gateway/protoc-gen-openapiv2/options",
         "@com_github_binchencoder_letsgo//grpc:go_default_library",
-        "@com_github_binchencoder_skylb_api//balancer:go_default_library",
         "@com_github_binchencoder_skylb_api//client:go_default_library",
-        "@com_github_binchencoder_skylb_api//client/option:go_default_library",
         "@com_github_binchencoder_skylb_api//proto:go_default_library",
-        "@org_golang_google_grpc//naming:go_default_library",
     ],
 )
 
 go_library(
-    name = "go_default_library",
+    name = "examplepb",
     embed = [":examplepb_go_proto"],
-    importpath = "github.com/binchencoder/ease-gateway/proto/examples",
+    importpath = "github.com/binchencoder/ease-gateway/proto/examplepb",
     deps = [
-        "//httpoptions:go_default_library",
-        "//gateway/runtime:go_default_library",
+        "//httpoptions",
+        "//gateway/runtime",
+        "@com_github_grpc_ecosystem_grpc_gateway//utilities",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_binchencoder_gateway_proto//frontend:go_default_library",
-        "@com_github_binchencoder_skylb_api//balancer:go_default_library",
         "@com_github_binchencoder_skylb_api//client:go_default_library",
     ],
 )
@@ -61,4 +60,9 @@ protoc_gen_openapiv2(
     name = "examplepb_protoc_gen_openapiv2",
     proto = ":examplepb_proto",
     single_output = False,  # Outputs a single swagger.json file.
+)
+
+alias(
+    name = "go_default_library",
+    actual = ":examplepb",
 )

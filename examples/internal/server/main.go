@@ -25,7 +25,7 @@ func Run(ctx context.Context, network, address string) error {
 	}()
 
 	s := grpc.NewServer()
-	examples.RegisterEchoServiceServer(s, newEchoServer())
+	examples.RegisterEchoServiceServer(s, NewEchoServer())
 
 	go func() {
 		defer s.GracefulStop()
@@ -38,7 +38,7 @@ func Run(ctx context.Context, network, address string) error {
 func RunInProcessGateway(ctx context.Context, addr string, opts ...runtime.ServeMuxOption) error {
 	mux := runtime.NewServeMux(opts...)
 
-	examples.RegisterEchoServiceHandlerServer(ctx, mux, newEchoServer())
+	examples.RegisterEchoServiceHandlerServer(ctx, mux, NewEchoServer())
 	s := &http.Server{
 		Addr:    addr,
 		Handler: mux,

@@ -681,7 +681,7 @@ func TestWithHealthEndpointAt_consistentWithHealthz(t *testing.T) {
 			w := httptest.NewRecorder()
 
 			runtime.NewServeMux(
-				runtime.WithHealthEndpointAt(client, endpointPath),
+				runtime.WithHealthEndpointAt(client, endpointPath, 1 /* sid */),
 			).ServeHTTP(w, r)
 
 			refW := httptest.NewRecorder()

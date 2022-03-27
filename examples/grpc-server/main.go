@@ -8,7 +8,7 @@ import (
 	"flag"
 	"fmt"
 
-	examples "github.com/binchencoder/ease-gateway/proto/examples"
+	examplepb "github.com/binchencoder/ease-gateway/proto/examplepb"
 	"github.com/binchencoder/gateway-proto/data"
 	skylb "github.com/binchencoder/skylb-api/server"
 	"github.com/golang/glog"
@@ -29,7 +29,7 @@ func main() {
 	skylb.Register(data.ServiceId_CUSTOM_EASE_GATEWAY_TEST, "grpc", *port)
 	skylb.EnableHistogram()
 	skylb.Start(fmt.Sprintf(":%d", *port), func(s *grpc.Server) error {
-		examples.RegisterEchoServiceServer(s, NewEchoServer())
+		examplepb.RegisterEchoServiceServer(s, NewEchoServer())
 		return nil
 	})
 }

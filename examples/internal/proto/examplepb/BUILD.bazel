@@ -1,7 +1,7 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("@com_github_binchencoder_ease_gateway//gateway/protoc-gen-openapiv2:defs.bzl", "protoc_gen_openapiv2")
+load("//gateway/protoc-gen-openapiv2:defs.bzl", "protoc_gen_openapiv2")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -34,6 +34,13 @@ package(default_visibility = ["//visibility:public"])
 # gazelle:exclude openapi_merge_b.proto
 # gazelle:go_grpc_compilers //:go_apiv2, //:go_grpc, //protoc-gen-grpc-gateway:go_gen_grpc_gateway
 
+genrule(
+    name = "generated_proto",
+    srcs = ["generated_input.proto"],
+    outs = ["generated_output.proto"],
+    cmd = "cp $< $@",  # A simple copy simulates a generated proto file.
+)
+
 proto_library(
     name = "examplepb_proto",
     srcs = [
@@ -41,8 +48,8 @@ proto_library(
         # "unannotated_echo_service.proto",
     ],
     deps = [
-	    "//gateway/protoc-gen-openapiv2/options:options_proto",
         "//httpoptions:options_proto",
+        "//gateway/protoc-gen-openapiv2/options:options_proto",
         "@com_github_binchencoder_gateway_proto//data:data_proto",
         "@com_github_binchencoder_gateway_proto//frontend:error_proto",
         "@com_google_protobuf//:duration_proto",
@@ -83,9 +90,7 @@ go_proto_library(
     deps = [
     	"//httpoptions",
         "@com_github_binchencoder_letsgo//grpc:go_default_library",
-        "@com_github_binchencoder_skylb_api//balancer:go_default_library",
         "@com_github_binchencoder_skylb_api//client:go_default_library",
-        "@com_github_binchencoder_skylb_api//client/option:go_default_library",
         "@com_github_binchencoder_skylb_api//proto:go_default_library",
         "//gateway/protoc-gen-openapiv2/options",
         "@com_github_golang_protobuf//descriptor:go_default_library_gen",  # keep
@@ -94,7 +99,6 @@ go_proto_library(
         "@go_googleapis//google/api:visibility_go_proto",
         "@go_googleapis//google/rpc:status_go_proto",
         "@org_golang_google_protobuf//proto:go_default_library",  # keep
-        # "@org_golang_google_grpc//naming:go_default_library",
     ],
 )
 
@@ -107,7 +111,6 @@ go_library(
         "//gateway/runtime",
         "@com_github_grpc_ecosystem_grpc_gateway//utilities",
         "@com_github_binchencoder_gateway_proto//frontend:go_default_library",
-        "@com_github_binchencoder_skylb_api//balancer:go_default_library",
         "@com_github_binchencoder_skylb_api//client:go_default_library",
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//codes",

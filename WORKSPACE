@@ -6,9 +6,9 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # Define before rules_proto, otherwise we receive the version of com_google_protobuf from there
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "3bd7828aa5af4b13b99c191e8b1e884ebfa9ad371b0ce264605d347f135d2568",
-    strip_prefix = "protobuf-3.19.4",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.19.4.tar.gz"],
+    sha256 = "b07772d38ab07e55eca4d50f4b53da2d998bb221575c60a4f81100242d4b4889",
+    strip_prefix = "protobuf-3.20.0",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.20.0.tar.gz"],
 )
 
 http_archive(
@@ -42,10 +42,10 @@ rules_proto_toolchains()
 
 http_archive(
     name = "io_bazel_rules_go",
-    sha256 = "d6b2513456fe2229811da7eb67a444be7785f5323c6708b38d851d2b51e54d83",
+    sha256 = "f2dcd210c7095febe54b804bb1cd3a58fe8435a909db2ec04e31542631cf715c",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.30.0/rules_go-v0.30.0.zip",
-        "https://github.com/bazelbuild/rules_go/releases/download/v0.30.0/rules_go-v0.30.0.zip",
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.31.0/rules_go-v0.31.0.zip",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.31.0/rules_go-v0.31.0.zip",
     ],
 )
 
@@ -64,9 +64,9 @@ http_archive(
 # https://github.com/bazelbuild/bazel-gazelle/pull/1194 is merged
 git_repository(
     name = "bazel_gazelle",
-    commit = "4a1aeae7cab962fd8088f42038d3a477cdca91a5",
-    remote = "https://github.com/johanbrandhorst/bazel-gazelle",
-    shallow_since = "1647116890 +0000",
+    commit = "f377e6eff8e24508feb1a34b1e5e681982482a9f",
+    remote = "https://github.com/bazelbuild/bazel-gazelle",
+    shallow_since = "1648046534 -0400",
 )
 
 # 从下载的扩展里载入 go_rules_dependencies go_register_toolchains 函数

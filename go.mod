@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/binchencoder/gateway-proto v0.0.7
 	github.com/binchencoder/letsgo v0.0.3
-	github.com/binchencoder/skylb-api v0.0.5
+	github.com/binchencoder/skylb-api v0.2.0
 	github.com/antihax/optional v1.0.0
 	github.com/golang/glog v1.0.0
 	github.com/golang/protobuf v1.5.2
@@ -31,7 +31,4 @@ require (
 replace (
 	github.com/coreos/bbolt v1.3.4 => go.etcd.io/bbolt v1.3.4
 	github.com/coreos/bbolt v1.3.5 => go.etcd.io/bbolt v1.3.5
-	// google.golang.org/grpc v1.30.0 => google.golang.org/grpc v1.29.1
-	// google.golang.org/grpc v1.33.1 => google.golang.org/grpc v1.29.1
-    // google.golang.org/grpc => google.golang.org/grpc v1.29.1
 )

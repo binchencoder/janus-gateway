@@ -173,6 +173,11 @@ func applyTemplate(p param, reg *descriptor.Registry) (string, error) {
 	if err := headerTemplate.Execute(w, p); err != nil {
 		return "", err
 	}
+
+	if err := validatorTemplate.Execute(w, p); err != nil {
+		return "", err
+	}
+
 	var targetServices []*descriptor.Service
 
 	for _, msg := range p.Messages {
@@ -270,9 +275,9 @@ var _ client.ServiceCli
 var _ vexpb.ServiceId
 var _ = http.MethodGet
 var _ regexp.Regexp
-var _ = balancer.ConsistentHashing
-var _ option.BalancerCreator
-var _ naming.Resolver
+// var _ = balancer.ConsistentHashing
+// var _ option.BalancerCreator
+// var _ naming.Resolver
 var _ strings.Reader
 var _ = utf8.UTFMax
 
@@ -867,7 +872,7 @@ func init() {
 {{range $svc := .Services}}
 // Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint is same as Register{{$svc.GetName}}{{$.RegisterFuncSuffix}} but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint(ctx context.Context, mux *runtime.ServeMux) (err error) {
+func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint(mux *runtime.ServeMux) (err error) {
 	// conn, err := grpc.Dial(endpoint, opts...)
 	// if err != nil {
 	// 	return err
@@ -887,8 +892,8 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}FromEndpoint(ctx context.Co
 	// 	}()
 	// }()
 
-	return Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}(ctx, mux, conn)
-	// return Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}(nil, mux, nil)
+	// return Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}(ctx, mux, conn)
+	return Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}(nil, mux, nil)
 }
 
 // Register{{$svc.GetName}}{{$.RegisterFuncSuffix}} registers the http handlers for service {{$svc.GetName}} to "mux".
@@ -934,7 +939,7 @@ func Register{{$svc.GetName}}{{$.RegisterFuncSuffix}}Client(ctx context.Context,
 		{{- end }}
 		defer cancel()
 		// inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
+		// var err error
 		{{- if $b.PathTmpl }}
 		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/{{$svc.File.GetPackage}}.{{$svc.GetName}}/{{$m.GetName}}", runtime.WithHTTPPathPattern("{{$b.PathTmpl.Template}}"))
 		{{- else -}}
@@ -1016,13 +1021,9 @@ func Enable_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_ServiceGro
 	{{if eq $svc.Balancer.String "ROUND_ROBIN"}}
 	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.Resolve(spec)
 	{{else if eq $svc.Balancer.String "CONSISTENT"}}
-	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.Resolve(spec,
-		option.WithBalancerCreator(func(r naming.Resolver) grpc.Balancer {
-			return balancer.ConsistentHashing(r)
-		}),
+	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.Resolve(spec),
 	)
 	{{end}}
-	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.EnableResolveFullEps()
 	internal_{{$svc.ServiceId}}__{{$svc.Namespace}}__{{$svc.PortName}}_skycli.Start(func(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
 		sg := runtime.GetServiceGroup(spec)
 		for _, svc := range sg.Services {

@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-option go_package = "github.com/binchencoder/ease-gateway/gateway/proto/examples";
+option go_package = "github.com/binchencoder/ease-gateway/gateway/proto/examplepb";
 
-package grpc.gateway.proto.examples;
+package grpc.gateway.proto.examplepb;
 
-option java_package = "com.binchencoder.easegw.examples";
+option java_package = "com.binchencoder.easegw.examplepb";
 option java_outer_classname = "ExamplesProto";
 
 // import "google/api/annotations.proto";
