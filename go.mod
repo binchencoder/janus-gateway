@@ -5,12 +5,12 @@ go 1.17
 require (
 	github.com/binchencoder/gateway-proto v0.0.7
 	github.com/binchencoder/letsgo v0.0.3
-	github.com/binchencoder/skylb-api v0.2.0
+	github.com/binchencoder/skylb-api v0.3.1
 	github.com/antihax/optional v1.0.0
 	github.com/golang/glog v1.0.0
 	github.com/golang/protobuf v1.5.2
 	github.com/google/go-cmp v0.5.7
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.8.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.9.0
 	github.com/rogpeppe/fastuuid v1.2.0
 	golang.org/x/oauth2 v0.0.0-20220309155454-6242fa91716a
 	google.golang.org/genproto v0.0.0-20220314164441-57ef72a4c106
