@@ -13,6 +13,8 @@ import (
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/google/go-cmp/cmp"
 	fieldmaskpb "google.golang.org/genproto/protobuf/field_mask"
+
+	// "google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/testing/protocmp"
@@ -33,9 +35,11 @@ func TestEcho(t *testing.T) {
 			testEchoOneof(t, 8088, apiPrefix, "application/json")
 			testEchoOneof1(t, 8088, apiPrefix, "application/json")
 			testEchoOneof2(t, 8088, apiPrefix, "application/json")
-			testEchoBody(t, 8088, apiPrefix)
+			testEchoBody(t, 8088, apiPrefix, true)
+			testEchoBody(t, 8088, apiPrefix, false)
 			// Use SendHeader/SetTrailer without gRPC server https://github.com/grpc-ecosystem/grpc-gateway/issues/517#issuecomment-684625645
-			testEchoBody(t, 8089, apiPrefix)
+			testEchoBody(t, 8089, apiPrefix, true)
+			testEchoBody(t, 8089, apiPrefix, false)
 		})
 	}
 	t.Run("testEchoValidationRules", func(t *testing.T) {
@@ -55,9 +59,12 @@ func TestEchoPatch(t *testing.T) {
 				StructValue: &structpb.Struct{Fields: map[string]*structpb.Value{
 					"layered_struct_key": {Kind: &structpb.Value_StringValue{StringValue: "struct_val"}},
 				}},
-			}}}},
-		ValueField: &structpb.Value{Kind: &structpb.Value_StructValue{StructValue: &structpb.Struct{Fields: map[string]*structpb.Value{
-			"value_struct_key": {Kind: &structpb.Value_StringValue{StringValue: "value_struct_val"}}}},
+			}},
+		}},
+		ValueField: &structpb.Value{Kind: &structpb.Value_StructValue{
+			StructValue: &structpb.Struct{Fields: map[string]*structpb.Value{
+				"value_struct_key": {Kind: &structpb.Value_StringValue{StringValue: "value_struct_val"}},
+			}},
 		}},
 	}
 	payload, err := protojson.MarshalOptions{UseProtoNames: true}.Marshal(&sent)
@@ -135,6 +142,39 @@ func TestForwardResponseOption(t *testing.T) {
 	testEcho(t, port, "v1", "application/vnd.docker.plugins.v1.1+json")
 }
 
+func TestForwardResponseOptionHTTPPathPattern(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+		return
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	port := 7080
+	go func() {
+		if err := runGateway(
+			ctx,
+			fmt.Sprintf(":%d", port),
+			runtime.WithForwardResponseOption(
+				func(ctx context.Context, w http.ResponseWriter, _ proto.Message) error {
+					path, _ := runtime.HTTPPathPattern(ctx)
+					w.Header().Set("Content-Type", path)
+					return nil
+				},
+			),
+		); err != nil {
+			t.Errorf("runGateway() failed with %v; want success", err)
+			return
+		}
+	}()
+	if err := waitForGateway(ctx, uint16(port)); err != nil {
+		t.Errorf("waitForGateway(ctx, %d) failed with %v; want success", port, err)
+	}
+	testEcho(t, port, "v1", "/v1/example/echo/{id}")
+}
+
 func testEcho(t *testing.T, port int, apiPrefix string, contentType string) {
 	apiURL := fmt.Sprintf("http://localhost:%d/%s/example/echo/myid", port, apiPrefix)
 	resp, err := http.Post(apiURL, "application/json", strings.NewReader("{}"))
@@ -149,39 +189,18 @@ func testEcho(t *testing.T, port int, apiPrefix string, contentType string) {
 		return
 	}
 
-	if apiPrefix != "v1" {
-		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
-	} else {
-		if got, want := resp.StatusCode, http.StatusOK; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("resp.StatusCode = %d; want %d", got, want)
+		t.Logf("%s", buf)
+	}
 
-		msg := new(examplepb.UnannotatedSimpleMessage)
-		if err := marshaler.Unmarshal(buf, msg); err != nil {
-			t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
-			return
-		}
-		if got, want := msg.Id, "myid"; got != want {
-			t.Errorf("msg.Id = %q; want %q", got, want)
-		}
-
-		if got, want := resp.Header.Get("Grpc-Metadata-Foo"), "foo1"; got != want {
-			t.Errorf("Grpc-Metadata-Foo was %q, wanted %q", got, want)
-		}
-		if got, want := resp.Header.Get("Grpc-Metadata-Bar"), "bar1"; got != want {
-			t.Errorf("Grpc-Metadata-Bar was %q, wanted %q", got, want)
-		}
-
-		if got, want := resp.Trailer.Get("Grpc-Trailer-Foo"), "foo2"; got != want {
-			t.Errorf("Grpc-Trailer-Foo was %q, wanted %q", got, want)
-		}
-		if got, want := resp.Trailer.Get("Grpc-Trailer-Bar"), "bar2"; got != want {
-			t.Errorf("Grpc-Trailer-Bar was %q, wanted %q", got, want)
-		}
+	msg := new(examplepb.UnannotatedSimpleMessage)
+	if err := marshaler.Unmarshal(buf, msg); err != nil {
+		t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
+		return
+	}
+	if got, want := msg.Id, "myid"; got != want {
+		t.Errorf("msg.Id = %q; want %q", got, want)
 	}
 
 	if value := resp.Header.Get("Content-Type"); value != contentType {
@@ -203,25 +222,18 @@ func testEchoOneof(t *testing.T, port int, apiPrefix string, contentType string)
 		return
 	}
 
-	if apiPrefix != "v1" {
-		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
-	} else {
-		if got, want := resp.StatusCode, http.StatusOK; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("resp.StatusCode = %d; want %d", got, want)
+		t.Logf("%s", buf)
+	}
 
-		msg := new(examplepb.UnannotatedSimpleMessage)
-		if err := marshaler.Unmarshal(buf, msg); err != nil {
-			t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
-			return
-		}
-		if got, want := msg.GetLang(), "golang"; got != want {
-			t.Errorf("msg.GetLang() = %q; want %q", got, want)
-		}
+	msg := new(examplepb.UnannotatedSimpleMessage)
+	if err := marshaler.Unmarshal(buf, msg); err != nil {
+		t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
+		return
+	}
+	if got, want := msg.GetLang(), "golang"; got != want {
+		t.Errorf("msg.GetLang() = %q; want %q", got, want)
 	}
 
 	if value := resp.Header.Get("Content-Type"); value != contentType {
@@ -243,25 +255,18 @@ func testEchoOneof1(t *testing.T, port int, apiPrefix string, contentType string
 		return
 	}
 
-	if apiPrefix != "v1" {
-		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
-	} else {
-		if got, want := resp.StatusCode, http.StatusOK; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("resp.StatusCode = %d; want %d", got, want)
+		t.Logf("%s", buf)
+	}
 
-		msg := new(examplepb.UnannotatedSimpleMessage)
-		if err := marshaler.Unmarshal(buf, msg); err != nil {
-			t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
-			return
-		}
-		if got, want := msg.GetStatus().GetNote(), "golang"; got != want {
-			t.Errorf("msg.GetStatus().GetNote() = %q; want %q", got, want)
-		}
+	msg := new(examplepb.UnannotatedSimpleMessage)
+	if err := marshaler.Unmarshal(buf, msg); err != nil {
+		t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
+		return
+	}
+	if got, want := msg.GetStatus().GetNote(), "golang"; got != want {
+		t.Errorf("msg.GetStatus().GetNote() = %q; want %q", got, want)
 	}
 
 	if value := resp.Header.Get("Content-Type"); value != contentType {
@@ -283,25 +288,18 @@ func testEchoOneof2(t *testing.T, port int, apiPrefix string, contentType string
 		return
 	}
 
-	if apiPrefix != "v1" {
-		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
-	} else {
-		if got, want := resp.StatusCode, http.StatusOK; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("resp.StatusCode = %d; want %d", got, want)
+		t.Logf("%s", buf)
+	}
 
-		msg := new(examplepb.UnannotatedSimpleMessage)
-		if err := marshaler.Unmarshal(buf, msg); err != nil {
-			t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
-			return
-		}
-		if got, want := msg.GetNo().GetNote(), "golang"; got != want {
-			t.Errorf("msg.GetNo().GetNote() = %q; want %q", got, want)
-		}
+	msg := new(examplepb.UnannotatedSimpleMessage)
+	if err := marshaler.Unmarshal(buf, msg); err != nil {
+		t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
+		return
+	}
+	if got, want := msg.GetNo().GetNote(), "golang"; got != want {
+		t.Errorf("msg.GetNo().GetNote() = %q; want %q", got, want)
 	}
 
 	if value := resp.Header.Get("Content-Type"); value != contentType {
@@ -309,7 +307,7 @@ func testEchoOneof2(t *testing.T, port int, apiPrefix string, contentType string
 	}
 }
 
-func testEchoBody(t *testing.T, port int, apiPrefix string) {
+func testEchoBody(t *testing.T, port int, apiPrefix string, useTrailers bool) {
 	sent := examplepb.UnannotatedSimpleMessage{Id: "example"}
 	payload, err := marshaler.Marshal(&sent)
 	if err != nil {
@@ -317,9 +315,19 @@ func testEchoBody(t *testing.T, port int, apiPrefix string) {
 	}
 
 	apiURL := fmt.Sprintf("http://localhost:%d/%s/example/echo_body", port, apiPrefix)
-	resp, err := http.Post(apiURL, "", bytes.NewReader(payload))
+
+	req, err := http.NewRequest("POST", apiURL, bytes.NewReader(payload))
 	if err != nil {
-		t.Errorf("http.Post(%q) failed with %v; want success", apiURL, err)
+		t.Errorf("http.NewRequest() failed with %v; want success", err)
+		return
+	}
+	if useTrailers {
+		req.Header.Set("TE", "trailers")
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Errorf("client.Do(%v) failed with %v; want success", req, err)
 		return
 	}
 	defer resp.Body.Close()
@@ -329,45 +337,39 @@ func testEchoBody(t *testing.T, port int, apiPrefix string) {
 		return
 	}
 
-	if apiPrefix != "v1" {
-		if got, want := resp.StatusCode, http.StatusNotFound; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
-	} else {
-		if got, want := resp.StatusCode, http.StatusOK; got != want {
-			t.Errorf("resp.StatusCode = %d; want %d", got, want)
-			t.Logf("%s", buf)
-		}
+	if got, want := resp.StatusCode, http.StatusOK; got != want {
+		t.Errorf("resp.StatusCode = %d; want %d", got, want)
+		t.Logf("%s", buf)
+	}
 
-		var received examplepb.UnannotatedSimpleMessage
-		if err := marshaler.Unmarshal(buf, &received); err != nil {
-			t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
-			return
-		}
-		if diff := cmp.Diff(&received, &sent, protocmp.Transform()); diff != "" {
-			t.Errorf(diff)
-		}
+	var received examplepb.UnannotatedSimpleMessage
+	if err := marshaler.Unmarshal(buf, &received); err != nil {
+		t.Errorf("marshaler.Unmarshal(%s, msg) failed with %v; want success", buf, err)
+		return
+	}
+	if diff := cmp.Diff(&received, &sent, protocmp.Transform()); diff != "" {
+		t.Errorf(diff)
+	}
 
-		if value := resp.Header.Get("Content-Type"); value != "application/json" {
-			t.Errorf("Content-Type was %s, wanted %s", value, "application/json")
+	if got, want := resp.Header.Get("Grpc-Metadata-Foo"), "foo1"; got != want {
+		t.Errorf("Grpc-Metadata-Foo was %q, wanted %q", got, want)
+	}
+	if got, want := resp.Header.Get("Grpc-Metadata-Bar"), "bar1"; got != want {
+		t.Errorf("Grpc-Metadata-Bar was %q, wanted %q", got, want)
+	}
+
+	wantedTrailers := map[bool]map[string]string{
+		true: {
+			"Grpc-Trailer-Foo": "foo2",
+			"Grpc-Trailer-Bar": "bar2",
+		},
+		false: {},
+	}
+
+	for trailer, want := range wantedTrailers[useTrailers] {
+		if got := resp.Trailer.Get(trailer); got != want {
+			t.Errorf("%s was %q, wanted %q", trailer, got, want)
 		}
-
-		// fmt.Printf("headers: %v \n", resp.Header)
-		// fmt.Printf("apiURL: %s \n", apiURL)
-		// if got, want := resp.Header.Get("Grpc-Metadata-Foo"), "foo1"; got != want {
-		// 	t.Errorf("Grpc-Metadata-Foo was %q, wanted %q", got, want)
-		// }
-		// if got, want := resp.Header.Get("Grpc-Metadata-Bar"), "bar1"; got != want {
-		// 	t.Errorf("Grpc-Metadata-Bar was %q, wanted %q", got, want)
-		// }
-
-		// if got, want := resp.Trailer.Get("Grpc-Trailer-Foo"), "foo2"; got != want {
-		// 	t.Errorf("Grpc-Trailer-Foo was %q, wanted %q", got, want)
-		// }
-		// if got, want := resp.Trailer.Get("Grpc-Trailer-Bar"), "bar2"; got != want {
-		// 	t.Errorf("Grpc-Trailer-Bar was %q, wanted %q", got, want)
-		// }
 	}
 }
 

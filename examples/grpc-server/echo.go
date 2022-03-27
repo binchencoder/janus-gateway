@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	examples "github.com/binchencoder/ease-gateway/proto/examples"
+	"github.com/binchencoder/ease-gateway/proto/examplepb"
 	"github.com/golang/glog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
@@ -14,16 +14,16 @@ import (
 type echoServer struct{}
 
 // NewEchoServer new echo server
-func NewEchoServer() examples.EchoServiceServer {
+func NewEchoServer() examplepb.EchoServiceServer {
 	return new(echoServer)
 }
 
-func (s *echoServer) Echo(ctx context.Context, msg *examples.SimpleMessage) (*examples.SimpleMessage, error) {
+func (s *echoServer) Echo(ctx context.Context, msg *examplepb.SimpleMessage) (*examplepb.SimpleMessage, error) {
 	glog.Info(msg)
 	return msg, nil
 }
 
-func (s *echoServer) EchoBody(ctx context.Context, msg *examples.SimpleMessage) (*examples.SimpleMessage, error) {
+func (s *echoServer) EchoBody(ctx context.Context, msg *examplepb.SimpleMessage) (*examplepb.SimpleMessage, error) {
 	glog.Info(msg)
 	grpc.SendHeader(ctx, metadata.New(map[string]string{
 		"foo": "foo1",
@@ -36,7 +36,7 @@ func (s *echoServer) EchoBody(ctx context.Context, msg *examples.SimpleMessage) 
 	return msg, nil
 }
 
-func (s *echoServer) EchoDelete(ctx context.Context, msg *examples.SimpleMessage) (*examples.SimpleMessage, error) {
+func (s *echoServer) EchoDelete(ctx context.Context, msg *examplepb.SimpleMessage) (*examplepb.SimpleMessage, error) {
 	glog.Info(msg)
 	return msg, nil
 }

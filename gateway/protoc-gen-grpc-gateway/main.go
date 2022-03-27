@@ -15,6 +15,8 @@ import (
 	"strings"
 
 	"github.com/golang/glog"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/codegenerator"
+
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
 	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway/internal/gengateway"
@@ -63,6 +65,8 @@ func main() {
 		if err != nil {
 			return err
 		}
+
+		codegenerator.SetSupportedFeaturesOnPluginGen(gen)
 
 		generator := gengateway.New(reg, *useRequestContext, *registerFuncSuffix, *allowPatchFeature, *standalone)
 

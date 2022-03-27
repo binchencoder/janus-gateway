@@ -10,14 +10,14 @@ go_library(
     importpath = "github.com/binchencoder/ease-gateway/cmd/gateway",
     visibility = ["//visibility:public"],
     deps = [
-        "//gateway/runtime:go_default_library",
+        "//proto/examplepb",
+        "//gateway/runtime",
         "//integrate:go_default_library",
-        "//proto/examples:go_default_library",
         "//util:go_default_library",
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
         "@com_github_binchencoder_letsgo//:go_default_library",
         "@com_github_binchencoder_letsgo//service/naming:go_default_library",
-        "@com_github_golang_glog//:go_default_library",
+        "@com_github_golang_glog//:glog",
     ],
 )
 

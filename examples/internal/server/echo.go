@@ -13,7 +13,7 @@ import (
 
 type echoServer struct{}
 
-func newEchoServer() examples.EchoServiceServer {
+func NewEchoServer() examples.EchoServiceServer {
 	return new(echoServer)
 }
 

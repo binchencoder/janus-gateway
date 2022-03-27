@@ -22,7 +22,7 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	//lint:ignore SA1019 known issue, will be replaced when possible
+	//nolint:staticcheck // Known issue, will be replaced when possible
 	legacydescriptor "github.com/golang/protobuf/descriptor"
 )
 
@@ -31,7 +31,8 @@ var (
 )
 
 type generator struct {
-	reg *descriptor.Registry
+	reg    *descriptor.Registry
+	format Format
 }
 
 type wrapper struct {
@@ -39,9 +40,17 @@ type wrapper struct {
 	swagger  *openapiSwaggerObject
 }
 
+type GeneratorOptions struct {
+	Registry       *descriptor.Registry
+	RecursiveDepth int
+}
+
 // New returns a new generator which generates grpc gateway files.
-func New(reg *descriptor.Registry) gen.Generator {
-	return &generator{reg: reg}
+func New(reg *descriptor.Registry, format Format) gen.Generator {
+	return &generator{
+		reg:    reg,
+		format: format,
+	}
 }
 
 // Merge a lot of OpenAPI file (wrapper) to single one OpenAPI file
@@ -141,21 +150,25 @@ func extensionMarshalJSON(so interface{}, extensions []extension) ([]byte, error
 }
 
 // encodeOpenAPI converts OpenAPI file obj to pluginpb.CodeGeneratorResponse_File
-func encodeOpenAPI(file *wrapper) (*descriptor.ResponseFile, error) {
-	var formatted bytes.Buffer
-	enc := json.NewEncoder(&formatted)
-	enc.SetIndent("", "  ")
+func encodeOpenAPI(file *wrapper, format Format) (*descriptor.ResponseFile, error) {
+	var contentBuf bytes.Buffer
+	enc, err := format.NewEncoder(&contentBuf)
+	if err != nil {
+		return nil, err
+	}
+
 	if err := enc.Encode(*file.swagger); err != nil {
 		return nil, err
 	}
+
 	name := file.fileName
 	ext := filepath.Ext(name)
 	base := strings.TrimSuffix(name, ext)
-	output := fmt.Sprintf("%s.swagger.json", base)
+	output := fmt.Sprintf("%s.swagger."+string(format), base)
 	return &descriptor.ResponseFile{
 		CodeGeneratorResponse_File: &pluginpb.CodeGeneratorResponse_File{
 			Name:    proto.String(output),
-			Content: proto.String(formatted.String()),
+			Content: proto.String(contentBuf.String()),
 		},
 	}, nil
 }
@@ -205,7 +218,7 @@ func (g *generator) Generate(targets []*descriptor.File) ([]*descriptor.Response
 
 	if g.reg.IsAllowMerge() {
 		targetOpenAPI := mergeTargetFile(openapis, g.reg.GetMergeFileName())
-		f, err := encodeOpenAPI(targetOpenAPI)
+		f, err := encodeOpenAPI(targetOpenAPI, g.format)
 		if err != nil {
 			return nil, fmt.Errorf("failed to encode OpenAPI for %s: %s", g.reg.GetMergeFileName(), err)
 		}
@@ -213,7 +226,7 @@ func (g *generator) Generate(targets []*descriptor.File) ([]*descriptor.Response
 		glog.V(1).Infof("New OpenAPI file will emit")
 	} else {
 		for _, file := range openapis {
-			f, err := encodeOpenAPI(file)
+			f, err := encodeOpenAPI(file, g.format)
 			if err != nil {
 				return nil, fmt.Errorf("failed to encode OpenAPI for %s: %s", file.fileName, err)
 			}
