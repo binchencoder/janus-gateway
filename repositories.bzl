@@ -199,29 +199,30 @@ def go_repositories():
         sum = "h1:J7Q5mO4ysT1dv8hyrUGHb9+ooztCXu1D8MY8DZYsu3g=",
         version = "v1.2.0",
     )
+    # Prometheus
     go_repository(
         name = "com_github_prometheus_client_golang",
         importpath = "github.com/prometheus/client_golang",
-        sum = "h1:9iH4JKXLzFbOAdtqv/a+j8aewx2Y8lAjAydhbaScPF8=",
-        version = "v0.9.3",
+        sum = "h1:Y8E/JaaPbmFSW2V81Ab/d8yZFYQQGbni1b1jPcG9Y6A=",
+        version = "v0.9.4",
     )
     go_repository(
         name = "com_github_prometheus_client_model",
         importpath = "github.com/prometheus/client_model",
-        sum = "h1:gQz4mCbXsO+nc9n1hCxHcGA3Zx3Eo+UHZoInFGUIXNM=",
-        version = "v0.0.0-20190812154241-14fe0d1b01d4",
+        sum = "h1:uq5h0d+GuxiXLJLNABMgp2qUWDPiLvgCzz2dUR+/W/M=",
+        version = "v0.2.0",
     )
     go_repository(
         name = "com_github_prometheus_common",
         importpath = "github.com/prometheus/common",
-        sum = "h1:7etb9YClo3a6HjLzfl6rIQaU+FDfi0VSX39io3aQ+DM=",
-        version = "v0.4.0",
+        sum = "h1:RyRA7RzGXQZiW+tGMr7sxa85G1z0yOpM1qq5c8lNawc=",
+        version = "v0.10.0",
     )
     go_repository(
         name = "com_github_prometheus_procfs",
         importpath = "github.com/prometheus/procfs",
-        sum = "h1:sofwID9zm4tzrgykg80hfFph1mryUeLRsUfoocVVmRY=",
-        version = "v0.0.0-20190507164030-5867b95ac084",
+        sum = "h1:F0+tqvhOksq22sc6iCHF5WGlWjdwj92p0udFh1VFBS8=",
+        version = "v0.1.3",
     )
     go_repository(
         name = "com_github_prometheus_tsdb",
