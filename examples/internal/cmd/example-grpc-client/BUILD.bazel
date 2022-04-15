@@ -4,7 +4,7 @@ package(default_visibility = ["//visibility:private"])
 
 go_library(
     name = "go_default_library",
-    srcs = ["main.go"],
+    srcs = ["grpcclient.go"],
     importpath = "github.com/binchencoder/ease-gateway/examples/internal/cmd/example-grpc-client",
     deps = [
         "//examples/internal/proto/examplepb:go_default_library",
@@ -23,7 +23,17 @@ go_library(
 )
 
 go_binary(
-    name = "example-grpc-client",
+    name = "grpc-client",
     embed = [":go_default_library"],
     visibility = ["//visibility:public"],
+)
+
+go_binary(
+    name = "gateway-client",
+    srcs = ["gatewayclient.go"],
+    deps = [
+        "//examples/internal/proto/examplepb:go_default_library",
+        "@com_github_binchencoder_letsgo//:go_default_library",
+        "@com_github_golang_protobuf//jsonpb:go_default_library",
+    ]
 )
