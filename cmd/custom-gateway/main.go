@@ -11,6 +11,7 @@ import (
 
 	"github.com/binchencoder/ease-gateway/gateway/runtime"
 	"github.com/binchencoder/ease-gateway/integrate"
+	"github.com/binchencoder/ease-gateway/util"
 	"github.com/binchencoder/gateway-proto/data"
 	"github.com/binchencoder/letsgo"
 )
@@ -34,6 +35,8 @@ Options:`)
 
 func startHTTPGateway(mux *runtime.ServeMux, hostPort string) {
 	if err := http.ListenAndServe(hostPort, integrate.HttpMux(mux)); err != nil {
+		glog.Errorf("Start http gateway error: %v", err)
+		shutdown()
 		panic(err)
 	}
 }
@@ -60,5 +63,14 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt, os.Kill)
 
-	startHTTPGateway(mux, hostPort)
+	go startHTTPGateway(mux, hostPort)
+
+	select {
+	case <-signals:
+		shutdown()
+	}
+}
+
+func shutdown() {
+	util.Flush()
 }
