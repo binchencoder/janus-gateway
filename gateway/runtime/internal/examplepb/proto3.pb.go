@@ -90,8 +90,8 @@ type Proto3Message struct {
 	BytesValue      []byte                    `protobuf:"bytes,9,opt,name=bytes_value,json=bytesValue,proto3" json:"bytes_value,omitempty"`
 	RepeatedValue   []string                  `protobuf:"bytes,10,rep,name=repeated_value,json=repeatedValue,proto3" json:"repeated_value,omitempty"`
 	RepeatedMessage []*wrapperspb.UInt64Value `protobuf:"bytes,44,rep,name=repeated_message,json=repeatedMessage,proto3" json:"repeated_message,omitempty"`
-	EnumValue       EnumValue                 `protobuf:"varint,11,opt,name=enum_value,json=enumValue,proto3,enum=ease.gateway.runtime.internal.examplepb.EnumValue" json:"enum_value,omitempty"`
-	RepeatedEnum    []EnumValue               `protobuf:"varint,12,rep,packed,name=repeated_enum,json=repeatedEnum,proto3,enum=ease.gateway.runtime.internal.examplepb.EnumValue" json:"repeated_enum,omitempty"`
+	EnumValue       EnumValue                 `protobuf:"varint,11,opt,name=enum_value,json=enumValue,proto3,enum=janus.gateway.runtime.internal.examplepb.EnumValue" json:"enum_value,omitempty"`
+	RepeatedEnum    []EnumValue               `protobuf:"varint,12,rep,packed,name=repeated_enum,json=repeatedEnum,proto3,enum=janus.gateway.runtime.internal.examplepb.EnumValue" json:"repeated_enum,omitempty"`
 	TimestampValue  *timestamppb.Timestamp    `protobuf:"bytes,13,opt,name=timestamp_value,json=timestampValue,proto3" json:"timestamp_value,omitempty"`
 	DurationValue   *durationpb.Duration      `protobuf:"bytes,14,opt,name=duration_value,json=durationValue,proto3" json:"duration_value,omitempty"`
 	FieldmaskValue  *fieldmaskpb.FieldMask    `protobuf:"bytes,15,opt,name=fieldmask_value,json=fieldmaskValue,proto3" json:"fieldmask_value,omitempty"`
@@ -803,22 +803,22 @@ func file_gateway_runtime_internal_examplepb_proto3_proto_rawDescGZIP() []byte {
 var file_gateway_runtime_internal_examplepb_proto3_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_gateway_runtime_internal_examplepb_proto3_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_gateway_runtime_internal_examplepb_proto3_proto_goTypes = []interface{}{
-	(EnumValue)(0),                 // 0: ease.gateway.runtime.internal.examplepb.EnumValue
-	(*Proto3Message)(nil),          // 1: ease.gateway.runtime.internal.examplepb.Proto3Message
-	nil,                            // 2: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValueEntry
-	nil,                            // 3: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue2Entry
-	nil,                            // 4: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue3Entry
-	nil,                            // 5: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue4Entry
-	nil,                            // 6: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue5Entry
-	nil,                            // 7: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue6Entry
-	nil,                            // 8: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue7Entry
-	nil,                            // 9: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue8Entry
-	nil,                            // 10: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue9Entry
-	nil,                            // 11: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue10Entry
-	nil,                            // 12: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue12Entry
-	nil,                            // 13: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue14Entry
-	nil,                            // 14: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue15Entry
-	nil,                            // 15: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue16Entry
+	(EnumValue)(0),                 // 0: janus.gateway.runtime.internal.examplepb.EnumValue
+	(*Proto3Message)(nil),          // 1: janus.gateway.runtime.internal.examplepb.Proto3Message
+	nil,                            // 2: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValueEntry
+	nil,                            // 3: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue2Entry
+	nil,                            // 4: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue3Entry
+	nil,                            // 5: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue4Entry
+	nil,                            // 6: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue5Entry
+	nil,                            // 7: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue6Entry
+	nil,                            // 8: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue7Entry
+	nil,                            // 9: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue8Entry
+	nil,                            // 10: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue9Entry
+	nil,                            // 11: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue10Entry
+	nil,                            // 12: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue12Entry
+	nil,                            // 13: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue14Entry
+	nil,                            // 14: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue15Entry
+	nil,                            // 15: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue16Entry
 	(*wrapperspb.UInt64Value)(nil), // 16: google.protobuf.UInt64Value
 	(*timestamppb.Timestamp)(nil),  // 17: google.protobuf.Timestamp
 	(*durationpb.Duration)(nil),    // 18: google.protobuf.Duration
@@ -833,38 +833,38 @@ var file_gateway_runtime_internal_examplepb_proto3_proto_goTypes = []interface{}
 	(*wrapperspb.BytesValue)(nil),  // 27: google.protobuf.BytesValue
 }
 var file_gateway_runtime_internal_examplepb_proto3_proto_depIdxs = []int32{
-	1,  // 0: ease.gateway.runtime.internal.examplepb.Proto3Message.nested:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message
-	16, // 1: ease.gateway.runtime.internal.examplepb.Proto3Message.repeated_message:type_name -> google.protobuf.UInt64Value
-	0,  // 2: ease.gateway.runtime.internal.examplepb.Proto3Message.enum_value:type_name -> ease.gateway.runtime.internal.examplepb.EnumValue
-	0,  // 3: ease.gateway.runtime.internal.examplepb.Proto3Message.repeated_enum:type_name -> ease.gateway.runtime.internal.examplepb.EnumValue
-	17, // 4: ease.gateway.runtime.internal.examplepb.Proto3Message.timestamp_value:type_name -> google.protobuf.Timestamp
-	18, // 5: ease.gateway.runtime.internal.examplepb.Proto3Message.duration_value:type_name -> google.protobuf.Duration
-	19, // 6: ease.gateway.runtime.internal.examplepb.Proto3Message.fieldmask_value:type_name -> google.protobuf.FieldMask
-	1,  // 7: ease.gateway.runtime.internal.examplepb.Proto3Message.nested_oneof_value_one:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message
-	20, // 8: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_double_value:type_name -> google.protobuf.DoubleValue
-	21, // 9: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_float_value:type_name -> google.protobuf.FloatValue
-	22, // 10: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_int64_value:type_name -> google.protobuf.Int64Value
-	23, // 11: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_int32_value:type_name -> google.protobuf.Int32Value
-	16, // 12: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_u_int64_value:type_name -> google.protobuf.UInt64Value
-	24, // 13: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_u_int32_value:type_name -> google.protobuf.UInt32Value
-	25, // 14: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_bool_value:type_name -> google.protobuf.BoolValue
-	26, // 15: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_string_value:type_name -> google.protobuf.StringValue
-	27, // 16: ease.gateway.runtime.internal.examplepb.Proto3Message.wrapper_bytes_value:type_name -> google.protobuf.BytesValue
-	2,  // 17: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValueEntry
-	3,  // 18: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value2:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue2Entry
-	4,  // 19: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value3:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue3Entry
-	5,  // 20: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value4:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue4Entry
-	6,  // 21: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value5:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue5Entry
-	7,  // 22: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value6:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue6Entry
-	8,  // 23: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value7:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue7Entry
-	9,  // 24: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value8:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue8Entry
-	10, // 25: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value9:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue9Entry
-	11, // 26: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value10:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue10Entry
-	12, // 27: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value12:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue12Entry
-	13, // 28: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value14:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue14Entry
-	14, // 29: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value15:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue15Entry
-	15, // 30: ease.gateway.runtime.internal.examplepb.Proto3Message.map_value16:type_name -> ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue16Entry
-	16, // 31: ease.gateway.runtime.internal.examplepb.Proto3Message.MapValue16Entry.value:type_name -> google.protobuf.UInt64Value
+	1,  // 0: janus.gateway.runtime.internal.examplepb.Proto3Message.nested:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message
+	16, // 1: janus.gateway.runtime.internal.examplepb.Proto3Message.repeated_message:type_name -> google.protobuf.UInt64Value
+	0,  // 2: janus.gateway.runtime.internal.examplepb.Proto3Message.enum_value:type_name -> janus.gateway.runtime.internal.examplepb.EnumValue
+	0,  // 3: janus.gateway.runtime.internal.examplepb.Proto3Message.repeated_enum:type_name -> janus.gateway.runtime.internal.examplepb.EnumValue
+	17, // 4: janus.gateway.runtime.internal.examplepb.Proto3Message.timestamp_value:type_name -> google.protobuf.Timestamp
+	18, // 5: janus.gateway.runtime.internal.examplepb.Proto3Message.duration_value:type_name -> google.protobuf.Duration
+	19, // 6: janus.gateway.runtime.internal.examplepb.Proto3Message.fieldmask_value:type_name -> google.protobuf.FieldMask
+	1,  // 7: janus.gateway.runtime.internal.examplepb.Proto3Message.nested_oneof_value_one:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message
+	20, // 8: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_double_value:type_name -> google.protobuf.DoubleValue
+	21, // 9: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_float_value:type_name -> google.protobuf.FloatValue
+	22, // 10: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_int64_value:type_name -> google.protobuf.Int64Value
+	23, // 11: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_int32_value:type_name -> google.protobuf.Int32Value
+	16, // 12: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_u_int64_value:type_name -> google.protobuf.UInt64Value
+	24, // 13: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_u_int32_value:type_name -> google.protobuf.UInt32Value
+	25, // 14: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_bool_value:type_name -> google.protobuf.BoolValue
+	26, // 15: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_string_value:type_name -> google.protobuf.StringValue
+	27, // 16: janus.gateway.runtime.internal.examplepb.Proto3Message.wrapper_bytes_value:type_name -> google.protobuf.BytesValue
+	2,  // 17: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValueEntry
+	3,  // 18: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value2:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue2Entry
+	4,  // 19: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value3:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue3Entry
+	5,  // 20: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value4:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue4Entry
+	6,  // 21: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value5:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue5Entry
+	7,  // 22: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value6:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue6Entry
+	8,  // 23: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value7:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue7Entry
+	9,  // 24: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value8:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue8Entry
+	10, // 25: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value9:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue9Entry
+	11, // 26: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value10:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue10Entry
+	12, // 27: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value12:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue12Entry
+	13, // 28: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value14:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue14Entry
+	14, // 29: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value15:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue15Entry
+	15, // 30: janus.gateway.runtime.internal.examplepb.Proto3Message.map_value16:type_name -> janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue16Entry
+	16, // 31: janus.gateway.runtime.internal.examplepb.Proto3Message.MapValue16Entry.value:type_name -> google.protobuf.UInt64Value
 	32, // [32:32] is the sub-list for method output_type
 	32, // [32:32] is the sub-list for method input_type
 	32, // [32:32] is the sub-list for extension type_name

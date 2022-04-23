@@ -8,7 +8,7 @@ import (
 	"flag"
 	"fmt"
 
-	examplepb "github.com/binchencoder/ease-gateway/proto/examplepb"
+	examplepb "github.com/binchencoder/janus-gateway/proto/examplepb"
 	"github.com/binchencoder/gateway-proto/data"
 	skylb "github.com/binchencoder/skylb-api/server"
 	"github.com/golang/glog"
@@ -26,7 +26,7 @@ func main() {
 	defer glog.Flush()
 
 	// Regist to skylbserver
-	skylb.Register(data.ServiceId_CUSTOM_EASE_GATEWAY_TEST, "grpc", *port)
+	skylb.Register(data.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, "grpc", *port)
 	skylb.EnableHistogram()
 	skylb.Start(fmt.Sprintf(":%d", *port), func(s *grpc.Server) error {
 		examplepb.RegisterEchoServiceServer(s, NewEchoServer())

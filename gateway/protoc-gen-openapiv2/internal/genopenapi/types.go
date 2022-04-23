@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
-	options "github.com/binchencoder/ease-gateway/httpoptions"
+	"github.com/binchencoder/janus-gateway/gateway/internal/descriptor"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
 	"gopkg.in/yaml.v2"
 )
 

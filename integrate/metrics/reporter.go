@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	// Create a histogram for record response latency (milliseconds) of ease-gateway.
+	// Create a histogram for record response latency (milliseconds) of janus-gateway.
 	// And it will generate additional metric, for example:
 	// gateway_http_response_ms_count, it is the total number of request.
 	gatewayHandledHistogram = prometheus.NewHistogramVec(
@@ -23,7 +23,7 @@ var (
 		[]string{"client", "service_name", "url", "http_method", "code"},
 	)
 
-	// Create a counter for record total system errors of ease-gateway.
+	// Create a counter for record total system errors of janus-gateway.
 	gatewayErrCounter = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: "gateway",

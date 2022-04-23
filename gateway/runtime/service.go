@@ -3,15 +3,15 @@ package runtime
 import (
 	"google.golang.org/grpc"
 
-	options "github.com/binchencoder/ease-gateway/httpoptions"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
 	vexpb "github.com/binchencoder/gateway-proto/data"
 	skypb "github.com/binchencoder/skylb-api/proto"
 )
 
 var (
 	// CallerServiceId sets the gRPC caller service ID of the gateway.
-	// For ease-gateway, it's ServiceId_EASE_GATEWAY.
-	CallerServiceId = vexpb.ServiceId_EASE_GATEWAY
+	// For janus-gateway, it's ServiceId_JANUS_GATEWAY.
+	CallerServiceId = vexpb.ServiceId_JANUS_GATEWAY
 )
 
 // Method represents a gRPC service method.

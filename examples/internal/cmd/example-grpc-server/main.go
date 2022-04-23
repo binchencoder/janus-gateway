@@ -10,13 +10,13 @@ import (
 	"log"
 	"net/http"
 
-	examplepb "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
+	examplepb "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb"
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/binchencoder/gateway-proto/data"
 	skylb "github.com/binchencoder/skylb-api/server"
 
-	"github.com/binchencoder/ease-gateway/examples/internal/server"
+	"github.com/binchencoder/janus-gateway/examples/internal/server"
 	"github.com/golang/glog"
 	"google.golang.org/grpc"
 )
@@ -48,7 +48,7 @@ func main() {
 
 	go registerPrometheus()
 
-	skylb.Register(data.ServiceId_CUSTOM_EASE_GATEWAY_TEST, "grpc", *port)
+	skylb.Register(data.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, "grpc", *port)
 	skylb.EnableHistogram()
 	skylb.Start(fmt.Sprintf(":%d", *port), func(s *grpc.Server) error {
 		examplepb.RegisterEchoServiceServer(s, server.NewEchoServer())

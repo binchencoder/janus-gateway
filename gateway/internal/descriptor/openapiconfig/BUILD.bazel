@@ -12,7 +12,7 @@ proto_library(
 go_proto_library(
     name = "openapiconfig_go_proto",
     compilers = ["//:go_apiv2"],
-    importpath = "github.com/binchencoder/ease-gateway/gateway/internal/descriptor/openapiconfig",
+    importpath = "github.com/binchencoder/janus-gateway/gateway/internal/descriptor/openapiconfig",
     proto = ":openapiconfig_proto",
     visibility = ["//:__subpackages__"],
     deps = ["//gateway/protoc-gen-openapiv2/options"],
@@ -21,7 +21,7 @@ go_proto_library(
 go_library(
     name = "openapiconfig",
     embed = [":openapiconfig_go_proto"],
-    importpath = "github.com/binchencoder/ease-gateway/gateway/internal/descriptor/openapiconfig",
+    importpath = "github.com/binchencoder/janus-gateway/gateway/internal/descriptor/openapiconfig",
     visibility = ["//:__subpackages__"],
 )
 

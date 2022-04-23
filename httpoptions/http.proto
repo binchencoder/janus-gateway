@@ -14,13 +14,13 @@
 // See `https://github.com/googleapis/googleapis/blob/master/google/api/http.proto`
 syntax = "proto3";
 
-package ease.api;
+package janus.api;
 
 option cc_enable_arenas = true;
-option go_package = "github.com/binchencoder/ease-gateway/httpoptions;annotations";
+option go_package = "github.com/binchencoder/janus-gateway/httpoptions;annotations";
 option java_multiple_files = true;
 option java_outer_classname = "HttpProto";
-option java_package = "com.ease.api";
+option java_package = "com.janus.api";
 option objc_class_prefix = "EAPI";
 
 // Defines the HTTP configuration for an API service. It contains a list of

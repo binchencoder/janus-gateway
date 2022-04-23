@@ -15,7 +15,7 @@ buildifier(
 )
 
 # gazelle:exclude _output
-# gazelle:prefix github.com/binchencoder/ease-gateway/gateway
+# gazelle:prefix github.com/binchencoder/janus-gateway/gateway
 # gazelle:go_proto_compilers //:go_apiv2
 # gazelle:go_grpc_compilers //:go_apiv2, //:go_grpc
 # gazelle:go_naming_convention import_alias

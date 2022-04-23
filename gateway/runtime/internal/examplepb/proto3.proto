@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package ease.gateway.runtime.internal.examplepb;
+package janus.gateway.runtime.internal.examplepb;
 
-option go_package = "github.com/binchencoder/ease-gateway/gateway/runtime/internal/examplepb";
+option go_package = "github.com/binchencoder/janus-gateway/gateway/runtime/internal/examplepb";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/field_mask.proto";

@@ -29,7 +29,7 @@ go_proto_library(
         "//:go_apiv2",
         "//:go_grpc",
     ],
-    importpath = "github.com/binchencoder/ease-gateway/gateway/runtime/internal/examplepb",
+    importpath = "github.com/binchencoder/janus-gateway/gateway/runtime/internal/examplepb",
     proto = ":examplepb_proto",
     deps = ["@go_googleapis//google/api:annotations_go_proto"],
 )
@@ -37,7 +37,7 @@ go_proto_library(
 go_library(
     name = "examplepb",
     embed = [":examplepb_go_proto"],
-    importpath = "github.com/binchencoder/ease-gateway/gateway/runtime/internal/examplepb",
+    importpath = "github.com/binchencoder/janus-gateway/gateway/runtime/internal/examplepb",
 )
 
 alias(

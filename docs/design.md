@@ -1,26 +1,26 @@
-# Ease-gatway - Enterprise Universal Gateway Service
+# Janus-gatway - Enterprise Universal Gateway Service
 
-`ease-gateway` is a enterprise universal gateway service for mobile, native, and web apps.
+`janus-gateway` is a enterprise universal gateway service for mobile, native, and web apps.
 It's based on `grpc-gateway` and mobile team's gateway development experience.
 
 ## Overview
 
-`ease-gateway` is a thin gateway layer on top of all front-end or APIs services. It's the single entrance for all enterprise internal services except the connection services (such as EIM connection layer, SSO, etc.). All clients access the gateway (through the reverse proxy or load balancer) with RESTful APIs, the gateway translates the requests to gRPC calls to the target services.
+`janus-gateway` is a thin gateway layer on top of all front-end or APIs services. It's the single entrance for all enterprise internal services except the connection services (such as EIM connection layer, SSO, etc.). All clients access the gateway (through the reverse proxy or load balancer) with RESTful APIs, the gateway translates the requests to gRPC calls to the target services.
 
 ![Architecture](images/Arch.png)
 
 >  SkyLB is an external load balancer for gRPC which is able to load balance on
-> gRPC's long-lived connections. `ease-gateway` instances connect to SkyLB for endpoints
+> gRPC's long-lived connections. `janus-gateway` instances connect to SkyLB for endpoints
 > of the target services, and load balance the end-users' requests to the target
 > services.
 
-Based on this structure, `ease-gateway` provides foundamental functions to enterprise
+Based on this structure, `janus-gateway` provides foundamental functions to enterprise
 infrastructure such as user identity verification, API management, monitoring,
 and logging.
 
-## How does Ease-gateway Work?
+## How does Janus-gateway Work?
 
-`ease-gateway` is based on the open-sourced `grpc-gateway` framework. The following
+`janus-gateway` is based on the open-sourced `grpc-gateway` framework. The following
 diagram shows how grpc-gateway works:
 
 ![grpc-gateway](images/mechanism.png)
@@ -40,7 +40,7 @@ gateway and gRPC service stubs in Golang. The generated code can be easily
 hooked up with a HTTP server, and when HTTP requests arrive, it issues gRPC
 calls to the target service.
 
-`ease-gateway` is the project to create such a HTTP server to meet enterprise business
+`janus-gateway` is the project to create such a HTTP server to meet enterprise business
 needs.
 
 ### Request Interception
@@ -83,7 +83,7 @@ translates the proto, it also generates a SkyLB client for each service. The
 SkyLB clients talk to the SkyLB to fetch service endpoints, and get notified
 when the service endpoints were changed so that it can do client side load
 balance properly. A typical SkyLB client example can be found at
-[ease-gateway demo](https://github.com/binchencoder/ease-gateway/tree/master/examples/gateway) (it also contains the `grpc-gateway` example).
+[janus-gateway demo](https://github.com/binchencoder/janus-gateway/tree/master/examples/gateway) (it also contains the `grpc-gateway` example).
 
 The GatewayServiceHook provides a Bootstrap() method for us to do
 initialization work (triggered by calling runtime.SetGatewayServiceHook() of
@@ -136,8 +136,8 @@ In gRPC service proto, engineers need to specify the service ID like this:
 import "options/extension.proto";
 
 service Demo {
-	option (ease.api.service_spec) = {
-		service_id: EASE_GATEWAY_DEMO
+	option (janus.api.service_spec) = {
+		service_id: JANUS_GATEWAY_DEMO
 		namespace: "default"
 		port_name: "grpc"
 	}
@@ -162,7 +162,7 @@ import "httpoptions/annotations.proto";
 // The request message for greeting.
 message GreetingRequest {
 	string name = 1 [
-		 (ease.api.rules) = {
+		 (janus.api.rules) = {
 			rules: {
 				type: STRING,
 				operator: NON_NIL,
@@ -196,7 +196,7 @@ We can add Janus customized instrumentation if needed.
 
 ## Gateway Rollout Procedure
 
-When a new target service or service update is going to be added to `ease-gateway`,
+When a new target service or service update is going to be added to `janus-gateway`,
 it has to following the following steps:
 
 1. Add a service enum if it's a new service.
@@ -206,15 +206,15 @@ it has to following the following steps:
 3. Implement the gRPC service and push to production.
 
 4. Link the service to gateway if it's a new service. This can be easily done
-	by adding an anonymous import in `//ease-gateway/cmd/gateway/registryprod.go ` :
+	by adding an anonymous import in `//janus-gateway/cmd/gateway/registryprod.go ` :
 	
 	```go
 	import (
-		_ "github.com/binchencoder/ease-gateway/proto/examples"
+		_ "github.com/binchencoder/janus-gateway/proto/examples"
 	)
 	```
 	
-5. Rebuild the `ease-gateway` binary and push to production.
+5. Rebuild the `janus-gateway` binary and push to production.
 
 
 ## References

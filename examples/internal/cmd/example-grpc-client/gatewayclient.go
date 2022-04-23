@@ -10,7 +10,7 @@ import (
 
 	"github.com/golang/protobuf/jsonpb"
 
-	examplepb "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
+	examplepb "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb"
 	"github.com/binchencoder/letsgo"
 )
 

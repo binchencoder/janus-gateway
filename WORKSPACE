@@ -1,4 +1,4 @@
-workspace(name = "com_github_binchencoder_ease_gateway")
+workspace(name = "com_github_binchencoder_janus_gateway")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")

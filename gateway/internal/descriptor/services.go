@@ -8,7 +8,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule"
 	// options "google.golang.org/genproto/googleapis/api/annotations"
-	options "github.com/binchencoder/ease-gateway/httpoptions"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
@@ -243,7 +243,7 @@ func extractServiceSpec(svc *descriptorpb.ServiceDescriptorProto) (*options.Serv
 		return nil, errNoServiceSpec
 	}
 	spec := proto.GetExtension(svc.Options, options.E_ServiceSpec)
-	// Extract ease gateway service spec options.
+	// Extract janus gateway service spec options.
 	svcSpec, ok := spec.(*options.ServiceSpec)
 	if !ok {
 		return nil, fmt.Errorf("extension is %T; Want a service spec", spec)
@@ -283,7 +283,7 @@ func extractAPIOptions(meth *descriptorpb.MethodDescriptorProto) (*options.HttpR
 	if !proto.HasExtension(meth.Options, options.E_Method) {
 		return opts, mopts, nil
 	}
-	// Extract ease gateway method options.
+	// Extract janus gateway method options.
 	m := proto.GetExtension(meth.Options, options.E_Method)
 	mopts, ok = m.(*options.ApiMethod)
 	if !ok {

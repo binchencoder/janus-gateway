@@ -9,27 +9,27 @@ import (
 
 	"github.com/golang/glog"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
-	"github.com/binchencoder/ease-gateway/integrate"
-	"github.com/binchencoder/ease-gateway/util"
+	"github.com/binchencoder/janus-gateway/gateway/runtime"
+	"github.com/binchencoder/janus-gateway/integrate"
+	"github.com/binchencoder/janus-gateway/util"
 	"github.com/binchencoder/gateway-proto/data"
 	"github.com/binchencoder/letsgo"
 	"github.com/binchencoder/letsgo/service/naming"
 )
 
 var (
-	host        = flag.String("host", "", "The ease-gateway service host ")
-	port        = flag.Int("port", 8080, "The ease-gateway service port")
+	host        = flag.String("host", "", "The janus-gateway service host ")
+	port        = flag.Int("port", 8080, "The janus-gateway service port")
 	enableHTTPS = flag.Bool("enable-https", false, "Whether to enable https.")
 	certFile    = flag.String("cert-file", "", "The TLS cert file.")
 	keyFile     = flag.String("key-file", "", "The TLS key file.")
 )
 
 func usage() {
-	fmt.Println(`Ease Gateway - Universal Gateway of xxx Inc.
+	fmt.Println(`Janus Gateway - Universal Gateway of xxx Inc.
 
 Usage:
-	ease-gateway [options]
+	janus-gateway [options]
 
 Options:`)
 
@@ -72,7 +72,7 @@ func main() {
 	checkFlags()
 
 	hostPort := fmt.Sprintf("%s:%d", *host, *port)
-	runtime.CallerServiceId = data.ServiceId_EASE_GATEWAY
+	runtime.CallerServiceId = data.ServiceId_JANUS_GATEWAY
 	serviceName, err := naming.ServiceIdToName(runtime.CallerServiceId)
 	if err != nil {
 		glog.Errorf("Invalid service id %d", runtime.CallerServiceId)

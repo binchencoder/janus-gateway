@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 go_library(
     name = "go_default_library",
     srcs = ["main.go"],
-    importpath = "github.com/binchencoder/ease-gateway/util/glog/cmd",
+    importpath = "github.com/binchencoder/janus-gateway/util/glog/cmd",
     visibility = ["//visibility:private"],
     deps = ["//util/glog:go_default_library"],
 )

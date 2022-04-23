@@ -7,7 +7,7 @@
 package examplepb
 
 import (
-	_ "github.com/binchencoder/ease-gateway/httpoptions"
+	_ "github.com/binchencoder/janus-gateway/httpoptions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"

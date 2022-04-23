@@ -15,7 +15,7 @@
 // See `https://github.com/googleapis/googleapis/blob/master/google/api/annotations.proto`
 syntax = "proto3";
 
-package ease.api;
+package janus.api;
 
 import "google/protobuf/descriptor.proto";
 import "httpoptions/http.proto";
@@ -23,9 +23,9 @@ import "data/data.proto";
 import "frontend/error.proto";
 
 option java_multiple_files = true;
-option go_package = "github.com/binchencoder/ease-gateway/httpoptions;annotations";
+option go_package = "github.com/binchencoder/janus-gateway/httpoptions;annotations";
 option java_outer_classname = "AnnotationsProto";
-option java_package = "com.ease.api";
+option java_package = "com.janus.api";
 option objc_class_prefix = "EAPI";
 
 extend google.protobuf.MethodOptions {
@@ -66,13 +66,13 @@ message ApiMethod {
 
 // Api regist gateway.
 enum ApiSourceType {
-	EASE_GATEWAY       = 0; // ease-gateway apis.
+	JANUS_GATEWAY       = 0; // janus-gateway apis.
 	OPEN_GATEWAY        = 1; // open-gateway open apis.
 }
 
 // Auth token type.
 enum AuthTokenType {
-	EASE_AUTH_TOKEN   = 0; // ease gateway auth type.
+	JANUS_AUTH_TOKEN   = 0; // janus gateway auth type.
 	BASE_ACCESS_TOKEN  = 1; // open platform baseAccessToken.
 }
 

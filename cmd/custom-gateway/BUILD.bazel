@@ -3,7 +3,7 @@ package(default_visibility = ["//visibility:public"])
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 
 go_binary(
-    name = "custom-ease-gateway",
+    name = "custom-janus-gateway",
     embed = [":go_default_library"],
 )
 
@@ -13,7 +13,7 @@ go_library(
         "main.go",
         "registrydemo.go",
     ],
-    importpath = "github.com/binchencoder/ease-gateway/cmd/custom-gateway",
+    importpath = "github.com/binchencoder/janus-gateway/cmd/custom-gateway",
     deps = [
         "//examples/internal/proto/examplepb",
         "//gateway/runtime",

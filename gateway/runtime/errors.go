@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/status"
 
-	"github.com/binchencoder/ease-gateway/gateway/internal"
+	"github.com/binchencoder/janus-gateway/gateway/internal"
 	fpb "github.com/binchencoder/gateway-proto/frontend"
 )
 

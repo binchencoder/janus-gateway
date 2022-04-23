@@ -17,7 +17,7 @@ import (
 	"sync"
 	"unicode/utf8"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/janus-gateway/gateway/runtime"
 	vexpb "github.com/binchencoder/gateway-proto/data"
 	fpb "github.com/binchencoder/gateway-proto/frontend"
 	lgr "github.com/binchencoder/letsgo/grpc"
@@ -108,7 +108,7 @@ var (
 func request_EchoService_Echo_0(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -188,7 +188,7 @@ var (
 func request_EchoService_Echo_1(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -289,7 +289,7 @@ var (
 func request_EchoService_Echo_2(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -421,7 +421,7 @@ var (
 func request_EchoService_Echo_3(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -553,7 +553,7 @@ var (
 func request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	var (
 		val string
@@ -629,7 +629,7 @@ func local_request_EchoService_Echo_4(ctx context.Context, marshaler runtime.Mar
 func request_EchoService_EchoBody_0(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
 	if berr != nil {
@@ -677,7 +677,7 @@ var (
 func request_EchoService_EchoDelete_0(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SimpleMessage
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
@@ -722,7 +722,7 @@ var (
 func request_EchoService_EchoPatch_0(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DynamicMessageUpdate
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
 	if berr != nil {
@@ -794,7 +794,7 @@ func local_request_EchoService_EchoPatch_0(ctx context.Context, marshaler runtim
 func request_EchoService_EchoValidationRule_0(ctx context.Context, marshaler runtime.Marshaler, client EchoServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ValidationRuleTestRequest
 	var metadata runtime.ServerMetadata
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
 	if berr != nil {
@@ -848,7 +848,7 @@ func local_request_EchoService_EchoValidationRule_0(ctx context.Context, marshal
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterEchoServiceHandlerFromEndpoint instead.
 func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server EchoServiceServer) error {
 
-	mux.Handle("POST", pattern_EchoService_Echo_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_EchoService_Echo_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -872,7 +872,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	mux.Handle("GET", pattern_EchoService_Echo_1, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EchoService_Echo_1, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -896,7 +896,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	mux.Handle("GET", pattern_EchoService_Echo_2, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EchoService_Echo_2, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -920,7 +920,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	mux.Handle("GET", pattern_EchoService_Echo_3, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EchoService_Echo_3, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -944,7 +944,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	mux.Handle("GET", pattern_EchoService_Echo_4, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_EchoService_Echo_4, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -968,7 +968,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	mux.Handle("POST", pattern_EchoService_EchoBody_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_EchoService_EchoBody_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -992,7 +992,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	mux.Handle("DELETE", pattern_EchoService_EchoDelete_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("DELETE", pattern_EchoService_EchoDelete_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -1016,7 +1016,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	mux.Handle("PATCH", pattern_EchoService_EchoPatch_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PATCH", pattern_EchoService_EchoPatch_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -1040,7 +1040,7 @@ func RegisterEchoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	mux.Handle("POST", pattern_EchoService_EchoValidationRule_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_EchoService_EchoValidationRule_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -1075,7 +1075,7 @@ func init() {
 	_ = s
 	_ = spec
 
-	spec = internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec = internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 	s = &runtime.Service{
 		Spec:     *spec,
 		Name:     "EchoService",
@@ -1084,7 +1084,7 @@ func init() {
 		Disable:  DisableEchoService_Service,
 	}
 
-	runtime.AddService(s, Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup, Disable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup)
+	runtime.AddService(s, Enable_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_ServiceGroup, Disable_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_ServiceGroup)
 
 }
 
@@ -1126,14 +1126,14 @@ func RegisterEchoServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "EchoServiceClient" to call the correct interceptors.
 func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client EchoServiceClient) error {
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
-	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}", "POST", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("POST", pattern_EchoService_Echo_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}", "POST", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("POST", pattern_EchoService_Echo_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1141,7 +1141,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1167,12 +1167,12 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}/{num}", "GET", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("GET", pattern_EchoService_Echo_1, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}/{num}", "GET", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("GET", pattern_EchoService_Echo_1, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1180,7 +1180,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1206,12 +1206,12 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}/{num}/{lang}", "GET", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("GET", pattern_EchoService_Echo_2, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo/{id}/{num}/{lang}", "GET", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("GET", pattern_EchoService_Echo_2, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1219,7 +1219,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1245,12 +1245,12 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo1/{id}/{line_num}/{status.note}", "GET", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("GET", pattern_EchoService_Echo_3, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo1/{id}/{line_num}/{status.note}", "GET", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("GET", pattern_EchoService_Echo_3, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1258,7 +1258,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1284,12 +1284,12 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo2/{no.note}", "GET", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("GET", pattern_EchoService_Echo_4, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "Echo", "/v1/example/echo2/{no.note}", "GET", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("GET", pattern_EchoService_Echo_4, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1297,7 +1297,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "Echo", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1323,12 +1323,12 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	runtime.AddMethod(spec, "EchoService", "EchoBody", "/v1/example/echo_body", "POST", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("POST", pattern_EchoService_EchoBody_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "EchoBody", "/v1/example/echo_body", "POST", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("POST", pattern_EchoService_EchoBody_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1336,7 +1336,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoBody", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "EchoBody", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1362,12 +1362,12 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	runtime.AddMethod(spec, "EchoService", "EchoDelete", "/v1/example/echo_delete", "DELETE", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("DELETE", pattern_EchoService_EchoDelete_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "EchoDelete", "/v1/example/echo_delete", "DELETE", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("DELETE", pattern_EchoService_EchoDelete_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1375,7 +1375,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoDelete", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "EchoDelete", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1401,12 +1401,12 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	runtime.AddMethod(spec, "EchoService", "EchoPatch", "/v1/example/echo_patch", "PATCH", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("PATCH", pattern_EchoService_EchoPatch_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "EchoPatch", "/v1/example/echo_patch", "PATCH", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("PATCH", pattern_EchoService_EchoPatch_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1414,7 +1414,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoPatch", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "EchoPatch", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1440,12 +1440,12 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 
 	})
 
-	runtime.AddMethod(spec, "EchoService", "EchoValidationRule", "/v1/example/echo:validationRules", "POST", true, false, false, "UNSPECIFIED", "EASE_GATEWAY", "EASE_AUTH_TOKEN", "")
-	mux.Handle("POST", pattern_EchoService_EchoValidationRule_0, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	runtime.AddMethod(spec, "EchoService", "EchoValidationRule", "/v1/example/echo:validationRules", "POST", true, false, false, "UNSPECIFIED", "JANUS_GATEWAY", "JANUS_AUTH_TOKEN", "")
+	mux.Handle("POST", pattern_EchoService_EchoValidationRule_0, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, func(inctx context.Context, w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		// TODO(mojz): review all locking/unlocking logic.
-		// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RLock()
-		// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.RUnlock()
-		client := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client
+		// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RLock()
+		// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.RUnlock()
+		client := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		if client == nil {
 			err := status.Error(codes.Internal, "service disabled")
@@ -1453,7 +1453,7 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 			return
 		}
 
-		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec, "EchoService", "EchoValidationRule", w, req)
+		ctx, err := runtime.RequestAccepted(inctx, internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec, "EchoService", "EchoValidationRule", w, req)
 		if err != nil {
 			grpclog.Errorf("runtime.RequestAccepted returns error: %v", err)
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -1482,34 +1482,34 @@ func RegisterEchoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 	return nil
 }
 
-func Disable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup() {
-	// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.Lock()
-	// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.Unlock()
-	if internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli != nil {
-		spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+func Disable_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_ServiceGroup() {
+	// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.Lock()
+	// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.Unlock()
+	if internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_skycli != nil {
+		spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 		sg := runtime.GetServiceGroup(spec)
 		for _, svc := range sg.Services {
 			svc.Disable()
 		}
 
-		internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client = nil
-		internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli.Shutdown()
-		internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli = nil
+		internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client = nil
+		internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_skycli.Shutdown()
+		internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_skycli = nil
 	}
 }
 
-func Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup() {
-	// internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.Lock()
-	// defer internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock.Unlock()
+func Enable_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_ServiceGroup() {
+	// internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.Lock()
+	// defer internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock.Unlock()
 
-	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli = client.NewServiceCli(runtime.CallerServiceId)
+	internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_skycli = client.NewServiceCli(runtime.CallerServiceId)
 
 	// Resolve service
-	spec := internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec
+	spec := internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec
 
-	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli.Resolve(spec)
+	internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_skycli.Resolve(spec)
 
-	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli.Start(func(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
+	internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_skycli.Start(func(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
 		sg := runtime.GetServiceGroup(spec)
 		for _, svc := range sg.Services {
 			svc.Enable(spec, conn)
@@ -1518,11 +1518,11 @@ func Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup() {
 }
 
 func EnableEchoService_Service(spec *skypb.ServiceSpec, conn *grpc.ClientConn) {
-	internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client = NewEchoServiceClient(conn)
+	internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client = NewEchoServiceClient(conn)
 }
 
 func DisableEchoService_Service() {
-	internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client = nil
+	internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client = nil
 }
 
 var (
@@ -1566,10 +1566,10 @@ var (
 )
 
 var (
-	internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_spec   = client.NewServiceSpec("default", vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, "grpc")
-	internal_EchoService_CUSTOM_EASE_GATEWAY_TEST_client EchoServiceClient
+	internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_spec   = client.NewServiceSpec("default", vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, "grpc")
+	internal_EchoService_CUSTOM_JANUS_GATEWAY_TEST_client EchoServiceClient
 
-	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_skycli client.ServiceCli
+	internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_skycli client.ServiceCli
 
-	internal_CUSTOM_EASE_GATEWAY_TEST__default__grpc_lock = sync.RWMutex{}
+	internal_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_lock = sync.RWMutex{}
 )

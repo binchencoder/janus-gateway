@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	"github.com/binchencoder/ease-gateway/gateway/protoc-gen-openapiv2/options"
+	"github.com/binchencoder/janus-gateway/gateway/protoc-gen-openapiv2/options"
 )
 
 func TestLoadOpenAPIConfigFromYAMLRejectInvalidYAML(t *testing.T) {

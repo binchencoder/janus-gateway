@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb;examplepb";
+option go_package = "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb;examplepb";
 
 // Unannotated Echo Service
 // Similar to echo_service.proto but without annotations. See
@@ -41,8 +41,8 @@ message UnannotatedSimpleMessage {
 
 // Echo service responds to incoming echo requests.
 service UnannotatedEchoService {
-	option (ease.api.service_spec) = {
-		service_id: CUSTOM_EASE_GATEWAY_TEST
+	option (janus.api.service_spec) = {
+		service_id: CUSTOM_JANUS_GATEWAY_TEST
 		port_name : "grpc"
 		namespace : "default"
 	};

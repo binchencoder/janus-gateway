@@ -9,9 +9,9 @@ import (
 
 	"github.com/golang/glog"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
-	"github.com/binchencoder/ease-gateway/integrate"
-	"github.com/binchencoder/ease-gateway/util"
+	"github.com/binchencoder/janus-gateway/gateway/runtime"
+	"github.com/binchencoder/janus-gateway/integrate"
+	"github.com/binchencoder/janus-gateway/util"
 	"github.com/binchencoder/gateway-proto/data"
 	"github.com/binchencoder/letsgo"
 )
@@ -22,10 +22,10 @@ var (
 )
 
 func usage() {
-	fmt.Println(`EaseGateway - Ease Gateway of binchencoder.
+	fmt.Println(`JanusGateway - Janus Gateway of binchencoder.
 
 Usage:
-	ease-gateway [options]
+	janus-gateway [options]
 
 Options:`)
 
@@ -48,17 +48,17 @@ func main() {
 	// debugMode := flag.Lookup("debug-mode")
 	// debugMode.Value.Set("true")
 
-	runtime.CallerServiceId = data.ServiceId_EASE_GATEWAY
+	runtime.CallerServiceId = data.ServiceId_JANUS_GATEWAY
 	// integrate.SetAllowCredentials(true)
 	// integrate.SetAllowHostsRegexp([]string{"*"})
 
-	glog.Info("***** Ease gateway init. *****")
+	glog.Info("***** Janus gateway init. *****")
 
 	hostPort := fmt.Sprintf("%s:%d", *host, *port)
 	mux := runtime.NewServeMux()
 	runtime.SetGatewayServiceHook(integrate.NewGatewayHook(mux, hostPort))
 
-	glog.Infof("***** Starting custom ease-gateway at %s. *****", hostPort)
+	glog.Infof("***** Starting custom janus-gateway at %s. *****", hostPort)
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt, os.Kill)

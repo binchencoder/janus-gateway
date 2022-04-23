@@ -10,9 +10,9 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/codegenerator"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
+	"github.com/binchencoder/janus-gateway/gateway/internal/descriptor"
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/internal/genopenapi"
-	genopenapi "github.com/binchencoder/ease-gateway/gateway/protoc-gen-openapiv2/internal/genopenapi"
+	genopenapi "github.com/binchencoder/janus-gateway/gateway/protoc-gen-openapiv2/internal/genopenapi"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/pluginpb"

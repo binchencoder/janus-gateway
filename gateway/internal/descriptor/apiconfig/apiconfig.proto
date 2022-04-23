@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package grpc.gateway.internal.descriptor.apiconfig;
 
-option go_package = "github.com/binchencoder/ease-gateway/gatewayinternal/descriptor/apiconfig";
+option go_package = "github.com/binchencoder/janus-gateway/gatewayinternal/descriptor/apiconfig";
 
 import "httpoptions/http.proto";
 
@@ -17,5 +17,5 @@ import "httpoptions/http.proto";
 // compatibility guarantees by protobuf it is safe for us to remove the other fields.
 message GrpcAPIService {
 	// Http Rule.
-    ease.api.Http http = 1;
+    janus.api.Http http = 1;
 }

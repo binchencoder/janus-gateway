@@ -9,7 +9,7 @@ import (
 	"flag"
 
 	"github.com/golang/glog"
-	"github.com/binchencoder/ease-gateway/examples/internal/gateway"
+	"github.com/binchencoder/janus-gateway/examples/internal/gateway"
 )
 
 var (

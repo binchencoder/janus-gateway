@@ -3,7 +3,7 @@ package generator
 
 import (
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
+	"github.com/binchencoder/janus-gateway/gateway/internal/descriptor"
 )
 
 // Generator is an abstraction of code generators.

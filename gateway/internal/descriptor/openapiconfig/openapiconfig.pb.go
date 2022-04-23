@@ -7,7 +7,7 @@
 package openapiconfig
 
 import (
-	options "github.com/binchencoder/ease-gateway/gateway/protoc-gen-openapiv2/options"
+	options "github.com/binchencoder/janus-gateway/gateway/protoc-gen-openapiv2/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

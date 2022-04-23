@@ -14,7 +14,7 @@ filegroup(
 go_library(
     name = "httpoptions",
     embed = [":options_go_proto"],
-    importpath = "github.com/binchencoder/ease-gateway/httpoptions",
+    importpath = "github.com/binchencoder/janus-gateway/httpoptions",
 )
 
 proto_library(
@@ -34,7 +34,7 @@ proto_library(
 go_proto_library(
     name = "options_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
-    importpath = "github.com/binchencoder/ease-gateway/httpoptions",
+    importpath = "github.com/binchencoder/janus-gateway/httpoptions",
     proto = ":options_proto",
     deps = [
         "@com_github_binchencoder_gateway_proto//data:go_default_library",
@@ -43,7 +43,7 @@ go_proto_library(
 )
 
 # proto_library(
-#     name = "ease_api_proto",
+#     name = "janus_api_proto",
 #     srcs = [
 #         "annotations.proto",
 #         "http.proto",

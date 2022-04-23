@@ -6,8 +6,8 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
-	gwruntime "github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb"
+	gwruntime "github.com/binchencoder/janus-gateway/gateway/runtime"
 	"google.golang.org/grpc"
 )
 
@@ -24,7 +24,7 @@ func newGateway(ctx context.Context, conn *grpc.ClientConn, opts []gwruntime.Ser
 
 	mux := gwruntime.NewServeMux(opts...)
 
-	// examplepb.Enable_CUSTOM_EASE_GATEWAY_TEST__default__grpc_ServiceGroup()
+	// examplepb.Enable_CUSTOM_JANUS_GATEWAY_TEST__default__grpc_ServiceGroup()
 	for _, f := range []func(context.Context, *gwruntime.ServeMux, *grpc.ClientConn) error{
 		examplepb.RegisterEchoServiceHandler,
 	} {

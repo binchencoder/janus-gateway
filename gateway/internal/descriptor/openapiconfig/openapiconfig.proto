@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package grpc.gateway.internal.descriptor.openapiconfig;
 
-option go_package = "github.com/binchencoder/ease-gateway/gateway/internal/descriptor/openapiconfig";
+option go_package = "github.com/binchencoder/janus-gateway/gateway/internal/descriptor/openapiconfig";
 
 import "gateway/protoc-gen-openapiv2/options/openapiv2.proto";
 

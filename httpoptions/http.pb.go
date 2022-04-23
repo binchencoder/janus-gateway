@@ -359,14 +359,14 @@ func file_httpoptions_http_proto_rawDescGZIP() []byte {
 
 var file_httpoptions_http_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_httpoptions_http_proto_goTypes = []interface{}{
-	(*Http)(nil),              // 0: ease.api.Http
-	(*HttpRule)(nil),          // 1: ease.api.HttpRule
-	(*CustomHttpPattern)(nil), // 2: ease.api.CustomHttpPattern
+	(*Http)(nil),              // 0: janus.api.Http
+	(*HttpRule)(nil),          // 1: janus.api.HttpRule
+	(*CustomHttpPattern)(nil), // 2: janus.api.CustomHttpPattern
 }
 var file_httpoptions_http_proto_depIdxs = []int32{
-	1, // 0: ease.api.Http.rules:type_name -> ease.api.HttpRule
-	2, // 1: ease.api.HttpRule.custom:type_name -> ease.api.CustomHttpPattern
-	1, // 2: ease.api.HttpRule.additional_bindings:type_name -> ease.api.HttpRule
+	1, // 0: janus.api.Http.rules:type_name -> janus.api.HttpRule
+	2, // 1: janus.api.HttpRule.custom:type_name -> janus.api.CustomHttpPattern
+	1, // 2: janus.api.HttpRule.additional_bindings:type_name -> janus.api.HttpRule
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

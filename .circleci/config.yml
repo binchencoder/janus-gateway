@@ -6,7 +6,7 @@ commands:
     steps:
       - run: |
           cat > .bazelrc \<< EOF
-          startup --output_base /home/vscode/.cache/_ease_gateway_bazel
+          startup --output_base /home/vscode/.cache/_janus_gateway_bazel
           build --test_output errors
           build --features race
           # Workaround https://github.com/bazelbuild/bazel/issues/3645
@@ -41,7 +41,7 @@ executors:
       password1: "3ec86b2e5a431be2d72c"
       GLOG_logtostderr: "1"
     docker:
-      - image: docker.pkg.github.com/binchencoder/ease-gateway/build-env:1.15
+      - image: docker.pkg.github.com/binchencoder/janus-gateway/build-env:1.15
         auth:
           username: gateway-ci-user
           password: ${password0}${password1}
@@ -49,20 +49,20 @@ executors:
 jobs:
   build:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - run: go build ./...
   test:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - run: go test -race -coverprofile=coverage.txt ./...
       - run: bash <(curl -s https://codecov.io/bash)
   node_test:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - run: go mod vendor
@@ -73,14 +73,14 @@ jobs:
           ./node_modules/.bin/gulp
   generate:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - generate
       - run: git diff --exit-code
   bazel:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - restore_cache:
@@ -109,10 +109,10 @@ jobs:
       - save_cache:
           key: v3-bazel-cache-{{ checksum "repositories.bzl" }}
           paths:
-            - /home/vscode/.cache/_ease_gateway_bazel
+            - /home/vscode/.cache/_janus_gateway_bazel
   gorelease:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - run:
@@ -156,14 +156,14 @@ jobs:
       - run: BUF_TOKEN="${BUF_API_TOKEN}" buf push --tag "$CIRCLE_SHA1"
   release:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - run: go mod vendor
       - run: curl -sL https://git.io/goreleaser | bash
   update-repositoriesbzl:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - restore_cache:
@@ -178,7 +178,7 @@ jobs:
       - renovate_git_amend_push
   regenerate:
     executor: build-env
-    working_directory: /home/vscode/src/ease-gateway
+    working_directory: /home/vscode/src/janus-gateway
     steps:
       - checkout
       - generate

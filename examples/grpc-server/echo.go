@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 
-	"github.com/binchencoder/ease-gateway/proto/examplepb"
+	"github.com/binchencoder/janus-gateway/proto/examplepb"
 	"github.com/golang/glog"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"

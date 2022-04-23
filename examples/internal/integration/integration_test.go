@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	examplepb "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	examplepb "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb"
+	"github.com/binchencoder/janus-gateway/gateway/runtime"
 	"github.com/google/go-cmp/cmp"
 	fieldmaskpb "google.golang.org/genproto/protobuf/field_mask"
 

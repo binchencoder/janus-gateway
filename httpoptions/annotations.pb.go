@@ -26,18 +26,18 @@ const (
 type ApiSourceType int32
 
 const (
-	ApiSourceType_EASE_GATEWAY ApiSourceType = 0
+	ApiSourceType_JANUS_GATEWAY ApiSourceType = 0
 	ApiSourceType_OPEN_GATEWAY ApiSourceType = 1
 )
 
 // Enum value maps for ApiSourceType.
 var (
 	ApiSourceType_name = map[int32]string{
-		0: "EASE_GATEWAY",
+		0: "JANUS_GATEWAY",
 		1: "OPEN_GATEWAY",
 	}
 	ApiSourceType_value = map[string]int32{
-		"EASE_GATEWAY": 0,
+		"JANUS_GATEWAY": 0,
 		"OPEN_GATEWAY": 1,
 	}
 )
@@ -72,18 +72,18 @@ func (ApiSourceType) EnumDescriptor() ([]byte, []int) {
 type AuthTokenType int32
 
 const (
-	AuthTokenType_EASE_AUTH_TOKEN   AuthTokenType = 0
+	AuthTokenType_JANUS_AUTH_TOKEN   AuthTokenType = 0
 	AuthTokenType_BASE_ACCESS_TOKEN AuthTokenType = 1
 )
 
 // Enum value maps for AuthTokenType.
 var (
 	AuthTokenType_name = map[int32]string{
-		0: "EASE_AUTH_TOKEN",
+		0: "JANUS_AUTH_TOKEN",
 		1: "BASE_ACCESS_TOKEN",
 	}
 	AuthTokenType_value = map[string]int32{
-		"EASE_AUTH_TOKEN":   0,
+		"JANUS_AUTH_TOKEN":   0,
 		"BASE_ACCESS_TOKEN": 1,
 	}
 )
@@ -382,9 +382,9 @@ type ApiMethod struct {
 	HashKey            string         `protobuf:"bytes,3,opt,name=hash_key,json=hashKey,proto3" json:"hash_key,omitempty"`
 	IsThirdParty       bool           `protobuf:"varint,4,opt,name=is_third_party,json=isThirdParty,proto3" json:"is_third_party,omitempty"`
 	Timeout            string         `protobuf:"bytes,5,opt,name=timeout,proto3" json:"timeout,omitempty"`
-	ApiSource          ApiSourceType  `protobuf:"varint,6,opt,name=api_source,json=apiSource,proto3,enum=ease.api.ApiSourceType" json:"api_source,omitempty"`
-	TokenType          AuthTokenType  `protobuf:"varint,7,opt,name=token_type,json=tokenType,proto3,enum=ease.api.AuthTokenType" json:"token_type,omitempty"`
-	SpecSourceType     SpecSourceType `protobuf:"varint,8,opt,name=spec_source_type,json=specSourceType,proto3,enum=ease.api.SpecSourceType" json:"spec_source_type,omitempty"`
+	ApiSource          ApiSourceType  `protobuf:"varint,6,opt,name=api_source,json=apiSource,proto3,enum=janus.api.ApiSourceType" json:"api_source,omitempty"`
+	TokenType          AuthTokenType  `protobuf:"varint,7,opt,name=token_type,json=tokenType,proto3,enum=janus.api.AuthTokenType" json:"token_type,omitempty"`
+	SpecSourceType     SpecSourceType `protobuf:"varint,8,opt,name=spec_source_type,json=specSourceType,proto3,enum=janus.api.SpecSourceType" json:"spec_source_type,omitempty"`
 }
 
 func (x *ApiMethod) Reset() {
@@ -458,14 +458,14 @@ func (x *ApiMethod) GetApiSource() ApiSourceType {
 	if x != nil {
 		return x.ApiSource
 	}
-	return ApiSourceType_EASE_GATEWAY
+	return ApiSourceType_JANUS_GATEWAY
 }
 
 func (x *ApiMethod) GetTokenType() AuthTokenType {
 	if x != nil {
 		return x.TokenType
 	}
-	return AuthTokenType_EASE_AUTH_TOKEN
+	return AuthTokenType_JANUS_AUTH_TOKEN
 }
 
 func (x *ApiMethod) GetSpecSourceType() SpecSourceType {
@@ -484,7 +484,7 @@ type ServiceSpec struct {
 	PortName      string         `protobuf:"bytes,2,opt,name=port_name,json=portName,proto3" json:"port_name,omitempty"`
 	Namespace     string         `protobuf:"bytes,3,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	GenController bool           `protobuf:"varint,4,opt,name=gen_controller,json=genController,proto3" json:"gen_controller,omitempty"`
-	Balancer      LoadBalancer   `protobuf:"varint,5,opt,name=balancer,proto3,enum=ease.api.LoadBalancer" json:"balancer,omitempty"`
+	Balancer      LoadBalancer   `protobuf:"varint,5,opt,name=balancer,proto3,enum=janus.api.LoadBalancer" json:"balancer,omitempty"`
 }
 
 func (x *ServiceSpec) Reset() {
@@ -559,10 +559,10 @@ type ValidationRule struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Operator OperatorType `protobuf:"varint,1,opt,name=operator,proto3,enum=ease.api.OperatorType" json:"operator,omitempty"`
-	Type     ValueType    `protobuf:"varint,2,opt,name=type,proto3,enum=ease.api.ValueType" json:"type,omitempty"`
+	Operator OperatorType `protobuf:"varint,1,opt,name=operator,proto3,enum=janus.api.OperatorType" json:"operator,omitempty"`
+	Type     ValueType    `protobuf:"varint,2,opt,name=type,proto3,enum=janus.api.ValueType" json:"type,omitempty"`
 	Value    string       `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
-	Function FunctionType `protobuf:"varint,4,opt,name=function,proto3,enum=ease.api.FunctionType" json:"function,omitempty"`
+	Function FunctionType `protobuf:"varint,4,opt,name=function,proto3,enum=janus.api.FunctionType" json:"function,omitempty"`
 }
 
 func (x *ValidationRule) Reset() {
@@ -677,7 +677,7 @@ var file_httpoptions_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
 		ExtensionType: (*HttpRule)(nil),
 		Field:         108345,
-		Name:          "ease.api.http",
+		Name:          "janus.api.http",
 		Tag:           "bytes,108345,opt,name=http",
 		Filename:      "httpoptions/annotations.proto",
 	},
@@ -685,7 +685,7 @@ var file_httpoptions_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
 		ExtensionType: (*ApiMethod)(nil),
 		Field:         108361,
-		Name:          "ease.api.method",
+		Name:          "janus.api.method",
 		Tag:           "bytes,108361,opt,name=method",
 		Filename:      "httpoptions/annotations.proto",
 	},
@@ -693,7 +693,7 @@ var file_httpoptions_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		ExtendedType:  (*descriptorpb.ServiceOptions)(nil),
 		ExtensionType: (*ServiceSpec)(nil),
 		Field:         108349,
-		Name:          "ease.api.service_spec",
+		Name:          "janus.api.service_spec",
 		Tag:           "bytes,108349,opt,name=service_spec",
 		Filename:      "httpoptions/annotations.proto",
 	},
@@ -701,7 +701,7 @@ var file_httpoptions_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*ValidationRules)(nil),
 		Field:         108102,
-		Name:          "ease.api.rules",
+		Name:          "janus.api.rules",
 		Tag:           "bytes,108102,opt,name=rules",
 		Filename:      "httpoptions/annotations.proto",
 	},
@@ -709,21 +709,21 @@ var file_httpoptions_annotations_proto_extTypes = []protoimpl.ExtensionInfo{
 
 // Extension fields to descriptorpb.MethodOptions.
 var (
-	// optional ease.api.HttpRule http = 108345;
+	// optional janus.api.HttpRule http = 108345;
 	E_Http = &file_httpoptions_annotations_proto_extTypes[0]
-	// optional ease.api.ApiMethod method = 108361;
+	// optional janus.api.ApiMethod method = 108361;
 	E_Method = &file_httpoptions_annotations_proto_extTypes[1]
 )
 
 // Extension fields to descriptorpb.ServiceOptions.
 var (
-	// optional ease.api.ServiceSpec service_spec = 108349;
+	// optional janus.api.ServiceSpec service_spec = 108349;
 	E_ServiceSpec = &file_httpoptions_annotations_proto_extTypes[2]
 )
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional ease.api.ValidationRules rules = 108102;
+	// optional janus.api.ValidationRules rules = 108102;
 	E_Rules = &file_httpoptions_annotations_proto_extTypes[3]
 )
 
@@ -865,41 +865,41 @@ func file_httpoptions_annotations_proto_rawDescGZIP() []byte {
 var file_httpoptions_annotations_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
 var file_httpoptions_annotations_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_httpoptions_annotations_proto_goTypes = []interface{}{
-	(ApiSourceType)(0),                  // 0: ease.api.ApiSourceType
-	(AuthTokenType)(0),                  // 1: ease.api.AuthTokenType
-	(SpecSourceType)(0),                 // 2: ease.api.SpecSourceType
-	(LoadBalancer)(0),                   // 3: ease.api.LoadBalancer
-	(OperatorType)(0),                   // 4: ease.api.OperatorType
-	(FunctionType)(0),                   // 5: ease.api.FunctionType
-	(ValueType)(0),                      // 6: ease.api.ValueType
-	(*ApiMethod)(nil),                   // 7: ease.api.ApiMethod
-	(*ServiceSpec)(nil),                 // 8: ease.api.ServiceSpec
-	(*ValidationRule)(nil),              // 9: ease.api.ValidationRule
-	(*ValidationRules)(nil),             // 10: ease.api.ValidationRules
+	(ApiSourceType)(0),                  // 0: janus.api.ApiSourceType
+	(AuthTokenType)(0),                  // 1: janus.api.AuthTokenType
+	(SpecSourceType)(0),                 // 2: janus.api.SpecSourceType
+	(LoadBalancer)(0),                   // 3: janus.api.LoadBalancer
+	(OperatorType)(0),                   // 4: janus.api.OperatorType
+	(FunctionType)(0),                   // 5: janus.api.FunctionType
+	(ValueType)(0),                      // 6: janus.api.ValueType
+	(*ApiMethod)(nil),                   // 7: janus.api.ApiMethod
+	(*ServiceSpec)(nil),                 // 8: janus.api.ServiceSpec
+	(*ValidationRule)(nil),              // 9: janus.api.ValidationRule
+	(*ValidationRules)(nil),             // 10: janus.api.ValidationRules
 	(data.ServiceId)(0),                 // 11: data.ServiceId
 	(*descriptorpb.MethodOptions)(nil),  // 12: google.protobuf.MethodOptions
 	(*descriptorpb.ServiceOptions)(nil), // 13: google.protobuf.ServiceOptions
 	(*descriptorpb.FieldOptions)(nil),   // 14: google.protobuf.FieldOptions
-	(*HttpRule)(nil),                    // 15: ease.api.HttpRule
+	(*HttpRule)(nil),                    // 15: janus.api.HttpRule
 }
 var file_httpoptions_annotations_proto_depIdxs = []int32{
-	0,  // 0: ease.api.ApiMethod.api_source:type_name -> ease.api.ApiSourceType
-	1,  // 1: ease.api.ApiMethod.token_type:type_name -> ease.api.AuthTokenType
-	2,  // 2: ease.api.ApiMethod.spec_source_type:type_name -> ease.api.SpecSourceType
-	11, // 3: ease.api.ServiceSpec.service_id:type_name -> data.ServiceId
-	3,  // 4: ease.api.ServiceSpec.balancer:type_name -> ease.api.LoadBalancer
-	4,  // 5: ease.api.ValidationRule.operator:type_name -> ease.api.OperatorType
-	6,  // 6: ease.api.ValidationRule.type:type_name -> ease.api.ValueType
-	5,  // 7: ease.api.ValidationRule.function:type_name -> ease.api.FunctionType
-	9,  // 8: ease.api.ValidationRules.rules:type_name -> ease.api.ValidationRule
-	12, // 9: ease.api.http:extendee -> google.protobuf.MethodOptions
-	12, // 10: ease.api.method:extendee -> google.protobuf.MethodOptions
-	13, // 11: ease.api.service_spec:extendee -> google.protobuf.ServiceOptions
-	14, // 12: ease.api.rules:extendee -> google.protobuf.FieldOptions
-	15, // 13: ease.api.http:type_name -> ease.api.HttpRule
-	7,  // 14: ease.api.method:type_name -> ease.api.ApiMethod
-	8,  // 15: ease.api.service_spec:type_name -> ease.api.ServiceSpec
-	10, // 16: ease.api.rules:type_name -> ease.api.ValidationRules
+	0,  // 0: janus.api.ApiMethod.api_source:type_name -> janus.api.ApiSourceType
+	1,  // 1: janus.api.ApiMethod.token_type:type_name -> janus.api.AuthTokenType
+	2,  // 2: janus.api.ApiMethod.spec_source_type:type_name -> janus.api.SpecSourceType
+	11, // 3: janus.api.ServiceSpec.service_id:type_name -> data.ServiceId
+	3,  // 4: janus.api.ServiceSpec.balancer:type_name -> janus.api.LoadBalancer
+	4,  // 5: janus.api.ValidationRule.operator:type_name -> janus.api.OperatorType
+	6,  // 6: janus.api.ValidationRule.type:type_name -> janus.api.ValueType
+	5,  // 7: janus.api.ValidationRule.function:type_name -> janus.api.FunctionType
+	9,  // 8: janus.api.ValidationRules.rules:type_name -> janus.api.ValidationRule
+	12, // 9: janus.api.http:extendee -> google.protobuf.MethodOptions
+	12, // 10: janus.api.method:extendee -> google.protobuf.MethodOptions
+	13, // 11: janus.api.service_spec:extendee -> google.protobuf.ServiceOptions
+	14, // 12: janus.api.rules:extendee -> google.protobuf.FieldOptions
+	15, // 13: janus.api.http:type_name -> janus.api.HttpRule
+	7,  // 14: janus.api.method:type_name -> janus.api.ApiMethod
+	8,  // 15: janus.api.service_spec:type_name -> janus.api.ServiceSpec
+	10, // 16: janus.api.rules:type_name -> janus.api.ValidationRules
 	17, // [17:17] is the sub-list for method output_type
 	17, // [17:17] is the sub-list for method input_type
 	13, // [13:17] is the sub-list for extension type_name

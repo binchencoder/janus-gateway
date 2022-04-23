@@ -2,13 +2,13 @@
 
 grpc-gateway 是一款非常优秀的网关服务器，负责转化和代理转发。让```RESTful API ```和 ```gRPC```可以相互转化，这样可以实现一套```gRPC```接口提供两种接口服务（提供内部的```gRPC```服务和外部```RESTful API```服务），大大提高了开发效率。
 
-但是官方提供的版本还是单机版的，还不支持集群，所以并不能直接运行在生产环境中。```ease-gateway```就是为了解决这些问题应运而生的，在```grpc-gateway```的基础上增加了新的feature
+但是官方提供的版本还是单机版的，还不支持集群，所以并不能直接运行在生产环境中。```janus-gateway```就是为了解决这些问题应运而生的，在```grpc-gateway```的基础上增加了新的feature
 
 - 支持自定义的loadbalancer
 - 支持网关层的parameter validation
 - 支持自定义的annotaion
 
-为了支持这些新feature，我不得不将grpc-gateway的源码拷贝到ease-gateway中并进行大量的修改，```//gateway``` 目录下就是从grpc-gateway中拷贝的部分源码
+为了支持这些新feature，我不得不将grpc-gateway的源码拷贝到janus-gateway中并进行大量的修改，```//gateway``` 目录下就是从grpc-gateway中拷贝的部分源码
 
 # Changed History
 

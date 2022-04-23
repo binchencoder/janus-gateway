@@ -29,16 +29,16 @@ fi
 STDOUT_FILE=$HOMEDIR/std.out
 
 set +e
-PIDS=`pgrep ^ease-gateway$`
+PIDS=`pgrep ^janus-gateway$`
 if [ $? -eq 0 ]; then
-  echo "ERROR: The service Ease Gateway already started!"
+  echo "ERROR: The service Janus Gateway already started!"
   echo "PID: $PIDS"
   exit 1
 fi
 set -e
 
-echo "Service Ease Gateway start..."
-nohup $HOMEDIR/bin/ease-gateway \
+echo "Service Janus Gateway start..."
+nohup $HOMEDIR/bin/janus-gateway \
 -debug-svc-endpoint=vexillary-service=192.168.10.41:4100 \
 -debug-svc-endpoint=pay-grpc-service=192.168.32.18:10008 \
 -skylb-endpoints=$SKYLB_ENDPOINTS \
@@ -50,10 +50,10 @@ nohup $HOMEDIR/bin/ease-gateway \
 
 sleep 2
 
-PIDS_COUNT=`pgrep ^ease-gateway$|wc -l`
+PIDS_COUNT=`pgrep ^janus-gateway$|wc -l`
 if [ $PIDS_COUNT -eq 0 ]; then
-  echo "ERROR: The service Ease Gateway does not started!"
+  echo "ERROR: The service Janus Gateway does not started!"
   exit 1
 fi
 
-echo "Service Ease Gateway start success!"
+echo "Service Janus Gateway start success!"
