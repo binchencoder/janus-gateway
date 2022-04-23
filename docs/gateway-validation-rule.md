@@ -1,10 +1,10 @@
-# Ease-gateway Validation Rule
+# Janus-gateway Validation Rule
 
 ## Rules Defination
 
 Validation Rule定义可以在这里找到：
 
-> ease-gateway/httpoptions/annotations.proto
+> janus-gateway/httpoptions/annotations.proto
 
 ```protobuf
 // The opertaion type.
@@ -66,7 +66,7 @@ message Payment {
         PaymentType type = 1;
         // 100 > paied_amount > 10
         int64 paied_amount = 2 [
-           (ease.api.rules) = {
+           (janus.api.rules) = {
                 rules: {
                     type:NUMBER,
                     operator: GT,
@@ -84,7 +84,7 @@ message Payment {
     PaymentType type = 1;
     // 长度=10
     string message_value_len_eq = 3 [
-        (ease.api.rules) = {
+        (janus.api.rules) = {
                rules: {
                type:STRING,
                 operator: LEN_EQ,
@@ -95,7 +95,7 @@ message Payment {
 
     // 长度Trim之后小于21
     string message_value_len_gt = 4 [
-        (ease.api.rules) = {
+        (janus.api.rules) = {
             rules: {
                 type:STRING,
                 operator: LEN_LT,
@@ -109,7 +109,7 @@ message Payment {
 
 更多例子可以以下目录找到：
 
-> ease-gateway/proto/examples/...
+> janus-gateway/proto/examples/...
 
 ## Implemention Details
 
@@ -148,10 +148,10 @@ func Validate__sharedproto_Payment(v *Payment) error {
 
 ### Defination
 
-> ease-gateway/httpoptions/annotations.proto
+> janus-gateway/httpoptions/annotations.proto
 
 ### Implementation Validation Rule
 
-> ease-gateway/gateway/protoc-gen-grpc-gateway/internal/gengateway/template.go
+> janus-gateway/gateway/protoc-gen-grpc-gateway/internal/gengateway/template.go
 
 所有Validation Rule的实现都在template.go 文件中,  搜索`validatorTemplate`， 参照现有实现Coding

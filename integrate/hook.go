@@ -13,10 +13,10 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/proto"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
-	options "github.com/binchencoder/ease-gateway/httpoptions"
-	"github.com/binchencoder/ease-gateway/integrate/metrics"
-	"github.com/binchencoder/ease-gateway/util"
+	"github.com/binchencoder/janus-gateway/gateway/runtime"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
+	"github.com/binchencoder/janus-gateway/integrate/metrics"
+	"github.com/binchencoder/janus-gateway/util"
 	"github.com/binchencoder/letsgo/grpc"
 	"github.com/binchencoder/letsgo/trace"
 
@@ -41,7 +41,7 @@ var (
 )
 
 // gatewayHook implements interface GatewayServiceHook in package
-// github.com/binchencoder/ease-gateway/gateway/runtime.
+// github.com/binchencoder/janus-gateway/gateway/runtime.
 type gatewayHook struct {
 	mux  *runtime.ServeMux
 	host string
@@ -149,13 +149,13 @@ func NewGatewayHook(mux *runtime.ServeMux, host string) runtime.GatewayServiceHo
 	}
 }
 
-// addMetrics add metrics to prometheus for ease-gateway.
+// addMetrics add metrics to prometheus for janus-gateway.
 func addMetrics(ctx context.Context, svc *runtime.Service, m *runtime.Method, code codes.Code, startTime time.Time, clt string) float64 {
 	rp := &metrics.ReporterParam{StartTime: startTime, ServiceName: svc.Spec.GetServiceName(), Url: m.Path, HttpMethod: m.HttpMethod, Code: strconv.FormatUint(uint64(code), 10), Client: clt}
 	return rp.RequestComplete()
 }
 
-// getClient returns client value who request ease-gateway from Md.
+// getClient returns client value who request janus-gateway from Md.
 func getClientFroMd(md metadata.MD) string {
 	if s, ok := md[XSource]; ok && len(s) > 0 && s[0] != ResourceClient {
 		return s[0]

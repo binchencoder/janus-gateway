@@ -6,8 +6,8 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
-	gwruntime "github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb"
+	gwruntime "github.com/binchencoder/janus-gateway/gateway/runtime"
 	"google.golang.org/grpc"
 )
 

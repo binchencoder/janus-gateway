@@ -2,8 +2,8 @@ load("@bazel_gazelle//:deps.bzl", "go_repository")
 
 def go_repositories():
     go_repository(
-        name = "com_github_binchencoder_ease_gateway",
-        importpath = "github.com/binchencoder/ease-gateway",
+        name = "com_github_binchencoder_janus_gateway",
+        importpath = "github.com/binchencoder/janus-gateway",
         sum = "h1:wYZv8TO4TGO2U8HjEO5Odf8OYWQjfrXS8ddfGZWQfHI=",
         version = "v1.0.3",
     )

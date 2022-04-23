@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb";
+option go_package = "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb";
 package grpc.gateway.examples.internal.proto.examplepb;
 
 import "google/api/annotations.proto";

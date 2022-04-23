@@ -1,6 +1,6 @@
 # Overrview
 
-ease-gateway/examples/internal 是使用ease-gateway的一个完整示例，包含gateway-server 和 gRPC-server. 还有Java实现gRPC Server的例子 [https://github.com/binchencoder/spring-boot-grpc/tree/master/spring-boot-grpc-examples]
+janus-gateway/examples/internal 是使用ease-gateway的一个完整示例，包含gateway-server 和 gRPC-server. 还有Java实现gRPC Server的例子 [https://github.com/binchencoder/spring-boot-grpc/tree/master/spring-boot-grpc-examples]
 
 # Build the example
 
@@ -18,27 +18,27 @@ bazel build examples/internal/cmd/example-grpc-server/...
 
 start gateway server
 ```shell
-ease-gateway/bazel-bin/examples/internal/cmd/example-gateway-server/example-gateway-server_/example-gateway-server -skylb-endpoints="127.0.0.1:1900" -debug-svc-endpoint=custom-ease-gateway-test=localhost:9090
+janus-gateway/bazel-bin/examples/internal/cmd/example-gateway-server/example-gateway-server_/example-gateway-server -skylb-endpoints="127.0.0.1:1900" -debug-svc-endpoint=custom-janus-gateway-test=localhost:9090
 ```
 
 start custom-gateway server
 ```shell
-ease-gateway/bazel-bin/cmd/custom-gateway/custom-ease-gateway_/custom-ease-gateway -skylb-endpoints="127.0.0.1:1900" -debug-service=custom-ease-gateway-test -debug-svc-endpoint=custom-ease-gateway-test=localhost:9090
+janus-gateway/bazel-bin/cmd/custom-gateway/custom-janus-gateway_/custom-janus-gateway -skylb-endpoints="127.0.0.1:1900" -debug-service=custom-janus-gateway-test -debug-svc-endpoint=custom-janus-gateway-test=localhost:9090
 ```
 
 start examples gRPC server for test //examples/internal/cmd/example-grpc-server
 ```shell
-ease-gateway/bazel-bin/examples/internal/cmd/example-grpc-server/example-grpc-server_/example-grpc-server -skylb-endpoints="127.0.0.1:1900,127.0.0.1:1901"
+janus-gateway/bazel-bin/examples/internal/cmd/example-grpc-server/example-grpc-server_/example-grpc-server -skylb-endpoints="127.0.0.1:1900,127.0.0.1:1901"
 ```
 
 start gRPC server for test //cmd/gateway
 ```shell
-ease-gateway/bazel-bin/examples/grpc-server/grpc-server_/grpc-server -skylb-endpoints="127.0.0.1:1900"
+janus-gateway/bazel-bin/examples/grpc-server/grpc-server_/grpc-server -skylb-endpoints="127.0.0.1:1900"
 ```
 
 start //cmd/gateway
 ```shell
-ease-gateway/bazel-bin/cmd/gateway/gateway_/gateway -skylb-endpoints="127.0.0.1:1900" -v=2 -log_dir=.
+janus-gateway/bazel-bin/cmd/gateway/gateway_/gateway -skylb-endpoints="127.0.0.1:1900" -v=2 -log_dir=.
 ```
 
 # Usage

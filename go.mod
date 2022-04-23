@@ -1,4 +1,4 @@
-module github.com/binchencoder/ease-gateway
+module github.com/binchencoder/janus-gateway
 
 go 1.17
 

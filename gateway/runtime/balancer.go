@@ -6,7 +6,7 @@ import (
 	"github.com/pborman/uuid"
 	"google.golang.org/protobuf/proto"
 
-	options "github.com/binchencoder/ease-gateway/httpoptions"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
 	"github.com/binchencoder/letsgo/grpc"
 	"github.com/binchencoder/letsgo/hashring"
 )

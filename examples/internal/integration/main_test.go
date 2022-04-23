@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/golang/glog"
-	"github.com/binchencoder/ease-gateway/examples/internal/gateway"
-	server "github.com/binchencoder/ease-gateway/examples/internal/server"
-	gwruntime "github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/janus-gateway/examples/internal/gateway"
+	server "github.com/binchencoder/janus-gateway/examples/internal/server"
+	gwruntime "github.com/binchencoder/janus-gateway/gateway/runtime"
 )
 
 var (

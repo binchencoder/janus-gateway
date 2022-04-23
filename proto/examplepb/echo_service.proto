@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/binchencoder/ease-gateway/gateway/proto/examplepb";
+option go_package = "github.com/binchencoder/janus-gateway/gateway/proto/examplepb";
 
 package grpc.gateway.proto.examplepb;
 
@@ -23,7 +23,7 @@ message SimpleMessage {
 	// Id represents the message identifier.
     string id = 1 
     [
-        (ease.api.rules) = {
+        (janus.api.rules) = {
             rules: {
                 type: STRING,
                 operator: NON_NIL,
@@ -44,7 +44,7 @@ message SimpleMessage {
     ];
     int64 num = 2 
     [
-        (ease.api.rules) = {
+        (janus.api.rules) = {
             rules: {
                 type: NUMBER,
                 operator: GT,
@@ -65,7 +65,7 @@ message SimpleMessage {
 
 // Echo service responds to incoming echo requests.
 service EchoService {
-    option (ease.api.service_spec) = {
+    option (janus.api.service_spec) = {
         service_id: CUSTOM_EASE_GATEWAY_TEST
         port_name : "grpc"
         namespace : "default"
@@ -77,7 +77,7 @@ service EchoService {
 	// The message posted as the id parameter will also be
 	// returned.
 	rpc Echo(SimpleMessage) returns (SimpleMessage) {
-		option (ease.api.http) = {
+		option (janus.api.http) = {
 			post: "/v1/example/echo/{id}"
 			additional_bindings {
 				get: "/v1/example/echo/{id}/{num}"
@@ -95,14 +95,14 @@ service EchoService {
 	}
 	// EchoBody method receives a simple message and returns it.
 	rpc EchoBody(SimpleMessage) returns (SimpleMessage) {
-		option (ease.api.http) = {
+		option (janus.api.http) = {
 			post: "/v1/example/echo_body"
 			body: "*"
 		};
 	}
 	// EchoDelete method receives a simple message and returns it.
 	rpc EchoDelete(SimpleMessage) returns (SimpleMessage) {
-		option (ease.api.http) = {
+		option (janus.api.http) = {
 			delete: "/v1/example/echo_delete"
 		};
 	}

@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 	hpb "google.golang.org/grpc/health/grpc_health_v1"
 
-	examplepb "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
+	examplepb "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb"
 	vexpb "github.com/binchencoder/gateway-proto/data"
 	"github.com/binchencoder/letsgo"
 	skylb "github.com/binchencoder/skylb-api/client"

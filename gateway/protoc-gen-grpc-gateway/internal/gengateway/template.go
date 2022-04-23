@@ -10,9 +10,9 @@ import (
 
 	"github.com/golang/glog"
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/casing"
-	"github.com/binchencoder/ease-gateway/gateway/internal/casing"
+	"github.com/binchencoder/janus-gateway/gateway/internal/casing"
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
+	"github.com/binchencoder/janus-gateway/gateway/internal/descriptor"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 )
 

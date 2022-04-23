@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	pb "github.com/binchencoder/ease-gateway/gateway/runtime/internal/examplepb"
+	pb "github.com/binchencoder/janus-gateway/gateway/runtime/internal/examplepb"
 	"google.golang.org/protobuf/proto"
 
-	options "github.com/binchencoder/ease-gateway/httpoptions"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
 	"github.com/binchencoder/letsgo/hashring"
 )
 

@@ -1,4 +1,4 @@
-// Note: this file is for ease-gateway  which are exposed to external users.
+// Note: this file is for janus-gateway  which are exposed to external users.
 
 package integrate
 
@@ -12,9 +12,9 @@ import (
 	gr "google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
-	options "github.com/binchencoder/ease-gateway/httpoptions"
-	"github.com/binchencoder/ease-gateway/util"
+	"github.com/binchencoder/janus-gateway/gateway/runtime"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
+	"github.com/binchencoder/janus-gateway/util"
 	vexpb "github.com/binchencoder/gateway-proto/data"
 	fpb "github.com/binchencoder/gateway-proto/frontend"
 	"github.com/binchencoder/letsgo/grpc"
@@ -217,7 +217,7 @@ func verifyHeader(ctx context.Context, header http.Header, svc *runtime.Service,
 	return nil
 }
 
-// getClient returns client value who request ease-gateway from header.
+// getClient returns client value who request janus-gateway from header.
 func getClientFromHeader(header http.Header) string {
 	xs := header.Get(XSource)
 	cl := header.Get(XClient)

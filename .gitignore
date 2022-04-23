@@ -14,7 +14,7 @@ _output/
 # Bazel.
 bazel-bin
 bazel-genfiles
-bazel-ease-gateway
+bazel-janus-gateway
 bazel-out
 bazel-testlogs
 *.bin

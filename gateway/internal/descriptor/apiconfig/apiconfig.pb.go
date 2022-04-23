@@ -120,10 +120,10 @@ func file_gateway_internal_descriptor_apiconfig_apiconfig_proto_rawDescGZIP() []
 var file_gateway_internal_descriptor_apiconfig_apiconfig_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_gateway_internal_descriptor_apiconfig_apiconfig_proto_goTypes = []interface{}{
 	(*GrpcAPIService)(nil),   // 0: grpc.gateway.internal.descriptor.apiconfig.GrpcAPIService
-	(*httpoptions.Http)(nil), // 1: ease.api.Http
+	(*httpoptions.Http)(nil), // 1: janus.api.Http
 }
 var file_gateway_internal_descriptor_apiconfig_apiconfig_proto_depIdxs = []int32{
-	1, // 0: grpc.gateway.internal.descriptor.apiconfig.GrpcAPIService.http:type_name -> ease.api.Http
+	1, // 0: grpc.gateway.internal.descriptor.apiconfig.GrpcAPIService.http:type_name -> janus.api.Http
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

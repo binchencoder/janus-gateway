@@ -8,7 +8,7 @@ go_library(
         ["*.go"],
         exclude = ["*_test.go"],
     ),
-    importpath = "github.com/binchencoder/ease-gateway/util/glog",
+    importpath = "github.com/binchencoder/janus-gateway/util/glog",
     deps = [
         "@com_github_binchencoder_letsgo//trace:go_default_library",
         "@org_golang_x_net//context:go_default_library",

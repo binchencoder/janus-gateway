@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb;examplepb";
+option go_package = "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb;examplepb";
 
 // Echo Service
 //
@@ -41,7 +41,7 @@ message ValidationRuleTestRequest {
     // Id represents the message identifier.
     string id = 1 
     [
-        (ease.api.rules) = {
+        (janus.api.rules) = {
             rules: {
                 type: STRING,
                 operator: NON_NIL,
@@ -62,7 +62,7 @@ message ValidationRuleTestRequest {
     ];
     int64 num = 2 
     [
-        (ease.api.rules) = {
+        (janus.api.rules) = {
             rules: {
                 type: NUMBER,
                 operator: GT,
@@ -90,7 +90,7 @@ message DynamicMessageUpdate {
 
 // Echo service responds to incoming echo requests.
 service EchoService {
-    option (ease.api.service_spec) = {
+    option (janus.api.service_spec) = {
         service_id: CUSTOM_EASE_GATEWAY_TEST
         port_name : "grpc"
         namespace : "default"
@@ -102,7 +102,7 @@ service EchoService {
 	// The message posted as the id parameter will also be
 	// returned.
 	rpc Echo(SimpleMessage) returns (SimpleMessage) {
-		option (ease.api.http) = {
+		option (janus.api.http) = {
 			post: "/v1/example/echo/{id}"
 			additional_bindings {
 				get: "/v1/example/echo/{id}/{num}"
@@ -120,20 +120,20 @@ service EchoService {
 	}
 	// EchoBody method receives a simple message and returns it.
 	rpc EchoBody(SimpleMessage) returns (SimpleMessage) {
-		option (ease.api.http) = {
+		option (janus.api.http) = {
 			post: "/v1/example/echo_body"
 			body: "*"
 		};
 	}
 	// EchoDelete method receives a simple message and returns it.
 	rpc EchoDelete(SimpleMessage) returns (SimpleMessage) {
-		option (ease.api.http) = {
+		option (janus.api.http) = {
 			delete: "/v1/example/echo_delete"
 		};
 	}
 	// EchoPatch method receives a NonStandardUpdateRequest and returns it.
 	rpc EchoPatch(DynamicMessageUpdate) returns (DynamicMessageUpdate) {
-		option (ease.api.http) = {
+		option (janus.api.http) = {
 			patch: "/v1/example/echo_patch"
 			body: "body"
 		};
@@ -141,7 +141,7 @@ service EchoService {
     
     // EchoValidationRule method for validation http rules integration test.
     rpc EchoValidationRule(ValidationRuleTestRequest) returns (ValidationRuleTestResponse) {
-        option (ease.api.http) = {
+        option (janus.api.http) = {
 			post: "/v1/example/echo:validationRules"
 			body: "*"
 		};

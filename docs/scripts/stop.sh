@@ -1,7 +1,7 @@
 #!/bin/sh
 set +e
 
-PIDS=`pgrep ^ease-gateway$`
+PIDS=`pgrep ^janus-gateway$`
 if [ $? -ne 0 ]; then
   echo "INFO: The service Ease Gateway did not started!"
   exit 0
@@ -15,7 +15,7 @@ done
 while [ true ]; do
   echo -e ".\c"
 
-  IDS=`pgrep ^ease-gateway$`
+  IDS=`pgrep ^janus-gateway$`
   if [ $? -ne 0 ]; then
     echo
     echo "PID: $PIDS"

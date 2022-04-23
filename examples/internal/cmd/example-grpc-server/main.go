@@ -10,13 +10,13 @@ import (
 	"log"
 	"net/http"
 
-	examplepb "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb"
+	examplepb "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb"
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/binchencoder/gateway-proto/data"
 	skylb "github.com/binchencoder/skylb-api/server"
 
-	"github.com/binchencoder/ease-gateway/examples/internal/server"
+	"github.com/binchencoder/janus-gateway/examples/internal/server"
 	"github.com/golang/glog"
 	"google.golang.org/grpc"
 )

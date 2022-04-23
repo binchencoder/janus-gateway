@@ -11,7 +11,7 @@ go_library(
         "services.go",
         "types.go",
     ],
-    importpath = "github.com/binchencoder/ease-gateway/gateway/internal/descriptor",
+    importpath = "github.com/binchencoder/janus-gateway/gateway/internal/descriptor",
     deps = [
         "//gateway/internal/casing",
 	    "@com_github_grpc_ecosystem_grpc_gateway//internal/codegenerator",

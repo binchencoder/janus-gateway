@@ -17,7 +17,7 @@ import (
 	"sync"
 	"unicode/utf8"
 
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/janus-gateway/gateway/runtime"
 	vexpb "github.com/binchencoder/gateway-proto/data"
 	fpb "github.com/binchencoder/gateway-proto/frontend"
 	lgr "github.com/binchencoder/letsgo/grpc"

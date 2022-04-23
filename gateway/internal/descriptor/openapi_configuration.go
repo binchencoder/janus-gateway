@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor/openapiconfig"
-	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor/openapiconfig"
+	"github.com/binchencoder/janus-gateway/gateway/internal/descriptor/openapiconfig"
 	"google.golang.org/protobuf/encoding/protojson"
 	"sigs.k8s.io/yaml"
 )

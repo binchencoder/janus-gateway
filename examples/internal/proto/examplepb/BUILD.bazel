@@ -85,7 +85,7 @@ go_proto_library(
         "//:go_grpc",
         "//gateway/protoc-gen-grpc-gateway:go_gen_grpc_gateway",
     ],
-    importpath = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb",
+    importpath = "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb",
     proto = ":examplepb_proto",
     deps = [
     	"//httpoptions",
@@ -105,7 +105,7 @@ go_proto_library(
 go_library(
     name = "examplepb",
     embed = [":examplepb_go_proto"],
-    importpath = "github.com/binchencoder/ease-gateway/examples/internal/proto/examplepb",
+    importpath = "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb",
     deps = [
         "//httpoptions",
         "//gateway/runtime",

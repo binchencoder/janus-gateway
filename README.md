@@ -1,4 +1,4 @@
-# Ease-gateway
+# Janus-gateway
 
 Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway).  This helps you provide your APIs in both gRPC and RESTful style at the same time.
 
@@ -8,7 +8,7 @@ Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-e
 
 **grpc-gateway** 的出现更能引起开发者对使用gRPC的兴趣, 她可以帮你在原有gRPC服务的基础上做少量的改动, 便可以将原gRPC服务同时提供RESTful HTTP API, 了解更多RESTful API的例子可以参考[GitHub REST API](https://developer.github.com/v3/) 、[Google REST API](https://developers.google.com/drive/v2/reference/)
 
-**ease-gateway** 是站在巨人的肩膀上实现的, 增加了更符合企业级应用开发的**Features**:
+**janus-gateway** 是站在巨人的肩膀上实现的, 增加了更符合企业级应用开发的**Features**:
 
 - 支持自定义的LoadBalancer
 - 既可以部署单机版模式, 也可注册到注册中心实现集群模式
@@ -21,15 +21,15 @@ Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-e
 
 ## Design
 
-[design.md](https://github.com/binchencoder/ease-gateway/tree/master/docs/design.md)
+[design.md](https://github.com/binchencoder/janus-gateway/tree/master/docs/design.md)
 
 ## Validation Rule
 
-[gateway-validation-rule.md](https://github.com/binchencoder/ease-gateway/tree/master/docs/gateway-validation-rule.md)
+[gateway-validation-rule.md](https://github.com/binchencoder/janus-gateway/tree/master/docs/gateway-validation-rule.md)
 
 ## Prepared
 
-**ease-gateway** 使用GO MOD来管理Dependencies，clone代码之后直接在本地使用bazel构建
+**janus-gateway** 使用GO MOD来管理Dependencies，clone代码之后直接在本地使用bazel构建
 
 ### Build tools
 
@@ -39,13 +39,13 @@ Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-e
 ## Clone code
 
 ```shell
-git clone https://github.com/binchencoder/ease-gateway.git
+git clone https://github.com/binchencoder/janus-gateway.git
 ```
 
 ## Bazel build gateway
 
 ```
-cd ease-gateway
+cd janus-gateway
 
 bazel build cmd/gateway/...
 ```
@@ -56,4 +56,4 @@ TODO
 
 ## Run Examples
 
-See [examples/README.md](https://github.com/binchencoder/ease-gateway/tree/master/examples)
+See [examples/README.md](https://github.com/binchencoder/janus-gateway/tree/master/examples)

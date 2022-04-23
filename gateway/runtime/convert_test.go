@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/binchencoder/ease-gateway/gateway/runtime"
+	"github.com/binchencoder/janus-gateway/gateway/runtime"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"

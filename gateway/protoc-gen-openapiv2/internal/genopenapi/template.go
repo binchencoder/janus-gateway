@@ -20,11 +20,11 @@ import (
 	"github.com/golang/glog"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/casing"
-	"github.com/binchencoder/ease-gateway/gateway/internal/casing"
+	"github.com/binchencoder/janus-gateway/gateway/internal/casing"
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor"
-	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor"
+	"github.com/binchencoder/janus-gateway/gateway/internal/descriptor"
 	// openapi_options "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	openapi_options "github.com/binchencoder/ease-gateway/gateway/protoc-gen-openapiv2/options"
+	openapi_options "github.com/binchencoder/janus-gateway/gateway/protoc-gen-openapiv2/options"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/genproto/googleapis/api/visibility"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -33,7 +33,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/structpb"
 
-	options "github.com/binchencoder/ease-gateway/httpoptions"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
 )
 
 //  The OpenAPI specification does not allow for more than one endpoint with the same HTTP method and path.

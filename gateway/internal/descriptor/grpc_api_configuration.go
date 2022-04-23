@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/descriptor/apiconfig"
-	"github.com/binchencoder/ease-gateway/gateway/internal/descriptor/apiconfig"
+	"github.com/binchencoder/janus-gateway/gateway/internal/descriptor/apiconfig"
 	"google.golang.org/protobuf/encoding/protojson"
 	"sigs.k8s.io/yaml"
 )

@@ -6,12 +6,12 @@ import (
 	"unicode"
 
 	// "github.com/grpc-ecosystem/grpc-gateway/v2/internal/casing"
-	"github.com/binchencoder/ease-gateway/gateway/internal/casing"
+	"github.com/binchencoder/janus-gateway/gateway/internal/casing"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule"
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	options "github.com/binchencoder/ease-gateway/httpoptions"
+	options "github.com/binchencoder/janus-gateway/httpoptions"
 	"github.com/binchencoder/gateway-proto/data"
 )
 

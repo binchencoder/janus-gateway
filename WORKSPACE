@@ -1,4 +1,4 @@
-workspace(name = "com_github_binchencoder_ease_gateway")
+workspace(name = "com_github_binchencoder_janus_gateway")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
@@ -109,17 +109,17 @@ load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_depen
 buildifier_dependencies()
 
 # ---------- local repositories
-# local_repository(
-#     name = "com_github_binchencoder_gateway_proto",
-#     path = "../gateway-proto",
-# )
+local_repository(
+    name = "com_github_binchencoder_gateway_proto",
+    path = "../gateway-proto",
+)
 
-# local_repository(
-#     name = "com_github_binchencoder_letsgo",
-#     path = "../letsgo",
-# )
+local_repository(
+    name = "com_github_binchencoder_letsgo",
+    path = "../letsgo",
+)
 
-# local_repository(
-#     name = "com_github_binchencoder_skylb_api",
-#     path = "../skylb-api",
-# )
+local_repository(
+    name = "com_github_binchencoder_skylb_api",
+    path = "../skylb-api",
+)

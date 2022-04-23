@@ -3,7 +3,7 @@ package util
 import (
 	col "github.com/fatih/color"
 
-	"github.com/binchencoder/ease-gateway/util/glog"
+	"github.com/binchencoder/janus-gateway/util/glog"
 )
 
 func init() {
@@ -12,7 +12,7 @@ func init() {
 
 // gateway-rest日志
 var (
-	// ease-gateway 请求和响应详情日志. 支持格式包括:
+	// janus-gateway 请求和响应详情日志. 支持格式包括:
 	// 1. RequestRestFormat
 	// 2. ResponseRestFormat
 	RestLogger = glog.Context(nil, glog.FileName{Name: "gateway-rest"})
@@ -30,13 +30,13 @@ var (
 
 // gateway-config日志
 var (
-	// ease-gateway 配置操作相关日志.
+	// janus-gateway 配置操作相关日志.
 	ConfigLogger = glog.Context(nil, glog.FileName{Name: "gateway-config"})
 )
 
 // gateway-stat日志
 var (
-	// ease-gateway 访问统计日志. 支持格式包括:
+	// janus-gateway 访问统计日志. 支持格式包括:
 	// 1. StatFormat
 	StatLogger = glog.Context(nil, glog.FileName{Name: "gateway-stat"})
 

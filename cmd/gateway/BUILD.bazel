@@ -2,12 +2,12 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 
 go_library(
-    name = "ease-gateway",
+    name = "janus-gateway",
     srcs = [
         "main.go",
         "registryprod.go",
     ],
-    importpath = "github.com/binchencoder/ease-gateway/cmd/gateway",
+    importpath = "github.com/binchencoder/janus-gateway/cmd/gateway",
     visibility = ["//visibility:public"],
     deps = [
         "//proto/examplepb",
@@ -22,15 +22,15 @@ go_library(
 )
 
 # pkg_tar(
-#     name = "ease-gateway-tar",
+#     name = "janus-gateway-tar",
 #     srcs = [
-#         ":ease-gateway",
+#         ":janus-gateway",
 #     ],
-#     package_dir = "/ease-gateway/bin",
+#     package_dir = "/janus-gateway/bin",
 # )
 
 go_binary(
     name = "gateway",
-    embed = [":ease-gateway"],
+    embed = [":janus-gateway"],
     visibility = ["//visibility:public"],
 )
