@@ -9,10 +9,10 @@ import (
 
 	"github.com/golang/glog"
 
+	"github.com/binchencoder/gateway-proto/data"
 	"github.com/binchencoder/janus-gateway/gateway/runtime"
 	"github.com/binchencoder/janus-gateway/integrate"
 	"github.com/binchencoder/janus-gateway/util"
-	"github.com/binchencoder/gateway-proto/data"
 	"github.com/binchencoder/letsgo"
 	"github.com/binchencoder/letsgo/service/naming"
 )

@@ -23,7 +23,7 @@ def go_repositories():
         name = "com_github_binchencoder_gateway_proto",
         importpath = "github.com/binchencoder/gateway-proto",
         sum = "h1:ZvjzhU0CR93EdhqGtQj0Wkwd76D+KsvMuNEMAS1XVos=",
-        version = "v0.0.8",
+        version = "v0.0.9",
     )
     go_repository(
         name = "com_github_armon_circbuf",

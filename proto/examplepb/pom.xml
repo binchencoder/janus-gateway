@@ -15,13 +15,13 @@
 	</parent>
 
 	<dependencies>
-        <dependency>
-            <groupId>com.binchencoder.gateway</groupId>
-            <artifactId>janus-options-protos</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.binchencoder.gateway</groupId>
-            <artifactId>data-proto</artifactId>
+		<dependency>
+			<groupId>com.binchencoder.gateway</groupId>
+			<artifactId>janus-options-protos</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.binchencoder.gateway</groupId>
+			<artifactId>data-proto</artifactId>
 		</dependency>
 
 		<dependency>
