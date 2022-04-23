@@ -1,4 +1,4 @@
-# Ease-gatway - Enterprise Universal Gateway Service
+# Janus-gatway - Enterprise Universal Gateway Service
 
 `janus-gateway` is a enterprise universal gateway service for mobile, native, and web apps.
 It's based on `grpc-gateway` and mobile team's gateway development experience.
@@ -137,7 +137,7 @@ import "options/extension.proto";
 
 service Demo {
 	option (janus.api.service_spec) = {
-		service_id: EASE_GATEWAY_DEMO
+		service_id: JANUS_GATEWAY_DEMO
 		namespace: "default"
 		port_name: "grpc"
 	}

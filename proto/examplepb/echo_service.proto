@@ -4,7 +4,7 @@ option go_package = "github.com/binchencoder/janus-gateway/gateway/proto/example
 
 package grpc.gateway.proto.examplepb;
 
-option java_package = "com.binchencoder.easegw.examplepb";
+option java_package = "com.binchencoder.janusgw.examplepb";
 option java_outer_classname = "ExamplesProto";
 
 // import "google/api/annotations.proto";
@@ -66,7 +66,7 @@ message SimpleMessage {
 // Echo service responds to incoming echo requests.
 service EchoService {
     option (janus.api.service_spec) = {
-        service_id: CUSTOM_EASE_GATEWAY_TEST
+        service_id: CUSTOM_JANUS_GATEWAY_TEST
         port_name : "grpc"
         namespace : "default"
         gen_controller: true

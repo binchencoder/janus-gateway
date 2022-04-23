@@ -24,7 +24,7 @@ var (
 	requestSleep   = flag.Duration("request-sleep", 100*time.Millisecond, "The sleep time after each request")
 	requestTimeout = flag.Duration("request-timeout", 100*time.Millisecond, "The timeout of each request")
 
-	spec = skylb.NewServiceSpec(skylb.DefaultNameSpace, vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST, skylb.DefaultPortName)
+	spec = skylb.NewServiceSpec(skylb.DefaultNameSpace, vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST, skylb.DefaultPortName)
 
 	grpcFailCount = prom.NewCounter(
 		prom.CounterOpts{
@@ -72,7 +72,7 @@ func main() {
 }
 
 func testClient() {
-	sl, cli, healthCli := startSkylb(vexpb.ServiceId_CUSTOM_EASE_GATEWAY_TEST)
+	sl, cli, healthCli := startSkylb(vexpb.ServiceId_CUSTOM_JANUS_GATEWAY_TEST)
 	for {
 		for i := 0; i < *nBatchRequest; i++ {
 			req := examplepb.SimpleMessage{

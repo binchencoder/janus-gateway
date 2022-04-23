@@ -26,7 +26,7 @@ var (
 )
 
 func usage() {
-	fmt.Println(`Ease Gateway - Universal Gateway of xxx Inc.
+	fmt.Println(`Janus Gateway - Universal Gateway of xxx Inc.
 
 Usage:
 	janus-gateway [options]
@@ -72,7 +72,7 @@ func main() {
 	checkFlags()
 
 	hostPort := fmt.Sprintf("%s:%d", *host, *port)
-	runtime.CallerServiceId = data.ServiceId_EASE_GATEWAY
+	runtime.CallerServiceId = data.ServiceId_JANUS_GATEWAY
 	serviceName, err := naming.ServiceIdToName(runtime.CallerServiceId)
 	if err != nil {
 		glog.Errorf("Invalid service id %d", runtime.CallerServiceId)

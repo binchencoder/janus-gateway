@@ -42,7 +42,7 @@ message UnannotatedSimpleMessage {
 // Echo service responds to incoming echo requests.
 service UnannotatedEchoService {
 	option (janus.api.service_spec) = {
-		service_id: CUSTOM_EASE_GATEWAY_TEST
+		service_id: CUSTOM_JANUS_GATEWAY_TEST
 		port_name : "grpc"
 		namespace : "default"
 	};

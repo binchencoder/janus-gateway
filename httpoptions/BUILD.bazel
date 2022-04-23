@@ -43,7 +43,7 @@ go_proto_library(
 )
 
 # proto_library(
-#     name = "ease_api_proto",
+#     name = "janus_api_proto",
 #     srcs = [
 #         "annotations.proto",
 #         "http.proto",

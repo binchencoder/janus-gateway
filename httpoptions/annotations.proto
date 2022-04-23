@@ -66,13 +66,13 @@ message ApiMethod {
 
 // Api regist gateway.
 enum ApiSourceType {
-	EASE_GATEWAY       = 0; // janus-gateway apis.
+	JANUS_GATEWAY       = 0; // janus-gateway apis.
 	OPEN_GATEWAY        = 1; // open-gateway open apis.
 }
 
 // Auth token type.
 enum AuthTokenType {
-	EASE_AUTH_TOKEN   = 0; // janus gateway auth type.
+	JANUS_AUTH_TOKEN   = 0; // janus gateway auth type.
 	BASE_ACCESS_TOKEN  = 1; // open platform baseAccessToken.
 }
 

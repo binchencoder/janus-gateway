@@ -26,18 +26,18 @@ const (
 type ApiSourceType int32
 
 const (
-	ApiSourceType_EASE_GATEWAY ApiSourceType = 0
+	ApiSourceType_JANUS_GATEWAY ApiSourceType = 0
 	ApiSourceType_OPEN_GATEWAY ApiSourceType = 1
 )
 
 // Enum value maps for ApiSourceType.
 var (
 	ApiSourceType_name = map[int32]string{
-		0: "EASE_GATEWAY",
+		0: "JANUS_GATEWAY",
 		1: "OPEN_GATEWAY",
 	}
 	ApiSourceType_value = map[string]int32{
-		"EASE_GATEWAY": 0,
+		"JANUS_GATEWAY": 0,
 		"OPEN_GATEWAY": 1,
 	}
 )
@@ -72,18 +72,18 @@ func (ApiSourceType) EnumDescriptor() ([]byte, []int) {
 type AuthTokenType int32
 
 const (
-	AuthTokenType_EASE_AUTH_TOKEN   AuthTokenType = 0
+	AuthTokenType_JANUS_AUTH_TOKEN   AuthTokenType = 0
 	AuthTokenType_BASE_ACCESS_TOKEN AuthTokenType = 1
 )
 
 // Enum value maps for AuthTokenType.
 var (
 	AuthTokenType_name = map[int32]string{
-		0: "EASE_AUTH_TOKEN",
+		0: "JANUS_AUTH_TOKEN",
 		1: "BASE_ACCESS_TOKEN",
 	}
 	AuthTokenType_value = map[string]int32{
-		"EASE_AUTH_TOKEN":   0,
+		"JANUS_AUTH_TOKEN":   0,
 		"BASE_ACCESS_TOKEN": 1,
 	}
 )
@@ -458,14 +458,14 @@ func (x *ApiMethod) GetApiSource() ApiSourceType {
 	if x != nil {
 		return x.ApiSource
 	}
-	return ApiSourceType_EASE_GATEWAY
+	return ApiSourceType_JANUS_GATEWAY
 }
 
 func (x *ApiMethod) GetTokenType() AuthTokenType {
 	if x != nil {
 		return x.TokenType
 	}
-	return AuthTokenType_EASE_AUTH_TOKEN
+	return AuthTokenType_JANUS_AUTH_TOKEN
 }
 
 func (x *ApiMethod) GetSpecSourceType() SpecSourceType {

@@ -22,7 +22,7 @@ var (
 )
 
 func usage() {
-	fmt.Println(`EaseGateway - Ease Gateway of binchencoder.
+	fmt.Println(`JanusGateway - Janus Gateway of binchencoder.
 
 Usage:
 	janus-gateway [options]
@@ -48,11 +48,11 @@ func main() {
 	// debugMode := flag.Lookup("debug-mode")
 	// debugMode.Value.Set("true")
 
-	runtime.CallerServiceId = data.ServiceId_EASE_GATEWAY
+	runtime.CallerServiceId = data.ServiceId_JANUS_GATEWAY
 	// integrate.SetAllowCredentials(true)
 	// integrate.SetAllowHostsRegexp([]string{"*"})
 
-	glog.Info("***** Ease gateway init. *****")
+	glog.Info("***** Janus gateway init. *****")
 
 	hostPort := fmt.Sprintf("%s:%d", *host, *port)
 	mux := runtime.NewServeMux()

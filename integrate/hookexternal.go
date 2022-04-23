@@ -326,11 +326,11 @@ func getHeader(h http.Header, key string) string {
 }
 
 func isGatewayApi(api *runtime.Method) bool {
-	if runtime.CallerServiceId == vexpb.ServiceId_EASE_GATEWAY {
-		return api.ApiSource == options.ApiSourceType_EASE_GATEWAY
+	if runtime.CallerServiceId == vexpb.ServiceId_JANUS_GATEWAY {
+		return api.ApiSource == options.ApiSourceType_JANUS_GATEWAY
 	}
-	// else if runtime.CallerServiceId == vexpb.ServiceId_EASE_OPEN_GATEWAY {
-	// 	return api.ApiSource == options.ApiSourceType_EASE_OPEN_GATEWAY ||
+	// else if runtime.CallerServiceId == vexpb.ServiceId_JANUS_OPEN_GATEWAY {
+	// 	return api.ApiSource == options.ApiSourceType_JANUS_OPEN_GATEWAY ||
 	// 		api.ApiSource == options.ApiSourceType_OPEN_GATEWAY_PRIVATE
 	// }
 	return false

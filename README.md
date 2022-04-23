@@ -17,7 +17,7 @@ Gateway service based on [grpc-ecosystem/grpc-gateway](https://github.com/grpc-e
 
 ## Architecture
 
-![](./docs/images/Ease-Gateway.png)
+![](./docs/images/Janus-Gateway.png)
 
 ## Design
 
