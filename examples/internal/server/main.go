@@ -8,6 +8,8 @@ import (
 	examples "github.com/binchencoder/janus-gateway/examples/internal/proto/examplepb"
 	"github.com/binchencoder/janus-gateway/gateway/runtime"
 	"github.com/golang/glog"
+
+	// standalone "github.com/binchencoder/janus-gateway/examples/internal/proto/standalone"
 	"google.golang.org/grpc"
 )
 
@@ -26,6 +28,7 @@ func Run(ctx context.Context, network, address string) error {
 
 	s := grpc.NewServer()
 	examples.RegisterEchoServiceServer(s, NewEchoServer())
+	examples.RegisterUnannotatedEchoServiceServer(s, newUnannotatedEchoServer())
 
 	go func() {
 		defer s.GracefulStop()
@@ -39,6 +42,8 @@ func RunInProcessGateway(ctx context.Context, addr string, opts ...runtime.Serve
 	mux := runtime.NewServeMux(opts...)
 
 	examples.RegisterEchoServiceHandlerServer(ctx, mux, NewEchoServer())
+	// examples.RegisterNonStandardServiceHandlerServer(ctx, mux, newNonStandardServer())
+	// standalone.RegisterUnannotatedEchoServiceHandlerServer(ctx, mux, newUnannotatedEchoServer())
 	s := &http.Server{
 		Addr:    addr,
 		Handler: mux,

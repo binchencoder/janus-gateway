@@ -7,11 +7,13 @@ go_library(
     srcs = [
         "echo.go",
         "main.go",
+        "unannotatedecho.go",
     ],
     importpath = "github.com/binchencoder/janus-gateway/examples/internal/server",
     deps = [
         "//examples/internal/proto/examplepb",
-	"//gateway/runtime",
+        # "//examples/internal/proto/standalone",
+	    "//gateway/runtime",
         "@com_github_golang_glog//:glog",
         "@com_github_rogpeppe_fastuuid//:fastuuid",
         "@go_googleapis//google/api:httpbody_go_proto",
